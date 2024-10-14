@@ -16,9 +16,7 @@ export class LoginComponent {
   }
 
   onSubmit() {
-    
-    console.log("oray");
-    console.log(this.email);
-    console.log(this.password);
+    this.router.navigate(['/feedback']);
+
   }
 }

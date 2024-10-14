@@ -1,0 +1,73 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+}
+
+/* Hero Section */
+.hero {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: #004080;
+  color: white;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.hero p {
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+  max-width: 700px;
+}
+
+/* Call-to-action button */
+.cta-button {
+  background-color: #ff6f61;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1.25rem;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.cta-button:hover {
+  background-color: #e65c50;
+}
+
+/* Navbar */
+.navbar {
+  background-color: #004080;
+}
+
+.navbar .nav-link {
+  color: white;
+  padding: 10px 20px;
+}
+
+.navbar .nav-link:hover {
+  background-color: #003366;
+  border-radius: 5px;
+}
+
+/* Footer */
+footer {
+  background-color: #004080;
+  padding: 20px;
+  text-align: center;
+  color: white;
+}
+
+footer p {
+  margin: 0;
+}

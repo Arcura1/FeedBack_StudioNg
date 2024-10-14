@@ -1,28 +1,27 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
-
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http'; // HttpClientModule'ü içe aktarın
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LandingComponent } from './landing/landing.component';
 import { LoginComponent } from './login/login.component';
-import {FeedbackModule} from './feedback/feedback.module'
-import {FormsModule} from "@angular/forms";
+import { RegisterComponent } from './register/register.component';
+
 @NgModule({
   declarations: [
     AppComponent,
     LandingComponent,
     LoginComponent,
-
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FeedbackModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule // Buraya ekleyin
   ],
-  providers: [
-    provideClientHydration()
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

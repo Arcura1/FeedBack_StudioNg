@@ -1,17 +1,19 @@
 import { Component } from '@angular/core';
-import {Router} from '@angular/router';
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-landing',
   templateUrl: './landing.component.html',
-  styleUrl: './landing.component.css'
-
+  styleUrls: ['./landing.component.css'] // 'styleUrls' kullanmalısınız
 })
 export class LandingComponent {
   constructor(private router: Router) {}
 
-  goToAbout() {
-    this.router.navigate(['/login']);
+  goToEntry() {
+    this.router.navigate(['/login']); // Giriş sayfasına yönlendirme
+  }
+
+  goToRegister() {
+    this.router.navigate(['/register']); // Kayıt sayfasına yönlendirme
   }
 }

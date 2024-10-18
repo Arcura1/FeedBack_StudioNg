@@ -8,6 +8,7 @@ import {LnawbarComponent} from "./component/Lnawbar/Lnawbar.component";
 import {RnawbarComponent} from "./component/Rnawbar/Rnawbar.component";
 import {MainPageComponent} from "./component/mainPage/mainPage.component";
 import {ProfileComponent} from "./component/Profile/profle.component";
+import {PdfEditComponent} from "./component/pdfEditPage/./pdfEdit.component";
 
 
 
@@ -23,6 +24,7 @@ import {ProfileComponent} from "./component/Profile/profle.component";
     NavbarComponent,
     LnawbarComponent,
     RnawbarComponent,
+    PdfEditComponent
   ]
 })
 export class FeedbackModule { }

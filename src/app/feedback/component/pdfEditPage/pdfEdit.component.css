@@ -1,0 +1,21 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+
+#pdf-render {
+  border: 1px solid black;
+  width: 100%;
+  height: auto;
+}
+
+
+.canvas-container {
+  position: relative;
+  width: 100%;
+}
+
+canvas {
+  display: block;
+  margin: 0 auto;
+}

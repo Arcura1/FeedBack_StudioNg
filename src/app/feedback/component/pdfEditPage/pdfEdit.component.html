@@ -1,0 +1,18 @@
+<p>test works!</p>
+<label>Tıklanılan X değeri:{{ pdfX.toFixed(2) }}</label>
+<br>
+<br>
+
+<label>Tıklanılan Y değeri:{{ pdfY.toFixed(2) }}</label>
+<br>
+
+<form (ngSubmit)="onSubmit()" #myForm="ngForm">
+  <input id="noteInput" type="text" name="metin" placeholder="Metin giriniz" required [(ngModel)]="metin">
+  <button type="submit" [disabled]="!myForm.form.valid">Gönder</button>
+</form>
+<button (click)="pageChangeBackvard()">geri</button>
+<button (click)="pageChangeForvard()">ileri</button>
+
+<div class="canvas-container" id="pdf-viewer">
+  <canvas (click)="pdfLocationUpdate($event)" id="pdf-render" #pdfCanvas></canvas>
+</div>

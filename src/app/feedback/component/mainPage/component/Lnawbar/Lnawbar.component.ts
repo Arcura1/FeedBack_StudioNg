@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {PdfEditComponent} from "../pdfEditPage/./pdfEdit.component";
+import {PdfEditComponent} from "../../../pdfEditPage/pdfEdit.component";
 
 @Component({
   selector: 'Lnawbarfeed',

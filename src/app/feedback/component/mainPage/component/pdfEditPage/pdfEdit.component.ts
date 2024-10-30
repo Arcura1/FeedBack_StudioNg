@@ -88,7 +88,33 @@ export class PdfEditComponent implements OnInit {
           canvasContext: context,
           viewport: viewport
         };
-        page.render(renderContext);
+        page.render(renderContext).promise.then(() => {
+          // Sayfada kelimelerin konumlarını almak için metin içeriğini alıyoruz
+          page.getTextContent().then((textContent) => {
+            textContent.items.forEach((item) => {
+              if ('str' in item && 'transform' in item) {  // `item`'in `TextItem` olup olmadığını kontrol ediyoruz
+                const text = item.str;
+                const transform = item.transform;
+                // Bu noktada `text` ve `transform` ile işlemlere devam edebilirsiniz
+
+              // Her kelime için konum
+              const x = transform[4] * scale;
+              const y = transform[5] * scale;
+              const ctx = this.pdfCanvasRef.nativeElement.getContext('2d');
+
+              if (ctx) {
+                // Kelimenin altını çiz (çizgi genişliği ve yüksekliği kelimenin boyutuna göre)
+                ctx.strokeStyle = 'red';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(x, canvas.height - y); // Başlangıç noktası
+                ctx.lineTo(x + (text.length * 7 * scale), canvas.height - y); // Kelime uzunluğu kadar yatay çizgi
+                ctx.stroke();
+              }
+              }
+            });
+          });
+        });;
         console.log('Sayfa render edildi');
       } else {
         console.error('Canvas context alınamadı');

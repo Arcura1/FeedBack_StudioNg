@@ -3,6 +3,7 @@ declare const pdfjsLib: any;
 import { PDFDocumentProxy,PageViewport } from 'pdfjs-dist';
 import { getDocument } from 'pdfjs-dist';
 import {FormsModule} from "@angular/forms";
+import {NgIf} from "@angular/common";
 
 
 @Component({
@@ -11,7 +12,8 @@ import {FormsModule} from "@angular/forms";
   styleUrls: ['./pdfEdit.component.css'],
   standalone: true,
   imports: [
-    FormsModule
+    FormsModule,
+    NgIf
   ],
 })
 export class PdfEditComponent implements OnInit {
@@ -41,6 +43,7 @@ export class PdfEditComponent implements OnInit {
   public pdfY:number
   public metin: any;
   public originalViewport: any;
+  public isPopupOpen = false; // Pop-up'ın açık olup olmadığını kontrol eden değişken
 
 
 
@@ -178,5 +181,17 @@ export class PdfEditComponent implements OnInit {
     this.pdfY = (y / rect.height) * this.originalViewport.height;
 
     console.log(`Tıklanan PDF Koordinatları X: ${this.pdfX.toFixed(2)}, Y: ${this.pdfY.toFixed(2)}`);
+  }
+  openPopup() {
+    this.isPopupOpen = !this.isPopupOpen; // Pop-up'ı aç
+  }
+
+  closePopup() {
+    this.isPopupOpen = false; // Pop-up'ı kapat
+  }
+
+  onSubmitNote() {
+    console.log('Form gönderildi');
+    this.closePopup(); // Form gönderildikten sonra pop-up'ı kapat
   }
 }

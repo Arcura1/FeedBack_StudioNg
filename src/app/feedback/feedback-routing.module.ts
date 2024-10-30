@@ -3,12 +3,28 @@ import {RouterModule, Routes} from '@angular/router';
 import {FeedbackComponent} from './feedback.component';
 import {ProfileComponent} from "./component/Profile/profle.component";
 import {MainPageComponent} from "./component/mainPage/mainPage.component";
+import {FlandingComponent} from "./component/mainPage/component/Flanding/Flanding";
+import {PdfEditComponent} from "./component/mainPage/component/pdfEditPage/pdfEdit.component";
 
 const pageCode="feedback"
 const routes: Routes = [
-  {path: '', component:MainPageComponent },
+  { path: '',
+    component:MainPageComponent,
+    children:[
+      {path:'',component:FlandingComponent},
+      {path:'landing',component:FlandingComponent},
+      {path:'PdfEdit',component:PdfEditComponent},
+    ]
+  },
   {path:'profile',component:ProfileComponent},
-  {path:'main',component:MainPageComponent}
+  { path:'main',
+    component:MainPageComponent,
+    children:[
+      {path:'',component:FlandingComponent},
+      {path:'landing',component:FlandingComponent},
+      {path:'PdfEdit',component:PdfEditComponent},
+    ]
+  }
 
 ];
 

@@ -1,13 +1,44 @@
-<div class="sidebar">
-  <h2>Menü</h2>
-  <ul class="list-group">
-    <li class="list-group-item"><a href="#">PDF Ekle</a></li>
-    <li class="list-group-item"><a href="#">PDF Değiştir</a></li>
-    <li class="list-group-item"><a href="#">PDF Sil</a></li>
-    <li class="list-group-item"><a href="#">PDF Listele</a></li>
-  </ul>
+<!--<div class="sidebar">-->
+<!--  <h2>Menü</h2>-->
+<!--  <ul class="list-group">-->
+<!--    <li class="list-group-item"><a href="#">PDF Ekle</a></li>-->
+<!--    <li class="list-group-item"><a href="#">PDF Değiştir</a></li>-->
+<!--    <li class="list-group-item"><a href="#">PDF Sil</a></li>-->
+<!--    <li class="list-group-item"><a href="#">PDF Listele</a></li>-->
+<!--  </ul>-->
+<!--</div>-->
+
+<!--<div class="content">-->
+<!--  <Pdf-Edit></Pdf-Edit>-->
+<!--</div>-->
+
+
+
+<!-- Sidebar -->
+<!-- Sidebar Toggle Button -->
+<!-- Sağdan Açılan Off-canvas -->
+
+<!--<div class="d-flex">-->
+  <!-- Sidebar -->
+<!--  <div [ngClass]="{'sidebar': true, 'collapsed': isSidebarCollapsed}">-->
+<!--    <nav class="nav flex-column p-3">-->
+<!--      <h4>Menü</h4>-->
+<!--      <a routerLink="landing" class="btn btn-info me-2">Anasayfa</a>-->
+<!--      <a routerLink="PdfEdit" class="btn btn-success me-2">PdfEdit</a>-->
+<!--      <button (click)="toggleSidebar()" class="btn btn-primary m-3">Sidebar'ı Aç/Kapat</button>-->
+<!--    </nav>-->
+<!--  </div>-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+<div class="sidebar" [class.closed]="!isSidebarCollapsed">
+        <h4>Menü</h4>
+  <br>
+        <a routerLink="landing" class="btn btn-info me-2">Anasayfa</a>
+  <br>
+        <a routerLink="PdfEdit" class="btn btn-success me-2">PdfEdit</a>
+  <br>
+  <button (click)="toggleSidebar()"  class="btn btn-primary m-3">Kapat</button>
 </div>
 
-<div class="content">
-  <Pdf-Edit></Pdf-Edit>
-</div>
+<!-- Kapatıldığında görünmesi gereken buton -->
+<button *ngIf="!isSidebarCollapsed" class="toggle-btn" (click)="toggleSidebar()">☰</button>

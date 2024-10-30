@@ -7,7 +7,6 @@ import { AppComponent } from './app.component';
 import { LandingComponent } from './landing/landing.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { PdfEditComponent } from './feedback/component/pdfEditPage/./pdfEdit.component';
 
 @NgModule({
   declarations: [

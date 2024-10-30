@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../login/user.service';
 import { HttpClient } from '@angular/common/http';
-import { User } from '../login/user'; // User modelinizi içe aktarın
+import { User } from '../login/user'; //
 
 @Component({
   selector: 'app-register',
@@ -10,11 +10,12 @@ import { User } from '../login/user'; // User modelinizi içe aktarın
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
-  firstName: string = ''; // Ad
-  lastName: string = ''; // Soyad
-  email: string = ''; // Email
-  phone: string = ''; // Telefon numarası
-  password: string = ''; // Şifre
+  firstName: string = ''; //
+  lastName: string = ''; //
+  email: string = ''; //
+  phone: string = ''; //
+  password: string = ''; //
+
 
   private apiUrl = 'http://localhost:8080/api/users/create'; // Backend URL
 
@@ -26,7 +27,8 @@ export class RegisterComponent {
       lastName: this.lastName,
       email: this.email,
       phone: this.phone,
-      password: this.password
+      password: this.password,
+      role: 'student'
     };
 
     this.http.post(this.apiUrl, newUser).subscribe(

@@ -4,5 +4,6 @@ export interface User {
   email: string;     // Email
   phone: string;     // Telefon numarası
   password: string;  // Şifre
+  role: string;
 }
 

@@ -6,12 +6,22 @@
 }
 
 
-/*.canvas-container {*/
-/*  position: relative;*/
-/*  width: 100%;*/
-/*}*/
+.canvas-container {
+  position: relative;
+  width: 100%;
+}
 
-/*canvas {*/
-/*  display: block;*/
-/*  margin: 0 auto;*/
-/*}*/
+.button {
+  position: absolute;
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+canvas {
+  display: block;
+  /*margin: 0 auto;*/
+}
+

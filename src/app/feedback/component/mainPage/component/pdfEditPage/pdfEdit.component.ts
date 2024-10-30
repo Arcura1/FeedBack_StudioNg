@@ -17,6 +17,8 @@ import {NgIf} from "@angular/common";
   ],
 })
 export class PdfEditComponent implements OnInit {
+
+  @ViewChild('canvasContainer', { static: true }) canvasContainerRef!: ElementRef;
   @ViewChild('pdfCanvas', { static: false }) pdfCanvasRef!: ElementRef<HTMLCanvasElement>;
 
   // ngOnInit(): void {
@@ -77,6 +79,32 @@ export class PdfEditComponent implements OnInit {
       const canvas = this.pdfCanvasRef.nativeElement; // @ViewChild ile elde edilen referans
       const context = canvas.getContext('2d');
 
+
+      fetch('http://localhost:8080/viewAll')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          // Gelen veriyi for döngüsü ile tek tek yazdır
+          console.log(data)
+          for (const item of data) {
+            const button = document.createElement('button');
+            button.className = 'button';
+            button.textContent = item.note;
+            // Butonu tıklanan konuma yerleştir
+            button.style.left = `${item.xcoordinate}px`;
+            button.style.top = `${item.ycoordinate}px`;
+            this.canvasContainerRef.nativeElement.appendChild(button)
+            // console.log(item);
+          }
+        })
+        .catch(error => {
+          console.error('Veri alınırken bir hata oluştu:', error);
+        });
+
       // context'in null olmadığını kontrol et
       if (context) {
         // Canvas boyutlarını ayarla
@@ -104,6 +132,8 @@ export class PdfEditComponent implements OnInit {
 
               if (ctx) {
                 // Kelimenin altını çiz (çizgi genişliği ve yüksekliği kelimenin boyutuna göre)
+
+
                 ctx.strokeStyle = 'red';
                 ctx.lineWidth = 1;
                 ctx.beginPath();
@@ -114,7 +144,7 @@ export class PdfEditComponent implements OnInit {
               }
             });
           });
-        });;
+        });
         console.log('Sayfa render edildi');
       } else {
         console.error('Canvas context alınamadı');
@@ -201,6 +231,7 @@ export class PdfEditComponent implements OnInit {
     const rect = this.pdfCanvasRef.nativeElement.getBoundingClientRect();
     const x = $event.clientX - rect.left;
     const y = $event.clientY - rect.top;
+
 
 
     this.pdfX = (x / rect.width) * this.originalViewport.width;

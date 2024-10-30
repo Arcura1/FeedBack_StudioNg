@@ -32,7 +32,7 @@
 <button (click)="pageChangeBackvard()">geri</button>
 <button (click)="pageChangeForvard()">ileri</button>
 
-<div class="canvas-container" id="pdf-viewer">
+<div class="canvas-container" id="pdf-viewer" #canvasContainer>
   <canvas (click)="pdfLocationUpdate($event)" id="pdf-render" #pdfCanvas></canvas>
 </div>
 

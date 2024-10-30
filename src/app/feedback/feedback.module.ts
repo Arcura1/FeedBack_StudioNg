@@ -8,6 +8,7 @@ import {LnawbarComponent} from "./component/mainPage/component/Lnawbar/Lnawbar.c
 import {MainPageComponent} from "./component/mainPage/mainPage.component";
 import {ProfileComponent} from "./component/Profile/profle.component";
 import {PdfEditComponent} from "./component/mainPage/component/pdfEditPage/pdfEdit.component";
+import { StudentComponent } from './component/student/student.component';
 
 
 
@@ -16,6 +17,7 @@ import {PdfEditComponent} from "./component/mainPage/component/pdfEditPage/pdfEd
     FeedbackComponent,
     MainPageComponent,
     ProfileComponent,
+    StudentComponent
   ],
   imports: [
     CommonModule,

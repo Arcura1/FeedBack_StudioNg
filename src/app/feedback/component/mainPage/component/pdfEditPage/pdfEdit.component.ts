@@ -1,9 +1,9 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {PDFDocumentProxy} from 'pdfjs-dist';
 import {FormsModule} from "@angular/forms";
 import {NgIf} from "@angular/common";
 import html2canvas from 'html2canvas';
-
+import { jsPDF } from 'jspdf';
 
 
 declare const pdfjsLib: any;
@@ -23,7 +23,6 @@ export class PdfEditComponent implements OnInit {
 
   @ViewChild('canvasContainer', {static: true}) canvasContainerRef!: ElementRef;
   @ViewChild('pdfCanvas', {static: false}) pdfCanvasRef!: ElementRef<HTMLCanvasElement>;
-
   // ngOnInit(): void {
   //   const url = 'https://pdfobject.com/pdf/sample.pdf'; // PDF dosya URL'si
   //   const loadingTask = pdfjsLib.getDocument(url);
@@ -53,9 +52,11 @@ export class PdfEditComponent implements OnInit {
   public isMouseDown: boolean = false;
   public startX: number;
   public startY: number;
+  // public isDrawing: boolean=false;
+  // public ctx: CanvasRenderingContext2D | null = null;
 
 
-  constructor() {
+  constructor(private renderer:  Renderer2, private elementRef: ElementRef) {
     this.startY = 0;
     this.startX = 0;
 
@@ -64,7 +65,7 @@ export class PdfEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    // this.ctx=this.pdfCanvasRef.nativeElement.getContext('2d');
 
     this.loadingTask.promise.then(
       (pdf: PDFDocumentProxy) => {
@@ -99,14 +100,17 @@ export class PdfEditComponent implements OnInit {
         .then(data => {
           // Gelen veriyi for döngüsü ile tek tek yazdır
           console.log(data)
+          const rect = this.pdfCanvasRef.nativeElement.getBoundingClientRect();
           for (const item of data) {
             const button = document.createElement('button');
             button.className = 'btn btn-success position-absolute';
             button.textContent = item.note;
+            button.id='notes'
+
             // Butonu tıklanan konuma yerleştir
-            console.log(item);
-            button.style.left = `${item.xcoordinate}px`;
-            button.style.top = `${item.ycoordinate}px`;
+
+            button.style.left = `${((item.xcoordinate / this.originalViewport.width) * rect.width )}px`;
+            button.style.top = `${((item.ycoordinate / this.originalViewport.height) * rect.height )}px`;
             this.canvasContainerRef.nativeElement.appendChild(button)
             // console.log(item);
           }
@@ -160,6 +164,7 @@ export class PdfEditComponent implements OnInit {
         console.error('Canvas context alınamadı');
       }
     });
+
   }
 
 
@@ -242,7 +247,6 @@ export class PdfEditComponent implements OnInit {
       const x = $event.clientX - rect.left;
       const y = $event.clientY - rect.top;
 
-
       this.pdfX = (x / rect.width) * this.originalViewport.width;
       this.pdfY = (y / rect.height) * this.originalViewport.height;
 
@@ -270,7 +274,9 @@ export class PdfEditComponent implements OnInit {
   noteMode() {
     this.modeSelect = 0;
   }
-
+  cizgiMode($event: MouseEvent) {
+    this.modeSelect = 2;
+  }
   mouseup($event: MouseEvent) {
     if (this.modeSelect == 1) {
       if (this.isMouseDown) {
@@ -282,6 +288,7 @@ export class PdfEditComponent implements OnInit {
 
         const highlightDiv = document.createElement('div');
         highlightDiv.className = 'position-absolute bg-warning';
+        highlightDiv.id = 'button';
         highlightDiv.style.opacity = '0.5';
 
         highlightDiv.style.left = Math.min(this.startX, endX) + 'px';
@@ -292,6 +299,9 @@ export class PdfEditComponent implements OnInit {
         this.canvasContainerRef.nativeElement.appendChild(highlightDiv);
       }
     }
+    // else if(this.modeSelect==2){
+    //   this.isDrawing = false;
+    // }
   }
 
   mouseDown($event: MouseEvent) {
@@ -301,14 +311,69 @@ export class PdfEditComponent implements OnInit {
       this.startX = $event.clientX - rect.left;
       this.startY = $event.clientY - rect.top;
     }
+    // else if(this.modeSelect==2){
+    //   this.isDrawing = true;
+    //   this.ctx?.beginPath();
+    //   this.ctx?.moveTo($event.offsetX, $event.offsetY);
+    // }
   }
 
   download($event: MouseEvent) {
     html2canvas(this.canvasContainerRef.nativeElement).then(canvas => {
+
       const link = document.createElement('a');
       link.download = 'highlighted_pdf.png';
       link.href = canvas.toDataURL();
       link.click();
     });
   }
+  downloadWithoutButton($event: MouseEvent) {
+    this.toggleVisibility();
+    html2canvas(this.canvasContainerRef.nativeElement).then(canvas => {
+
+      const link = document.createElement('a');
+      link.download = 'highlighted_pdf.png';
+      link.href = canvas.toDataURL();
+      link.click();
+    });
+    this.toggleVisibility();
+  }
+  toggleVisibility() {
+    const elements = this.elementRef.nativeElement.querySelectorAll('#notes');
+
+    elements.forEach((element: HTMLElement) => {
+      if (element.style.display === 'none') {
+        // Görünür yap
+        this.renderer.setStyle(element, 'display', 'block');
+      } else {
+        // Gizle
+        this.renderer.setStyle(element, 'display', 'none');
+      }
+    });
+  }
+
+  // downloadWithoutButtonpdf($event: MouseEvent) {
+  //   const canvas = this.pdfCanvasRef.nativeElement;
+  //   const pdf = new jsPDF();
+  //
+  //   // Canvas'ı bir veri URL'sine dönüştür
+  //   const imgData = canvas.toDataURL('image/png');
+  //
+  //   // PDF'in boyutunu canvas boyutuna ayarla
+  //   const pdfWidth = canvas.width * 0.75; // px'den pt'ye çevir (1 px ≈ 0.75 pt)
+  //   const pdfHeight = canvas.height * 0.75;
+  //
+  //   // Canvas görüntüsünü PDF'e ekle
+  //   pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+  //
+  //   // PDF dosyasını indir
+  //   pdf.save('canvas-output.pdf');
+  // }
+
+  // mouseMove($event: MouseEvent) {
+  //   if (this.isDrawing) {
+  //     this.ctx?.lineTo($event.offsetX, $event.offsetY);
+  //     this.ctx?.stroke();
+  //   }
+  // }
 }

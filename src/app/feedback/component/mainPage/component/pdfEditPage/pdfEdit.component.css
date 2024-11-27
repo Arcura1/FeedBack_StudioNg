@@ -10,7 +10,11 @@
   position: relative;
   width: 100%;
 }
-
+.highlight {
+  position: absolute;
+  background-color: rgba(255, 255, 0, 0.5);
+  pointer-events: none;
+}
 .button {
   position: absolute;
   padding: 10px;
@@ -23,5 +27,22 @@
 canvas {
   display: block;
   /*margin: 0 auto;*/
+}
+
+#pdf-container {
+  position: relative;
+  border: 1px solid #ccc;
+  overflow: auto;
+  width: 600px;
+  height: 800px;
+}
+#pdf-canvas {
+  display: block;
+  margin: 0 auto;
+}
+.highlight {
+  position: absolute;
+  background-color: rgba(255, 255, 0, 0.5);
+  pointer-events: none;
 }
 

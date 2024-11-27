@@ -31,8 +31,11 @@
 </form>
 <button (click)="pageChangeBackvard()">geri</button>
 <button (click)="pageChangeForvard()">ileri</button>
+<button (click)="higlihtMode()">higliht</button>
+<button (click)="noteMode()">note</button>
+<button id="download-btn" (click)="download($event)" class="btn btn-primary mt-3">Download PDF</button>
 
-<div class="canvas-container" id="pdf-viewer" #canvasContainer>
-  <canvas (click)="pdfLocationUpdate($event)" id="pdf-render" #pdfCanvas></canvas>
+<div  class="border position-relative"  id="pdf-viewer" #canvasContainer>
+  <canvas (click)="pdfLocationUpdate($event)" (mouseup)="mouseup($event)" (mousedown)="mouseDown($event)" id="pdf-render" class="d-block" #pdfCanvas></canvas>
 </div>
 

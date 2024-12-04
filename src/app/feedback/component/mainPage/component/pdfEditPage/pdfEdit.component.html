@@ -35,7 +35,7 @@
 <button (click)="noteMode()">note</button>
 <button id="download-btn" (click)="download($event)" class="btn btn-primary mt-3">Download PDF</button>
 <button  (click)="downloadWithoutButton($event)" class="btn btn-primary mt-3">Download Without buttons PDF</button>
-<button  (click)="cizgiMode($event)" class="btn btn-danger mt-3">çizgi</button>
+<!--<button  (click)="cizgiMode($event)" class="btn btn-danger mt-3">çizgi</button>-->
 
 <div  class="border position-relative "  id="pdf-viewer" style="width: max-content" #canvasContainer>
   <canvas (click)="pdfLocationUpdate($event)" (mouseup)="mouseup($event)"  (mousedown)="mouseDown($event)" id="pdf-render" class="" #pdfCanvas></canvas>

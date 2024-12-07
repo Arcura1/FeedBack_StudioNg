@@ -10,6 +10,11 @@ import { PopupComponent } from '../popup/popup.component';
 
 declare const pdfjsLib: any;
 
+interface NoteItem {
+  note: string;
+  xcoordinate: number;
+  ycoordinate: number;
+}
 
 @Component({
   selector: 'Pdf-Edit',
@@ -22,7 +27,7 @@ export class PdfEditComponent implements OnInit {
   @ViewChild('pdfCanvas', {static: false}) pdfCanvasRef!: ElementRef<HTMLCanvasElement>;
   @ViewChild('popup') popup!: PopupComponent;
 
-  public parentMessage: string = 'Merhaba, bu bir @Input örneğidir!';
+
   // ngOnInit(): void {
   //   const url = 'https://pdfobject.com/pdf/sample.pdf'; // PDF dosya URL'si
   //   const loadingTask = pdfjsLib.getDocument(url);
@@ -52,6 +57,7 @@ export class PdfEditComponent implements OnInit {
   public isMouseDown: boolean = false;
   public startX: number;
   public startY: number;
+  public parentMessage: string = '';
   // public isDrawing: boolean=false;
   // public ctx: CanvasRenderingContext2D | null = null;
   public isDrawing: boolean=false;
@@ -79,7 +85,66 @@ export class PdfEditComponent implements OnInit {
         console.error('PDF yüklenemedi: ' + reason);
       }
     );
+  this.updateParentMessage();
   }
+
+updateParentMessage() {
+
+  this.parentMessage = `Tıklanan PDF Koordinatları X: ${this.pdfX.toFixed(2)}, Y: ${this.pdfY.toFixed(2)}`;
+}
+
+handleButtonClick(item: any) {
+  const buttonId = item.id;  // Butonun ID'sini alın
+
+  console.log('Butona tıklandı:', buttonId);  // Burada konsola tıklama işlemi geldiğini kontrol edin
+
+  // API'den veri çekme
+  fetch(`http://localhost:8080/view?NoteId=${buttonId}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();  // JSON formatında veri döndür
+    })
+    .then(data => {
+      // API'den gelen veriyi kontrol et
+      if (data && data.note && data.xcoordinate !== undefined && data.ycoordinate !== undefined) {
+        // Koordinatları ve notu konsola yazdır
+        console.log(`Butona tıklandığında gelen veri: ${data.note}, Koordinatlar: X: ${data.xcoordinate}, Y: ${data.ycoordinate}`);
+      } else {
+        console.error('Veri yapısı beklenenden farklı: ', data);
+      }
+    })
+    .catch(error => {
+      console.error('Veri alınırken bir hata oluştu:', error);
+      alert('Veri alınırken bir hata oluştu. Lütfen tekrar deneyin.');
+    });
+}
+
+showPopup(message: string) {
+  const popupElement = document.getElementById('popup');
+  const messageElement = document.getElementById('popup-message');
+
+  if (popupElement && messageElement) {
+    messageElement.textContent = message;  // Mesajı pop-up'a ekle
+    popupElement.style.display = 'block';  // Pop-up'ı göster
+  }
+}
+
+closePopup() {
+  const popupElement = document.getElementById('popup');
+  if (popupElement) {
+    popupElement.style.display = 'none';  // Pop-up'ı gizle
+  }
+}
+
+
+
+
+
+
+
+
 
   renderPage(pdf: PDFDocumentProxy, pageNumber: number) {
     pdf.getPage(pageNumber).then((page) => {
@@ -91,34 +156,47 @@ export class PdfEditComponent implements OnInit {
       const context = canvas.getContext('2d');
 
 
-      fetch('http://localhost:8080/viewAll')
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then(data => {
-          // Gelen veriyi for döngüsü ile tek tek yazdır
-          console.log(data)
-          const rect = this.pdfCanvasRef.nativeElement.getBoundingClientRect();
-          for (const item of data) {
-            const button = document.createElement('button');
-            button.className = 'btn btn-success position-absolute';
-            button.textContent = item.note;
-            button.id='notes'
+fetch('http://localhost:8080/viewAll')
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+  })
+  .then((data: NoteItem[]) => {  // Explicitly define the type of 'data' as an array of NoteItem
+    console.log(data);
+    const rect = this.pdfCanvasRef.nativeElement.getBoundingClientRect();
 
-            // Butonu tıklanan konuma yerleştir
+    data.forEach((item: NoteItem) => {  // Explicitly define 'item' as a NoteItem
+      const button = document.createElement('button');
+      button.className = 'btn btn-success position-absolute';
 
-            button.style.left = `${((item.xcoordinate / this.originalViewport.width) * rect.width )}px`;
-            button.style.top = `${((item.ycoordinate / this.originalViewport.height) * rect.height )}px`;
-            this.canvasContainerRef.nativeElement.appendChild(button)
-            // console.log(item);
-          }
-        })
-        .catch(error => {
-          console.error('Veri alınırken bir hata oluştu:', error);
-        });
+      // Butonun içine notu yaz
+      button.textContent = `Not: ${item.note}`;
+      button.id = 'notes';
+
+      // Butonu doğru koordinatlarda yerleştir
+      button.style.left = `${((item.xcoordinate / this.originalViewport.width) * rect.width)}px`;
+      button.style.top = `${((item.ycoordinate / this.originalViewport.height) * rect.height)}px`;
+
+      // Butonu ekranda uygun alana ekle
+      this.canvasContainerRef.nativeElement.appendChild(button);
+
+      // Butona tıklandığında pop-up açılacak
+      button.addEventListener('click', () => {
+        // Pop-up'ta notun içeriğini ve koordinatları göster
+        alert(`Butona tıklandı! \nMesaj: ${item.note}\nKoordinatlar: X: ${item.xcoordinate}, Y: ${item.ycoordinate}`);
+      });
+    });
+  })
+  .catch(error => {
+    console.error('Veri alınırken bir hata oluştu:', error);
+  });
+
+
+
+
+
 
       // context'in null olmadığını kontrol et
       if (context) {
@@ -131,6 +209,10 @@ export class PdfEditComponent implements OnInit {
           canvasContext: context,
           viewport: viewport
         };
+
+
+
+
         page.render(renderContext).promise.then(() => {
           // Sayfada kelimelerin konumlarını almak için metin içeriğini alıyoruz
           page.getTextContent().then((textContent) => {
@@ -250,23 +332,12 @@ export class PdfEditComponent implements OnInit {
 
       this.pdfX = (x / rect.width) * this.originalViewport.width;
       this.pdfY = (y / rect.height) * this.originalViewport.height;
-
+      this.updateParentMessage();
       console.log(`Tıklanan PDF Koordinatları X: ${this.pdfX.toFixed(2)}, Y: ${this.pdfY.toFixed(2)}`);
+
     }
   }
 
-  openPopupa() {
-    this.isPopupOpena = !this.isPopupOpena; // Pop-up'ı aç
-  }
-
-  closePopupa() {
-    this.isPopupOpena = false; // Pop-up'ı kapat
-  }
-
-  onSubmitNote() {
-    console.log('Form gönderildi');
-    this.closePopupa(); // Form gönderildikten sonra pop-up'ı kapat
-  }
 
   higlihtMode() {
     this.modeSelect = 1;
@@ -377,14 +448,5 @@ export class PdfEditComponent implements OnInit {
       this.pdfCanvasRef?.nativeElement.getContext('2d')?.stroke();
     }
   }
-
-  showPopup() {
-    this.popup.showPopup();
-  }
-
-  closePopup() {
-    this.popup.closePopup();
-  }
-
 
 }

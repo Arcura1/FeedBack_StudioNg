@@ -1,7 +1,8 @@
-<!-- Eğer isVisible true ise popup gösterilir -->
-<div *ngIf="isVisible" class="popup-overlay">
-  <div class="popup">
-    <p>{{ content }}</p>  <!-- Dinamik içerik burada gösterilecek -->
-    <button (click)="closePopup()" class="btn-close">Kapat</button>
+<!-- Pop-up İçeriği -->
+<div class="popup-overlay" id="popup" style="display: none;">
+  <div class="popup-content">
+    <h2>Buton Mesajı</h2>
+    <p>{{ popupMessage }}</p> <!-- Mesajı burada gösteriyoruz -->
+    <button (click)="closePopup()">Kapat</button> <!-- Kapatma butonu -->
   </div>
 </div>

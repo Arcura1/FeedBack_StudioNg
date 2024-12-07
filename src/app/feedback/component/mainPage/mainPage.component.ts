@@ -1,16 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { PopupComponent } from '../popup/popup.component'; // PopupComponent'i import et
 
 @Component({
   selector: 'mainPage',
   templateUrl: './mainPage.component.html',
 })
 export class MainPageComponent implements OnInit {
-  @ViewChild('popup') popup!: PopupComponent;
+
 
   constructor(private router: Router) {}
-  public parentMessage: string = 'Merhaba, bu bir @Input örneğidir!';
+
   // Bileşen yüklendiğinde kullanıcı oturum bilgilerini al
   ngOnInit(): void {
     const user = JSON.parse(sessionStorage.getItem('user') || '{}'); // Oturum verilerini JSON olarak al
@@ -25,11 +24,4 @@ export class MainPageComponent implements OnInit {
     this.router.navigate(['/feedback/student']);
   }
 
-  showPopup() {
-    this.popup.showPopup();
-  }
-
-  closePopup() {
-    this.popup.closePopup();
-  }
 }

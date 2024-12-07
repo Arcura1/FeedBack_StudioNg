@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-popup',
@@ -7,6 +7,8 @@ import { Component } from '@angular/core';
 })
 export class PopupComponent {
   isVisible: boolean = false;
+
+  @Input() content: string = '';
 
   showPopup() {
     this.isVisible = true;

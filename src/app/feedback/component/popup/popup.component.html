@@ -1,4 +1,6 @@
 <div *ngIf="isVisible" class="popup">
-  <p>Popup İçeriği</p>
-  <button (click)="closePopup()">Kapat</button>
+  <div class="popup-content">
+    <p>{{ content }}</p>  <!-- Burada content'i gösteriyoruz -->
+    <button (click)="closePopup()">Kapat</button>
+  </div>
 </div>

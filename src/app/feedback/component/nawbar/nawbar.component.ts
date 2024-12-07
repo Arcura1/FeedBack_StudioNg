@@ -13,6 +13,7 @@ export class NavbarComponent {
   }
 
   goToMain() {
-    this.router.navigate(['/feedback/main']);
+    this.router.navigate(['/feedback']);
   }
+
 }

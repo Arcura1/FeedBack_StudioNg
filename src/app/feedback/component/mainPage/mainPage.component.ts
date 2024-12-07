@@ -32,4 +32,7 @@ export class MainPageComponent implements OnInit {
   closePopup() {
     this.popup.closePopup();
   }
+  goToTeacher() {
+    this.router.navigate(['/feedback/teacher']);
+  }
 }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'student',
@@ -6,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrl: './student.component.css'
 })
 export class StudentComponent {
-
+constructor(private router: Router) {
+}
+  goToPdfEdit() {
+    this.router.navigate(['/feedback/PdfEdit']);
+  }
 }

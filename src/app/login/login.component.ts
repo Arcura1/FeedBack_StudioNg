@@ -5,16 +5,17 @@ import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'] // Doğru yazım
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
   email: string = '';
   password: string = '';
 
-  private apiUrl = 'http://localhost:8080/api/users/login';
+  private apiUrl = 'http://localhost:8080/api/users/login'; // Backend URL
 
   constructor(private http: HttpClient, private router: Router) {}
 
+  // Kullanıcı giriş işlemi
   login() {
     const credentials = { email: this.email, password: this.password };
 
@@ -22,19 +23,34 @@ export class LoginComponent {
       (response: any) => {
         console.log('Giriş başarılı!', response);
 
-        // Kullanıcıyı sessionStorage'a kaydet
-        sessionStorage.setItem('user', JSON.stringify(response));
+        // Gelen kullanıcı yanıtını sessionStorage'a kaydet
+        this.setUserSession(response);
 
-        this.router.navigate(['/feedback']); // Başarılı giriş sonrası yönlendirme
+        // Başarılı giriş sonrası yönlendirme
+        this.router.navigate(['/feedback']);
       },
       (error) => {
         console.error('Giriş hatası:', error);
-        alert('Giriş bilgilerinizi kontrol edin.'); // Hata mesajı
+        alert('Giriş bilgilerinizi kontrol edin.');
       }
     );
   }
 
+  // Kullanıcı bilgilerini sessionStorage'da sakla
+  private setUserSession(user: any) {
+    const sessionData = {
+      id: user.id,
+      firstName: user.firstName,
+      role: user.role,
+      email: user.email,
+    };
+
+    sessionStorage.setItem('user', JSON.stringify(sessionData));
+    console.log('Kullanıcı oturumu ayarlandı:', sessionData);
+  }
+
+  // Form gönderildiğinde login fonksiyonunu çağır
   onSubmit() {
-    this.login(); // Form gönderildiğinde login() fonksiyonunu çağır
+    this.login();
   }
 }

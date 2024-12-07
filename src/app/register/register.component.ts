@@ -15,7 +15,7 @@ export class RegisterComponent {
   email: string = ''; //
   phone: string = ''; //
   password: string = ''; //
-
+  role: string = 'student'; // Varsayılan olarak "student" rolü
 
   private apiUrl = 'http://localhost:8080/api/users/create'; // Backend URL
 
@@ -28,7 +28,7 @@ export class RegisterComponent {
       email: this.email,
       phone: this.phone,
       password: this.password,
-      role: 'student'
+      role: this.role // Kullanıcının seçtiği rol
     };
 
     this.http.post(this.apiUrl, newUser).subscribe(

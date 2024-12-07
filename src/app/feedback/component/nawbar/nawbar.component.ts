@@ -3,8 +3,7 @@ import {Router} from "@angular/router";
 
 @Component({
   selector: 'nawbarfeed',
-  templateUrl: './nawbar.components.html',
-  standalone: true
+  templateUrl: './nawbar.components.html'
 })
 export class NavbarComponent {
   constructor(private router: Router) {}

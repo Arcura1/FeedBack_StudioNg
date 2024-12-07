@@ -10,14 +10,14 @@ import {ProfileComponent} from "./component/Profile/profle.component";
 import { StudentComponent } from './component/student/student.component';
 import {PdfEditComponent} from "./component/pdfEditPage/pdfEdit.component";
 import {TeacherComponent} from "./component/Teacher/teacher.component";
+import {PopupComponent} from "./component/popup/popup.component";
 import {FormsModule} from "@angular/forms";
 
-import {PopupComponent} from "./component/popup/popup.component";
 
 
 
 @NgModule({
-  declarations: [
+  declarations:[
     FeedbackComponent,
     MainPageComponent,
     ProfileComponent,

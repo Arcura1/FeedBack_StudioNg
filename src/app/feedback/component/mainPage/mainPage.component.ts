@@ -7,10 +7,10 @@ import { PopupComponent } from '../popup/popup.component'; // PopupComponent'i i
   templateUrl: './mainPage.component.html',
 })
 export class MainPageComponent implements OnInit {
-  @ViewChild('popup') popup!: PopupComponent; // Popup bileşenine referans alıyoruz
+  @ViewChild('popup') popup!: PopupComponent;
 
   constructor(private router: Router) {}
-
+  public parentMessage: string = 'Merhaba, bu bir @Input örneğidir!';
   // Bileşen yüklendiğinde kullanıcı oturum bilgilerini al
   ngOnInit(): void {
     const user = JSON.parse(sessionStorage.getItem('user') || '{}'); // Oturum verilerini JSON olarak al
@@ -25,12 +25,10 @@ export class MainPageComponent implements OnInit {
     this.router.navigate(['/feedback/student']);
   }
 
-  // Popup'ı göster
   showPopup() {
     this.popup.showPopup();
   }
 
-  // Popup'ı kapat
   closePopup() {
     this.popup.closePopup();
   }

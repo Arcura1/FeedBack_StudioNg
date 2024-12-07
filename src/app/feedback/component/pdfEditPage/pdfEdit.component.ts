@@ -374,4 +374,10 @@ export class PdfEditComponent implements OnInit {
       this.pdfCanvasRef?.nativeElement.getContext('2d')?.stroke();
     }
   }
+
+
+
+
+
+
 }

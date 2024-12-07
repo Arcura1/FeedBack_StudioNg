@@ -6,6 +6,7 @@ import {MainPageComponent} from "./component/mainPage/mainPage.component";
 import {FlandingComponent} from "./component/mainPage/component/Flanding/Flanding";
 import {PdfEditComponent} from "./component/mainPage/component/pdfEditPage/pdfEdit.component";
 import {StudentComponent} from "./component/student/student.component";
+import {TeacherComponent} from "./component/Teacher/teacher.component";
 
 const pageCode="feedback"
 const routes: Routes = [
@@ -16,6 +17,7 @@ const routes: Routes = [
       {path:'landing',component:FlandingComponent},
       {path:'PdfEdit',component:PdfEditComponent},
       {path:'student',component:StudentComponent},
+      {path:'teacher',component:TeacherComponent},
     ]
   },
   {path:'profile',component:ProfileComponent},
@@ -26,6 +28,8 @@ const routes: Routes = [
       {path:'landing',component:FlandingComponent},
       {path:'PdfEdit',component:PdfEditComponent},
       {path:'student',component:StudentComponent},
+      {path:'teacher',component:TeacherComponent},
+
     ]
   }
 

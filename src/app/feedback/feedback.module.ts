@@ -9,22 +9,26 @@ import {MainPageComponent} from "./component/mainPage/mainPage.component";
 import {ProfileComponent} from "./component/Profile/profle.component";
 import {PdfEditComponent} from "./component/mainPage/component/pdfEditPage/pdfEdit.component";
 import { StudentComponent } from './component/student/student.component';
+import {TeacherComponent} from "./component/Teacher/teacher.component";
+
 
 
 
 @NgModule({
-  declarations: [
+  declarations:[
     FeedbackComponent,
     MainPageComponent,
     ProfileComponent,
-    StudentComponent
+    StudentComponent,
+    TeacherComponent
   ],
   imports: [
     CommonModule,
     FeedbackRoutingModule,
     NavbarComponent,
     LnawbarComponent,
-    PdfEditComponent,
+    PdfEditComponent
+
   ]
 })
 export class FeedbackModule { }

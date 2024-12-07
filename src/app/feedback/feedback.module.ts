@@ -10,7 +10,7 @@ import {ProfileComponent} from "./component/Profile/profle.component";
 import { StudentComponent } from './component/student/student.component';
 import {PdfEditComponent} from "./component/pdfEditPage/pdfEdit.component";
 import {TeacherComponent} from "./component/Teacher/teacher.component";
-
+import {PopupComponent} from "./component/popup/popup.component";
 
 
 
@@ -22,14 +22,14 @@ import {TeacherComponent} from "./component/Teacher/teacher.component";
     StudentComponent,
     NavbarComponent,
     StudentComponent,
-    TeacherComponent
+    TeacherComponent,
+    PopupComponent
   ],
   imports: [
     CommonModule,
     FeedbackRoutingModule,
     PdfEditComponent,
     PdfEditComponent
-
   ]
 })
 export class FeedbackModule { }

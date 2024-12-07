@@ -10,12 +10,14 @@ import {ProfileComponent} from "./component/Profile/profle.component";
 import { StudentComponent } from './component/student/student.component';
 import {PdfEditComponent} from "./component/pdfEditPage/pdfEdit.component";
 import {TeacherComponent} from "./component/Teacher/teacher.component";
+import {FormsModule} from "@angular/forms";
+
 import {PopupComponent} from "./component/popup/popup.component";
 
 
 
 @NgModule({
-  declarations:[
+  declarations: [
     FeedbackComponent,
     MainPageComponent,
     ProfileComponent,
@@ -23,13 +25,19 @@ import {PopupComponent} from "./component/popup/popup.component";
     NavbarComponent,
     StudentComponent,
     TeacherComponent,
-    PopupComponent
+    PopupComponent,
+    TeacherComponent,
+    PdfEditComponent
+  ],
+  exports: [
+    NavbarComponent
   ],
   imports: [
     CommonModule,
     FeedbackRoutingModule,
-    PdfEditComponent,
-    PdfEditComponent
+    FormsModule,
+
+
   ]
 })
 export class FeedbackModule { }

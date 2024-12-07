@@ -4,6 +4,8 @@ import {FormsModule} from "@angular/forms";
 import {NgIf} from "@angular/common";
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
+import {FeedbackModule} from "../../feedback.module";
+import {NavbarComponent} from "../nawbar/nawbar.component";
 
 
 declare const pdfjsLib: any;
@@ -12,12 +14,7 @@ declare const pdfjsLib: any;
 @Component({
   selector: 'Pdf-Edit',
   templateUrl: './pdfEdit.component.html',
-  styleUrls: ['./pdfEdit.component.css'],
-  standalone: true,
-  imports: [
-    FormsModule,
-    NgIf
-  ],
+  styleUrls: ['./pdfEdit.component.css']
 })
 export class PdfEditComponent implements OnInit {
 

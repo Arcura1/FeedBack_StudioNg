@@ -1,0 +1,43 @@
+
+
+#pdf-render {
+  border: 1px solid black;
+
+}
+
+.highlight {
+  position: absolute;
+  background-color: rgba(255, 255, 0, 0.5);
+  pointer-events: none;
+}
+.button {
+  position: absolute;
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+canvas {
+  display: block;
+  /*margin: 0 auto;*/
+}
+
+#pdf-container {
+  position: relative;
+  border: 1px solid #ccc;
+  overflow: auto;
+  width: 600px;
+  height: 800px;
+}
+#pdf-canvas {
+  display: block;
+  margin: 0 auto;
+}
+.highlight {
+  position: absolute;
+  background-color: rgba(255, 255, 0, 0.5);
+  pointer-events: none;
+}
+

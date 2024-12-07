@@ -1,10 +1,11 @@
 <nawbarfeed></nawbarfeed>
 
 <p>test works!</p>
-<button (click)="openPopup()">Pop-Up Aç</button>
-
-<div class="popup-overlay" *ngIf="isPopupOpen" (click)="closePopup()">
-  <div class="popup-content" (click)="$event.stopPropagation()">
+<button (click)="openPopupa()">Pop-Up ORAY Aç</button>
+<button (click)="showPopup()">Pop-Up TUNA Göster</button>
+<app-popup #popup [content]="parentMessage"></app-popup>
+<div class="popup-overlaya" *ngIf="isPopupOpena" (click)="closePopupa()">
+  <div class="popup-contenta" (click)="$event.stopPropagation()">
     <h2>Form Başlığı</h2>
     <form (ngSubmit)="onSubmitNote()">
       <label for="name">İsim:</label>
@@ -15,7 +16,7 @@
 
       <button type="submit">Gönder</button>
     </form>
-    <button (click)="closePopup()">Kapat</button>
+    <button (click)="closePopupa()">Kapat</button>
   </div>
 </div>
 <br>

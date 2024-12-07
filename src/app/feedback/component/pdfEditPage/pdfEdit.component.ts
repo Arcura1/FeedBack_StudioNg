@@ -6,7 +6,7 @@ import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 import {FeedbackModule} from "../../feedback.module";
 import {NavbarComponent} from "../nawbar/nawbar.component";
-
+import { PopupComponent } from '../popup/popup.component';
 
 declare const pdfjsLib: any;
 
@@ -20,6 +20,9 @@ export class PdfEditComponent implements OnInit {
 
   @ViewChild('canvasContainer', {static: true}) canvasContainerRef!: ElementRef;
   @ViewChild('pdfCanvas', {static: false}) pdfCanvasRef!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('popup') popup!: PopupComponent;
+
+  public parentMessage: string = 'Merhaba, bu bir @Input örneğidir!';
   // ngOnInit(): void {
   //   const url = 'https://pdfobject.com/pdf/sample.pdf'; // PDF dosya URL'si
   //   const loadingTask = pdfjsLib.getDocument(url);
@@ -44,7 +47,7 @@ export class PdfEditComponent implements OnInit {
   public pdfY: number;
   public metin: any;
   public originalViewport: any;
-  public isPopupOpen = false; // Pop-up'ın açık olup olmadığını kontrol eden değişken
+  public isPopupOpena = false; // Pop-up'ın açık olup olmadığını kontrol eden değişken
   public modeSelect: number = 0;
   public isMouseDown: boolean = false;
   public startX: number;
@@ -252,17 +255,17 @@ export class PdfEditComponent implements OnInit {
     }
   }
 
-  openPopup() {
-    this.isPopupOpen = !this.isPopupOpen; // Pop-up'ı aç
+  openPopupa() {
+    this.isPopupOpena = !this.isPopupOpena; // Pop-up'ı aç
   }
 
-  closePopup() {
-    this.isPopupOpen = false; // Pop-up'ı kapat
+  closePopupa() {
+    this.isPopupOpena = false; // Pop-up'ı kapat
   }
 
   onSubmitNote() {
     console.log('Form gönderildi');
-    this.closePopup(); // Form gönderildikten sonra pop-up'ı kapat
+    this.closePopupa(); // Form gönderildikten sonra pop-up'ı kapat
   }
 
   higlihtMode() {
@@ -375,9 +378,13 @@ export class PdfEditComponent implements OnInit {
     }
   }
 
+  showPopup() {
+    this.popup.showPopup();
+  }
 
-
-
+  closePopup() {
+    this.popup.closePopup();
+  }
 
 
 }

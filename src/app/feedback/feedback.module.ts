@@ -25,7 +25,7 @@ import {FormsModule} from "@angular/forms";
     NavbarComponent,
     StudentComponent,
     TeacherComponent,
-    PopupComponent
+    PopupComponent,
     TeacherComponent,
     PdfEditComponent
   ],

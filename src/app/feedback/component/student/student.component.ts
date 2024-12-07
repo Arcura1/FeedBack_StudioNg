@@ -1,14 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import {Router} from "@angular/router";
 
 @Component({
-  selector: 'student',
+  selector: 'app-student',
   templateUrl: './student.component.html',
-  styleUrl: './student.component.css'
+  styleUrls: ['./student.component.css'],
 })
-export class StudentComponent {
-constructor(private router: Router) {
-}
+export class StudentComponent implements OnInit {
+  homeworks: any[] = []; // Homework listesini tutmak için değişken
+
+  constructor(private http: HttpClient,private router: Router) {}
+
+  ngOnInit(): void {
+    // Backend'den homework verilerini çek
+    this.http
+      .get<any[]>('http://localhost:8080/Homework/getAll')
+      .subscribe((data) => {
+        this.homeworks = data;
+        console.log(this.homeworks);
+      });
+  }
+
   goToPdfEdit() {
     this.router.navigate(['/feedback/PdfEdit']);
   }

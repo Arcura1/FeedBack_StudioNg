@@ -54,6 +54,7 @@ export class PdfEditComponent implements OnInit {
   public startY: number;
   // public isDrawing: boolean=false;
   // public ctx: CanvasRenderingContext2D | null = null;
+  public isDrawing: boolean=false;
 
 
   constructor(private renderer:  Renderer2, private elementRef: ElementRef) {
@@ -299,9 +300,9 @@ export class PdfEditComponent implements OnInit {
         this.canvasContainerRef.nativeElement.appendChild(highlightDiv);
       }
     }
-    // else if(this.modeSelect==2){
-    //   this.isDrawing = false;
-    // }
+    else if(this.modeSelect==2){
+      this.isDrawing = false;
+    }
   }
 
   mouseDown($event: MouseEvent) {
@@ -311,11 +312,11 @@ export class PdfEditComponent implements OnInit {
       this.startX = $event.clientX - rect.left;
       this.startY = $event.clientY - rect.top;
     }
-    // else if(this.modeSelect==2){
-    //   this.isDrawing = true;
-    //   this.ctx?.beginPath();
-    //   this.ctx?.moveTo($event.offsetX, $event.offsetY);
-    // }
+    else if(this.modeSelect==2){
+      this.isDrawing = true;
+      this.pdfCanvasRef?.nativeElement.getContext('2d')?.beginPath();
+      this.pdfCanvasRef?.nativeElement.getContext('2d')?.moveTo($event.offsetX, $event.offsetY);
+    }
   }
 
   download($event: MouseEvent) {
@@ -370,10 +371,10 @@ export class PdfEditComponent implements OnInit {
   //   pdf.save('canvas-output.pdf');
   // }
 
-  // mouseMove($event: MouseEvent) {
-  //   if (this.isDrawing) {
-  //     this.ctx?.lineTo($event.offsetX, $event.offsetY);
-  //     this.ctx?.stroke();
-  //   }
-  // }
+  mouseMove($event: MouseEvent) {
+    if (this.isDrawing&&this.modeSelect==2) {
+      this.pdfCanvasRef?.nativeElement.getContext('2d')?.lineTo($event.offsetX, $event.offsetY);
+      this.pdfCanvasRef?.nativeElement.getContext('2d')?.stroke();
+    }
+  }
 }

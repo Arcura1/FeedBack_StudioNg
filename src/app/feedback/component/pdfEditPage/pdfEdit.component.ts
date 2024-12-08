@@ -36,7 +36,7 @@ export class PdfEditComponent implements OnInit {
   //   );
   //
   // }
-  public url = 'http://localhost:8080/pdf'; // PDF dosya URL'si
+  public url = 'http://localhost:8080/pdf/pdf'; // PDF dosya URL'si
   public loadingTask = pdfjsLib.getDocument(this.url);
   public currentPageNumber = 1;
   public topPagepdf = 1

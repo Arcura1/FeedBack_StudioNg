@@ -172,7 +172,7 @@ fetch('http://localhost:8080/viewAll')
       button.className = 'btn btn-success position-absolute';
 
       // Butonun içine notu yaz
-      button.textContent = `Not: ${item.note}`;
+      button.textContent = `${item.note}`;
       button.id = 'notes';
 
       // Butonu doğru koordinatlarda yerleştir

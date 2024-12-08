@@ -1,0 +1,34 @@
+<div
+  class="modal fade show"
+  [class.d-block]="isVisible"
+  tabindex="-1"
+  role="dialog"
+  style="background-color: rgba(0, 0, 0, 0.5);"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">PDF Yükleme - {{ homework?.title }}</h5>
+        <button
+          type="button"
+          class="close btn btn-danger"
+          aria-label="Close"
+          (click)="closePopup()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Başlık:</strong> {{ homework?.title }}</p>
+        <p><strong>Açıklama:</strong> {{ homework?.description }}</p>
+
+        <!-- PDF Yükleme -->
+        <label for="pdfUpload" class="form-label">PDF Yükle:</label>
+        <input type="file" id="pdfUpload" class="form-control" (change)="onFileSelected($event)" accept="application/pdf" />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closePopup()">Kapat</button>
+      </div>
+    </div>
+  </div>
+</div>

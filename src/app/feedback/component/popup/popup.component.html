@@ -1,6 +1,8 @@
-<div *ngIf="isVisible" class="popup">
+<!-- Pop-up İçeriği -->
+<div class="popup-overlay" id="popup" style="display: none;">
   <div class="popup-content">
-    <p>{{ content }}</p>  <!-- Burada content'i gösteriyoruz -->
-    <button (click)="closePopup()">Kapat</button>
+    <h2>Buton Mesajı</h2>
+    <p>{{ popupMessage }}</p> <!-- Mesajı burada gösteriyoruz -->
+    <button (click)="closePopup()">Kapat</button> <!-- Kapatma butonu -->
   </div>
 </div>

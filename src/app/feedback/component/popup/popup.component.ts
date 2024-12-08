@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-popup',
@@ -6,15 +6,26 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./popup.component.css']
 })
 export class PopupComponent {
-  isVisible: boolean = false;
 
-  @Input() content: string = '';
+  // Pop-up mesajını tutan değişken
+  popupMessage: string = '';
 
-  showPopup() {
-    this.isVisible = true;
+  // Pop-up'ı ekranda gösterme fonksiyonu
+  showPopup(message: string): void {
+    this.popupMessage = message;  // Mesajı güncelle
+    const popupElement = document.getElementById('popup');
+
+    if (popupElement) {
+      popupElement.style.display = 'block';  // Pop-up'ı göster
+    }
   }
 
-  closePopup() {
-    this.isVisible = false;
+  // Pop-up'ı gizleme fonksiyonu
+  closePopup(): void {
+    const popupElement = document.getElementById('popup');
+
+    if (popupElement) {
+      popupElement.style.display = 'none';  // Pop-up'ı gizle
+    }
   }
 }

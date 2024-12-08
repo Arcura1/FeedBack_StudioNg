@@ -27,9 +27,6 @@ export class MainPageComponent implements OnInit {
     this.router.navigate(['/feedback/student']);
   }
 
-  showPopup() {
-    this.popup.showPopup();
-  }
 
   closePopup() {
     this.popup.closePopup();

@@ -1,40 +1,57 @@
 <nawbarfeed></nawbarfeed>
 
-<p>test works!</p>
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Test Works!</h2>
 
-<!-- Placeholder for dynamically added buttons -->
-<div id="buttons-container"></div>
+  <!-- Placeholder for dynamically added buttons -->
+  <div id="buttons-container" class="d-flex justify-content-center mb-4"></div>
 
-<!-- Pop-up İçeriği -->
-<!-- Buton örneği -->
-
-<div class="popup-overlay" id="popup" style="display: none;">
-  <div class="popup-content">
-    <h2>Buton Mesajı</h2>
-    <p id="popup-message"></p>
-    <button onclick="closePopup()">Kapat</button>
+  <!-- Pop-up İçeriği -->
+  <div class="modal fade" id="popup" tabindex="-1" aria-labelledby="popupLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="popupLabel">Buton Mesajı</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p id="popup-message"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closePopup()">Kapat</button>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
 
-<br>
-<label>Tıklanılan X değeri:{{ pdfX.toFixed(2) }}</label>
-<br><br>
-<label>Tıklanılan Y değeri:{{ pdfY.toFixed(2) }}</label>
-<br>
+  <!-- X ve Y Değerleri -->
+  <div class="mb-3">
+    <label class="form-label">Tıklanılan X değeri: <strong>{{ pdfX.toFixed(2) }}</strong></label>
+    <br>
+    <label class="form-label">Tıklanılan Y değeri: <strong>{{ pdfY.toFixed(2) }}</strong></label>
+  </div>
 
-<form (ngSubmit)="onSubmit()" #myForm="ngForm">
-  <input id="noteInput" type="text" name="metin" placeholder="Metin giriniz" required [(ngModel)]="metin">
-  <button type="submit" [disabled]="!myForm.form.valid">Gönder</button>
-</form>
+  <!-- Form -->
+  <form (ngSubmit)="onSubmit()" #myForm="ngForm" class="mb-4">
+    <div class="input-group">
+      <input id="noteInput" type="text" name="metin" class="form-control" placeholder="Metin giriniz" required [(ngModel)]="metin">
+      <button type="submit" class="btn btn-primary" [disabled]="!myForm.form.valid">Gönder</button>
+    </div>
+  </form>
 
-<button (click)="pageChangeBackvard()">geri</button>
-<button (click)="pageChangeForvard()">ileri</button>
-<button (click)="higlihtMode()">higliht</button>
-<button (click)="noteMode()">note</button>
-<button id="download-btn" (click)="download($event)" class="btn btn-primary mt-3">Download PDF</button>
-<button (click)="downloadWithoutButton($event)" class="btn btn-primary mt-3">Download Without buttons PDF</button>
-<button (click)="cizgiMode($event)" class="btn btn-danger mt-3">çizgi</button>
+  <!-- Buttons -->
+  <div class="d-flex justify-content-between flex-wrap">
+    <button class="btn btn-secondary mb-2" (click)="pageChangeBackvard()">Geri</button>
+    <button class="btn btn-secondary mb-2" (click)="pageChangeForvard()">İleri</button>
+    <button class="btn btn-warning mb-2" (click)="higlihtMode()">Highlight</button>
+    <button class="btn btn-info mb-2" (click)="noteMode()">Note</button>
+    <button id="download-btn" class="btn btn-success mb-2" (click)="download($event)">Download PDF</button>
+    <button class="btn btn-success mb-2" (click)="downloadWithoutButton($event)">Download Without Buttons PDF</button>
+    <button class="btn btn-danger mb-2" (click)="cizgiMode($event)">Çizgi</button>
+  </div>
 
-<div class="border position-relative" id="pdf-viewer" style="width: max-content" #canvasContainer>
-  <canvas (click)="pdfLocationUpdate($event)" (mouseup)="mouseup($event)" (mousemove)="mouseMove($event)" (mousedown)="mouseDown($event)" id="pdf-render" class="" #pdfCanvas></canvas>
+  <!-- PDF Viewer -->
+  <div class="border position-relative" id="pdf-viewer" style="width: max-content" #canvasContainer>
+    <canvas (click)="pdfLocationUpdate($event)" (mouseup)="mouseup($event)" (mousemove)="mouseMove($event)" (mousedown)="mouseDown($event)" id="pdf-render" class="" #pdfCanvas></canvas>
+  </div>
 </div>

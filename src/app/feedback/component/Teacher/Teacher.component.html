@@ -1,42 +1,70 @@
 <nawbarfeed></nawbarfeed>
 <div class="container mt-5">
-    <h2 class="text-center mb-4">Ödev Gönderme - Öğretmen</h2>
+  <h2 class="text-center mb-4">Ödev Gönderme - Öğretmen</h2>
 
-    <!-- Öğretmen ID Gösterimi -->
-    <div class="alert alert-info" *ngIf="id">
-        <strong>Öğretmen ID:</strong> {{ id }}
-    </div>
+  <!-- Öğretmen ID Gösterimi -->
+  <div class="alert alert-info">
+    <strong>Öğretmen ID:</strong> {{ id }}
+  </div>
 
-    <!-- Ödev Gönderme Formu -->
-    <div class="card">
-        <div class="card-header bg-primary text-white">
-            Ödev Bilgileri
-        </div>
-        <div class="card-body">
-            <!-- Ödev Başlığı -->
-            <div class="mb-3">
-                <label for="homeworkTitle" class="form-label">Ödev Başlığı</label>
-                <input
-                        type="text"
-                        id="homeworkTitle"
-                        class="form-control"
-                        placeholder="Ödevin başlığını giriniz"
-                        [(ngModel)]="homeworkTitle"
-                />
-            </div>
-            <!-- Ödev Açıklaması -->
-            <div class="mb-3">
-                <label for="homeworkDescription" class="form-label">Ödev Açıklaması</label>
-                <textarea
-                        id="homeworkDescription"
-                        class="form-control"
-                        placeholder="Ödevin açıklamasını giriniz"
-                        [(ngModel)]="homeworkDescription"
-                        rows="4"
-                ></textarea>
-            </div>
-            <!-- Gönder Butonu -->
-            <button class="btn btn-success" (click)="sendHomework()">Gönder</button>
-        </div>
+  <!-- Ödev Gönderme Formu -->
+  <div class="card mb-5">
+    <div class="card-header bg-primary text-white">Ödev Bilgileri</div>
+    <div class="card-body">
+      <div class="mb-3">
+        <label for="homeworkTitle" class="form-label">Ödev Başlığı</label>
+        <input
+          type="text"
+          id="homeworkTitle"
+          class="form-control"
+          placeholder="Ödevin başlığını giriniz"
+          [(ngModel)]="homeworkTitle"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="homeworkDescription" class="form-label">Ödev Açıklaması</label>
+        <textarea
+          id="homeworkDescription"
+          class="form-control"
+          placeholder="Ödevin açıklamasını giriniz"
+          [(ngModel)]="homeworkDescription"
+          rows="4"
+        ></textarea>
+      </div>
+      <button class="btn btn-success" (click)="sendHomework()">Gönder</button>
     </div>
+  </div>
+
+  <!-- Gönderilen Ödevler Tablosu -->
+  <h3 class="text-center mt-5 mb-4">Gönderilen Ödevler</h3>
+  <div *ngIf="teacherHomeworks.length > 0; else noHomework">
+    <table class="table table-bordered">
+      <thead class="table-light">
+      <tr>
+        <th>#</th>
+        <th>Başlık</th>
+        <th>Açıklama</th>
+        <th>İşlemler</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let homework of teacherHomeworks; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ homework.title }}</td>
+        <td>{{ homework.description }}</td>
+        <td>
+          <button class="btn btn-primary" (click)="openPopup(homework)">Detaylar</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <ng-template #noHomework>
+    <div class="alert alert-warning text-center">
+      Henüz bir ödev vermediniz.
+    </div>
+  </ng-template>
+
+  <!-- Popup Bileşeni -->
+  <app-popup-teacher #popup></app-popup-teacher>
 </div>

@@ -13,6 +13,7 @@ import {TeacherComponent} from "./component/Teacher/teacher.component";
 import {PopupComponent} from "./component/popup/popup.component";
 import {FormsModule} from "@angular/forms";
 import {PopupStudentComponent} from "./component/popupstudent/popupstudent.component";
+import {PopupTeacherComponent} from "./component/popupteacher/popupteacher.component";
 
 
 
@@ -30,7 +31,8 @@ import {PopupStudentComponent} from "./component/popupstudent/popupstudent.compo
     PopupComponent,
     TeacherComponent,
     PdfEditComponent,
-    PopupStudentComponent
+    PopupStudentComponent,
+    PopupTeacherComponent
   ],
   exports: [
     NavbarComponent,

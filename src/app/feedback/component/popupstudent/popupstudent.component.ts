@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-popup-student',
@@ -6,26 +7,49 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./popupstudent.component.css'],
 })
 export class PopupStudentComponent {
-  @Input() homework: any; // Popup'ta gösterilecek ödev bilgisi
+  @Input() homework: any; // Açılacak ödev bilgisi
   isVisible: boolean = false; // Popup görünürlük durumu
+  selectedFile: File | null = null; // Seçilen dosya
 
-  // Popup'ı açma
+  constructor(private http: HttpClient) {}
+
   openPopup(homework: any): void {
-    this.homework = homework; // Ödev bilgilerini ayarla
+    this.homework = homework; // Ödev bilgilerini ata
     this.isVisible = true; // Popup'ı görünür yap
   }
 
-  // Popup'ı kapatma
   closePopup(): void {
     this.isVisible = false; // Popup'ı gizle
+    this.selectedFile = null; // Dosya seçimini sıfırla
   }
 
-  // PDF yükleme
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
-      console.log('Seçilen PDF:', file);
-      alert('PDF Yüklendi: ' + file.name);
+      this.selectedFile = file;
     }
+  }
+
+  submitHomework(): void {
+    if (!this.selectedFile) {
+      alert('Lütfen bir dosya seçin!');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('homeworkId', this.homework?.id);
+    formData.append('file', this.selectedFile);
+    formData.append('studentId', sessionStorage.getItem('user') || '');
+
+    this.http.post('http://localhost:8080/Homework/submitPdf', formData).subscribe(
+        (response) => {
+          alert('Ödev başarıyla gönderildi!');
+          this.closePopup();
+        },
+        (error) => {
+          console.error('Hata:', error);
+          alert('Ödev gönderilemedi.');
+        }
+    );
   }
 }

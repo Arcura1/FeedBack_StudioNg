@@ -446,8 +446,8 @@ closePopup() {
     }).catch(error => {
       console.error('PDF indirilirken bir hata oluştu:', error);
     });
+  })
   }
-
   downloadWithoutButton($event: MouseEvent) {
     this.toggleVisibility();
     html2canvas(this.canvasContainerRef.nativeElement).then(canvas => {

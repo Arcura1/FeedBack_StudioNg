@@ -6,6 +6,7 @@ import {MainPageComponent} from "./component/mainPage/mainPage.component";
 import {StudentComponent} from "./component/student/student.component";
 import {PdfEditComponent} from "./component/pdfEditPage/pdfEdit.component";
 import {TeacherComponent} from "./component/Teacher/teacher.component";
+import {TestComponent} from "./component/test/test.component";
 
 const pageCode="feedback"
 const routes: Routes = [
@@ -22,6 +23,7 @@ const routes: Routes = [
   {path:'profile',component:ProfileComponent},
   {path:'student',component:StudentComponent},
   {path:'PdfEdit',component:PdfEditComponent},
+  {path:'test',component:TestComponent},
 
 
 ];

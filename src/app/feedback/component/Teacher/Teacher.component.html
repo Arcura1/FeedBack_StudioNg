@@ -3,17 +3,14 @@
   <h2 class="text-center mb-4">Ödev Gönderme - Öğretmen</h2>
 
   <!-- Öğretmen ID Gösterimi -->
-  <div class="alert alert-info" *ngIf="id">
+  <div class="alert alert-info">
     <strong>Öğretmen ID:</strong> {{ id }}
   </div>
 
   <!-- Ödev Gönderme Formu -->
-  <div class="card">
-    <div class="card-header bg-primary text-white">
-      Ödev Bilgileri
-    </div>
+  <div class="card mb-5">
+    <div class="card-header bg-primary text-white">Ödev Bilgileri</div>
     <div class="card-body">
-      <!-- Ödev Başlığı -->
       <div class="mb-3">
         <label for="homeworkTitle" class="form-label">Ödev Başlığı</label>
         <input
@@ -24,7 +21,6 @@
           [(ngModel)]="homeworkTitle"
         />
       </div>
-      <!-- Ödev Açıklaması -->
       <div class="mb-3">
         <label for="homeworkDescription" class="form-label">Ödev Açıklaması</label>
         <textarea
@@ -35,24 +31,40 @@
           rows="4"
         ></textarea>
       </div>
-      <!-- Gönder Butonu -->
       <button class="btn btn-success" (click)="sendHomework()">Gönder</button>
     </div>
   </div>
 
-  <!-- Ödev Listesi -->
-  <div class="mt-5">
-    <h3 class="text-center mb-4">Ödevler</h3>
-    <div *ngIf="allHomeworks.length > 0">
-      <ul class="list-group">
-        <li *ngFor="let homework of allHomeworks" class="list-group-item">
-          <h5>{{ homework.title }}</h5>
-          <p>{{ homework.description }}</p>
-        </li>
-      </ul>
-    </div>
-    <div *ngIf="allHomeworks.length === 0">
-      <p>Henüz hiçbir ödev gönderilmedi.</p>
-    </div>
+  <!-- Gönderilen Ödevler Tablosu -->
+  <h3 class="text-center mt-5 mb-4">Gönderilen Ödevler</h3>
+  <div *ngIf="teacherHomeworks.length > 0; else noHomework">
+    <table class="table table-bordered">
+      <thead class="table-light">
+      <tr>
+        <th>#</th>
+        <th>Başlık</th>
+        <th>Açıklama</th>
+        <th>İşlemler</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let homework of teacherHomeworks; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ homework.title }}</td>
+        <td>{{ homework.description }}</td>
+        <td>
+          <button class="btn btn-primary" (click)="openPopup(homework)">Detaylar</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
   </div>
+  <ng-template #noHomework>
+    <div class="alert alert-warning text-center">
+      Henüz bir ödev vermediniz.
+    </div>
+  </ng-template>
+
+  <!-- Popup Bileşeni -->
+  <app-popup-teacher #popup></app-popup-teacher>
 </div>

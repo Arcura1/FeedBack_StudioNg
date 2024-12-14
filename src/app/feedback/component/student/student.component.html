@@ -3,27 +3,23 @@
 <p>Student Works!</p>
 <button (click)="goToPdfEdit()">PDF Edit</button>
 
-
-
-
-
 <div class="row">
   <div class="col-md-4" *ngFor="let homework of homeworks">
     <div class="card" style="width: 18rem; margin: 10px;">
-      <img
-        src="https://via.placeholder.com/150"
-        class="card-img-top"
-        alt="Homework Image"
-      />
       <div class="card-body">
         <h5 class="card-title">{{ homework.title }}</h5>
-        <p class="card-text">
-          {{ homework.description }}
-        </p>
-        <p><strong>Teacher:</strong> {{ homework.teacher.firstName }} {{ homework.teacher.lastName }}</p>
-        <p><strong>Email:</strong> {{ homework.teacher.email }}</p>
-        <a href="#" class="btn btn-primary">View Details</a>
+        <p class="card-text">{{ homework.description }}</p>
+        <button
+          class="btn btn-primary"
+          type="button"
+          (click)="showPopup(homework)"
+        >
+          View Details
+        </button>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Popup Bileşeni -->
+<app-popup-student #popup></app-popup-student>

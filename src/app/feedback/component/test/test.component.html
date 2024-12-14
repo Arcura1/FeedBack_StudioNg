@@ -1,0 +1,16 @@
+<div>
+  <h1>Upload PDF</h1>
+  <form (ngSubmit)="onSubmit()" #pdfUploadForm="ngForm">
+    <div>
+      <label for="id">ID:</label>
+      <input type="text" id="id" name="id" [(ngModel)]="id" required />
+    </div>
+    <div>
+      <label for="file">PDF File:</label>
+      <input type="file" id="file" name="file" (change)="onFileChange($event)" accept="application/pdf" required />
+    </div>
+    <div>
+      <button type="submit" [disabled]="!pdfUploadForm.form.valid">Upload</button>
+    </div>
+  </form>
+</div>

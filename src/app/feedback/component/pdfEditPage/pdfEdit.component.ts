@@ -431,7 +431,7 @@ closePopup() {
   download($event: MouseEvent) {
     html2canvas(this.canvasContainerRef.nativeElement).then(canvas => {
 
-      const link = document.createElement('a');
+        const link = document.createElement('a');
       link.download = 'highlighted_pdf.png';
       link.href = canvas.toDataURL();
       link.click();

@@ -53,9 +53,13 @@
         <td>{{ homework.title }}</td>
         <td>{{ homework.description }}</td>
         <td>
-          <button class="btn btn-primary" (click)="openPopup(homework)">Detaylar</button>
+          <!-- Keep the button label as 'Detaylar', and pass homework to openPopup -->
+          <button class="btn btn-primary" (click)="openPopup(homework)">
+            Detaylar
+          </button>
         </td>
       </tr>
+
       </tbody>
     </table>
   </div>

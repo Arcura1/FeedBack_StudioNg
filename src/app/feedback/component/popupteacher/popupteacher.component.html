@@ -27,8 +27,12 @@
             </li>
           </ul>
         </div>
+
+        <!-- Show the homework ID in the no PDFs message -->
         <ng-template #noPdfs>
-          <p>Henüz bu ödev için yüklenen bir PDF yok.</p>
+          <p>Henüz bu ödev  için yüklenen bir PDF yok.
+            (ID: {{ homework?.id }})
+          </p>
         </ng-template>
       </div>
       <div class="modal-footer">

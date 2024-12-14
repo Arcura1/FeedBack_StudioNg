@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {PDFDocumentProxy} from 'pdfjs-dist';
 import {FormsModule} from "@angular/forms";
 import {NgIf} from "@angular/common";
@@ -44,6 +44,8 @@ export class PdfEditComponent implements OnInit {
   //   );
   //
   // }
+  @Input() pdfId: string = '';
+  @Input() homeworkId: string = '';
   public url = 'http://localhost:8080/pdf/pdf'; // PDF dosya URL'si
   public loadingTask = pdfjsLib.getDocument(this.url);
   public currentPageNumber = 1;
@@ -374,6 +376,13 @@ closePopup() {
   cizgiMode($event: MouseEvent) {
     this.modeSelect = 2;
   }
+  mousedown($event: MouseEvent) {
+    const rect = this.canvasContainerRef.nativeElement.getBoundingClientRect();
+    this.startX = $event.clientX - rect.left;
+    this.startY = $event.clientY - rect.top;
+    this.isMouseDown = true;
+  }
+
   mouseup($event: MouseEvent) {
     if (this.modeSelect == 1) {
       if (this.isMouseDown) {
@@ -382,6 +391,9 @@ closePopup() {
         const rect = this.canvasContainerRef.nativeElement.getBoundingClientRect();
         const endX = $event.clientX - rect.left;
         const endY = $event.clientY - rect.top;
+
+        console.log(`Başlangıç Koordinatları: X: ${this.startX.toFixed(2)}, Y: ${this.startY.toFixed(2)}`);
+        console.log(`Bitiş Koordinatları: X: ${endX.toFixed(2)}, Y: ${endY.toFixed(2)}`);
 
         const highlightDiv = document.createElement('div');
         highlightDiv.className = 'position-absolute bg-warning';
@@ -395,11 +407,12 @@ closePopup() {
 
         this.canvasContainerRef.nativeElement.appendChild(highlightDiv);
       }
-    }
-    else if(this.modeSelect==2){
+    } else if (this.modeSelect == 2) {
       this.isDrawing = false;
     }
   }
+
+
 
   mouseDown($event: MouseEvent) {
     if (this.modeSelect == 1) {

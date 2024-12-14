@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-popup-student',
@@ -7,22 +8,31 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./popupstudent.component.css'],
 })
 export class PopupStudentComponent {
-  @Input() homework: any; // Açılacak ödev bilgisi
-  isVisible: boolean = false; // Popup görünürlük durumu
-  selectedFile: File | null = null; // Seçilen dosya
+  @Input() homework: any; // Homework details for the popup
+  isVisible: boolean = false; // Popup visibility state
+  selectedFile: File | null = null; // Selected file to be uploaded
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {
+  }
 
+  // Navigate to PDF Edit Page
+  goToPdfEdit() {
+    this.router.navigate(['/feedback/PdfEdit']);
+  }
+
+  // Open the popup with homework details
   openPopup(homework: any): void {
-    this.homework = homework; // Ödev bilgilerini ata
-    this.isVisible = true; // Popup'ı görünür yap
+    this.homework = homework;
+    this.isVisible = true;
   }
 
+  // Close the popup and reset file selection
   closePopup(): void {
-    this.isVisible = false; // Popup'ı gizle
-    this.selectedFile = null; // Dosya seçimini sıfırla
+    this.isVisible = false;
+    this.selectedFile = null;
   }
 
+  // Handle file selection
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
@@ -30,6 +40,7 @@ export class PopupStudentComponent {
     }
   }
 
+  // Submit the homework with the uploaded file
   submitHomework(): void {
     if (!this.selectedFile) {
       alert('Lütfen bir dosya seçin!');
@@ -37,19 +48,28 @@ export class PopupStudentComponent {
     }
 
     const formData = new FormData();
-    formData.append('homeworkId', this.homework?.id);
-    formData.append('file', this.selectedFile);
-    formData.append('studentId', sessionStorage.getItem('user') || '');
+    const oray = 1; // Number değeri
 
-    this.http.post('http://localhost:8080/Homework/submitPdf', formData).subscribe(
-        (response) => {
-          alert('Ödev başarıyla gönderildi!');
-          this.closePopup();
-        },
-        (error) => {
-          console.error('Hata:', error);
-          alert('Ödev gönderilemedi.');
-        }
+    // FormData'ya değerleri eklerken number'ı string'e dönüştürüyoruz
+    formData.append('title', this.homework?.title || '');
+    formData.append('content', this.homework?.description || '');
+    formData.append('xsize', oray.toString()); // Number => String dönüşümü
+    formData.append('ysize', '7'); // Statik bir değer varsa direkt string olarak bırakabilirsiniz
+    formData.append('pageSize', '1');
+    formData.append('homeworkId', this.homework?.id || '');
+    formData.append('file', this.selectedFile, this.selectedFile.name); // Dosya ekleme
+
+    console.log(formData);
+
+    this.http.post('http://localhost:8080/pdf/addPdf', formData).subscribe(
+      (response: Object) => {
+        console.log(response);
+        alert('PDF başarıyla gönderildi!');
+      },
+      (error) => {
+        console.error('Hata:', error);
+        alert('PDF gönderilemedi!');
+      }
     );
   }
 }

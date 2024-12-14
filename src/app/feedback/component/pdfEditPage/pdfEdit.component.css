@@ -27,6 +27,19 @@
   float: right;
   font-size: 28px;
   font-weight: bold;
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+#pdf-viewer {
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+  margin-top: 20px;
+}
+
+button {
+  margin-right: 10px;
 }
 
 .close:hover,

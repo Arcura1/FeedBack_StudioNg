@@ -432,11 +432,22 @@ closePopup() {
     html2canvas(this.canvasContainerRef.nativeElement).then(canvas => {
 
         const link = document.createElement('a');
+    html2canvas(this.canvasContainerRef.nativeElement, {
+      scale: 2, // Daha yüksek çözünürlük için ölçek artırılır
+      useCORS: true, // Cross-Origin Resource Sharing izinlerini etkinleştir
+      logging: true, // Hata ayıklama için loglama
+      allowTaint: true // Taint edilmiş (dış kaynaktan) içeriklere izin ver
+    }).then(canvas => {
+      // Oluşturulan canvas'ı indirmek için link oluştur
+      const link = document.createElement('a');
       link.download = 'highlighted_pdf.png';
-      link.href = canvas.toDataURL();
+      link.href = canvas.toDataURL('image/png'); // PNG formatında çıktı
       link.click();
+    }).catch(error => {
+      console.error('PDF indirilirken bir hata oluştu:', error);
     });
   }
+
   downloadWithoutButton($event: MouseEvent) {
     this.toggleVisibility();
     html2canvas(this.canvasContainerRef.nativeElement).then(canvas => {

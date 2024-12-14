@@ -17,6 +17,7 @@ export class PopupTeacherComponent {
     this.homework = homework; // Ödev bilgilerini ata
     this.isVisible = true; // Popup'ı görünür yap
 
+
     // Gönderilen PDF'leri çek
     this.http
       .get<any[]>(`http://localhost:8080/Homework/getSubmittedPdfs?homeworkId=${homework.id}`)

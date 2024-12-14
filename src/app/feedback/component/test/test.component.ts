@@ -8,6 +8,14 @@ export class TestComponent{
   id: string = '';
   selectedFile: File | null = null;
   formData = new FormData();
+  public pdf: string= '';
+  public homework: string = '';
+
+  ngOnInit(): void {
+    this.pdf = 'pdf';
+    this.homework = 'homework';
+  }
+
 
   constructor(private http: HttpClient) {}
 

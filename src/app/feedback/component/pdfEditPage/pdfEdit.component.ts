@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {PDFDocumentProxy} from 'pdfjs-dist';
 import {FormsModule} from "@angular/forms";
 import {NgIf} from "@angular/common";
@@ -44,6 +44,8 @@ export class PdfEditComponent implements OnInit {
   //   );
   //
   // }
+  @Input() pdfId: string = '';
+  @Input() homeworkId: string = '';
   public url = 'http://localhost:8080/pdf/pdf'; // PDF dosya URL'si
   public loadingTask = pdfjsLib.getDocument(this.url);
   public currentPageNumber = 1;
@@ -156,42 +158,67 @@ closePopup() {
       const context = canvas.getContext('2d');
 
 
-fetch('http://localhost:8080/viewAll')
-  .then(response => {
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return response.json();
-  })
-  .then((data: NoteItem[]) => {  // Explicitly define the type of 'data' as an array of NoteItem
-    console.log(data);
-    const rect = this.pdfCanvasRef.nativeElement.getBoundingClientRect();
+      fetch('http://localhost:8080/viewAll')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data: NoteItem[]) => {
+          console.log(data);
+          const rect = this.pdfCanvasRef.nativeElement.getBoundingClientRect();
 
-    data.forEach((item: NoteItem) => {  // Explicitly define 'item' as a NoteItem
-      const button = document.createElement('button');
-      button.className = 'btn btn-success position-absolute';
+          // Modal ve close butonu elemanlarını seçiyoruz
+          const modal = document.getElementById('modal');
+          const closeBtn = document.getElementsByClassName('close')[0];
+          const modalMessage = document.getElementById('modalMessage');
 
-      // Butonun içine notu yaz
-      button.textContent = `Not: ${item.note}`;
-      button.id = 'notes';
+          // Modal ve modalMessage null ise, işlem yapma
+          if (modal && modalMessage && closeBtn) {
+            data.forEach((item: NoteItem) => {
+              const button = document.createElement('button');
+              button.className = 'btn btn-success position-absolute';
+              button.textContent = `Not: ${item.note}`;
+              button.id = 'notes';
 
-      // Butonu doğru koordinatlarda yerleştir
-      button.style.left = `${((item.xcoordinate / this.originalViewport.width) * rect.width)}px`;
-      button.style.top = `${((item.ycoordinate / this.originalViewport.height) * rect.height)}px`;
+              // Butonu doğru koordinatlarda yerleştir
+              button.style.left = `${((item.xcoordinate / this.originalViewport.width) * rect.width)}px`;
+              button.style.top = `${((item.ycoordinate / this.originalViewport.height) * rect.height)}px`;
 
-      // Butonu ekranda uygun alana ekle
-      this.canvasContainerRef.nativeElement.appendChild(button);
+              // Butonu ekranda uygun alana ekle
+              this.canvasContainerRef.nativeElement.appendChild(button);
 
-      // Butona tıklandığında pop-up açılacak
-      button.addEventListener('click', () => {
-        // Pop-up'ta notun içeriğini ve koordinatları göster
-        alert(`Butona tıklandı! \nMesaj: ${item.note}\nKoordinatlar: X: ${item.xcoordinate}, Y: ${item.ycoordinate}`);
-      });
-    });
-  })
-  .catch(error => {
-    console.error('Veri alınırken bir hata oluştu:', error);
-  });
+              // Butona tıklandığında pop-up açılacak
+              button.addEventListener('click', () => {
+                // Modal mesajını güncelle
+                modalMessage.textContent = `Mesaj: ${item.note}\nKoordinatlar: X: ${item.xcoordinate}, Y: ${item.ycoordinate}`;
+
+                // Modal'ı göster
+                modal.style.display = 'block';
+              });
+            });
+
+            // Modal'ı kapatmak için close butonuna tıklama işlevi
+            closeBtn.addEventListener('click', () => {
+              modal.style.display = 'none';
+            });
+
+            // Modal dışına tıklanırsa, modal'ı kapat
+            window.addEventListener('click', (event) => {
+              if (event.target === modal) {
+                modal.style.display = 'none';
+              }
+            });
+          } else {
+            console.error('Modal veya modalMessage elementi bulunamadı');
+          }
+        })
+        .catch(error => {
+          console.error('Veri alınırken bir hata oluştu:', error);
+        });
+
+
 
 
 
@@ -349,6 +376,13 @@ fetch('http://localhost:8080/viewAll')
   cizgiMode($event: MouseEvent) {
     this.modeSelect = 2;
   }
+  mousedown($event: MouseEvent) {
+    const rect = this.canvasContainerRef.nativeElement.getBoundingClientRect();
+    this.startX = $event.clientX - rect.left;
+    this.startY = $event.clientY - rect.top;
+    this.isMouseDown = true;
+  }
+
   mouseup($event: MouseEvent) {
     if (this.modeSelect == 1) {
       if (this.isMouseDown) {
@@ -357,6 +391,9 @@ fetch('http://localhost:8080/viewAll')
         const rect = this.canvasContainerRef.nativeElement.getBoundingClientRect();
         const endX = $event.clientX - rect.left;
         const endY = $event.clientY - rect.top;
+
+        console.log(`Başlangıç Koordinatları: X: ${this.startX.toFixed(2)}, Y: ${this.startY.toFixed(2)}`);
+        console.log(`Bitiş Koordinatları: X: ${endX.toFixed(2)}, Y: ${endY.toFixed(2)}`);
 
         const highlightDiv = document.createElement('div');
         highlightDiv.className = 'position-absolute bg-warning';
@@ -370,11 +407,12 @@ fetch('http://localhost:8080/viewAll')
 
         this.canvasContainerRef.nativeElement.appendChild(highlightDiv);
       }
-    }
-    else if(this.modeSelect==2){
+    } else if (this.modeSelect == 2) {
       this.isDrawing = false;
     }
   }
+
+
 
   mouseDown($event: MouseEvent) {
     if (this.modeSelect == 1) {

@@ -5,25 +5,15 @@
 
   <!-- Placeholder for dynamically added buttons -->
   <div id="buttons-container" class="d-flex justify-content-center mb-4"></div>
-
-  <!-- Pop-up İçeriği -->
-  <div class="modal fade" id="popup" tabindex="-1" aria-labelledby="popupLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="popupLabel">Buton Mesajı</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <p id="popup-message"></p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" onclick="closePopup()">Kapat</button>
-        </div>
-      </div>
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p id="modalMessage"></p>
     </div>
   </div>
 
+  <p>PdfId: {{ pdfId }}</p>
+  <p>HomeworkId: {{ homeworkId }}</p>
   <!-- X ve Y Değerleri -->
   <div class="mb-3">
     <label class="form-label">Tıklanılan X değeri: <strong>{{ pdfX.toFixed(2) }}</strong></label>

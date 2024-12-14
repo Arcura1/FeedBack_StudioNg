@@ -19,6 +19,9 @@
         </button>
       </div>
       <div class="modal-body">
+        <!-- Show homework ID -->
+        <p><strong>Ödev ID:</strong> {{ homework?.id }}</p> <!-- Display homework ID here -->
+
         <div *ngIf="submittedPdfs.length > 0; else noPdfs">
           <ul class="list-group">
             <li class="list-group-item" *ngFor="let pdf of submittedPdfs">
@@ -28,11 +31,8 @@
           </ul>
         </div>
 
-        <!-- Show the homework ID in the no PDFs message -->
         <ng-template #noPdfs>
-          <p>Henüz bu ödev  için yüklenen bir PDF yok.
-            (ID: {{ homework?.id }})
-          </p>
+          <p>Henüz bu ödev için yüklenen bir PDF yok.</p>
         </ng-template>
       </div>
       <div class="modal-footer">

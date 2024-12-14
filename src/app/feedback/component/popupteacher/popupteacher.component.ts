@@ -7,33 +7,50 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./popupteacher.component.css'],
 })
 export class PopupTeacherComponent {
-  @Input() homework: any; // Açılacak ödev bilgisi
-  isVisible: boolean = false; // Popup görünürlük durumu
-  submittedPdfs: any[] = []; // Gönderilen PDF'ler
+  @Input() homework: any; // Homework passed from parent (initial empty)
+  isVisible: boolean = false; // To control visibility of the popup
+  submittedPdfs: any[] = []; // Submitted PDFs
 
   constructor(private http: HttpClient) {}
 
   openPopup(homework: any): void {
-    this.homework = homework; // Ödev bilgilerini ata
-    this.isVisible = true; // Popup'ı görünür yap
+    this.homework = homework; // Assign the homework object (with id)
+    this.isVisible = true; // Show the popup
 
+    // Fetch homework details (including ID) from the backend if not already passed
+    if (!this.homework?.id) {
+      this.http.get<any>(`http://localhost:8080/Homework/getHomeworkDetails?id=${homework.id}`)
+        .subscribe(
+          (data) => {
+            this.homework = data; // Update homework with data from the backend
+            this.fetchSubmittedPdfs(); // Fetch submitted PDFs for this homework
+          },
+          (error) => {
+            console.error('Error:', error);
+            alert('Ödev bilgileri alınamadı.');
+          }
+        );
+    } else {
+      this.fetchSubmittedPdfs(); // If homework already contains the necessary details, just fetch the PDFs
+    }
+  }
 
-    // Gönderilen PDF'leri çek
+  fetchSubmittedPdfs(): void {
     this.http
-      .get<any[]>(`http://localhost:8080/Homework/getSubmittedPdfs?homeworkId=${homework.id}`)
+      .get<any[]>(`http://localhost:8080/Homework/getSubmittedPdfs?homeworkId=${this.homework.id}`)
       .subscribe(
         (data) => {
-          this.submittedPdfs = data;
+          this.submittedPdfs = data; // Update submitted PDFs list
         },
         (error) => {
-          console.error('Hata:', error);
+          console.error('Error:', error);
           alert('Gönderilen PDFler alınamadı.');
         }
       );
   }
 
   closePopup(): void {
-    this.isVisible = false; // Popup'ı gizle
-    this.submittedPdfs = []; // PDF listesini sıfırla
+    this.isVisible = false; // Hide the popup
+    this.submittedPdfs = []; // Clear the list of submitted PDFs
   }
 }

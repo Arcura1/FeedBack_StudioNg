@@ -18,12 +18,14 @@ export class PopupStudentComponent {
   selectedFile: File | null = null; // Yüklenmek üzere seçilen dosya
   userId: string = ''; // Kullanıcı ID'si
   uploadedPdfId: string | null = null; // Kaydedilen PDF ID'si
+  pdfId: string = ''; // Store the fetched PDF ID
 
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
-    // Kullanıcı ID'sini sessionStorage veya localStorage'dan al
+    // Retrieve user ID from sessionStorage or localStorage
     const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+    this.userId = user?.id || 'Bilinmiyor'; // Default value if ID is unavailable
     this.userId = user?.id || 'Bilinmiyor'; // Eğer ID yoksa varsayılan değer
 
     // Kaydedilen PDF ID'sini al
@@ -35,10 +37,11 @@ export class PopupStudentComponent {
     this.router.navigate(['/feedback/PdfEdit']);
   }
 
-  // Popup'ı aç ve ödev detaylarını göster
+  // Open the popup with homework details and fetch the PDF ID
   openPopup(homework: any): void {
     this.homework = homework;
     this.isVisible = true;
+    this.fetchPdfId(); // Fetch the PDF ID from the database
   }
 
   // Popup'ı kapat ve seçilen dosyayı sıfırla
@@ -55,6 +58,24 @@ export class PopupStudentComponent {
     }
   }
 
+  // Fetch the PDF ID from the database
+  fetchPdfId(): void {
+    const homeworkId = this.homework?.id || ''; // Use the homework ID to fetch the PDF ID
+    const url = `http://localhost:8080/pdf/getPdfId/${homeworkId}`; // Replace with your backend endpoint
+
+    this.http.get<{ pdfId: string }>(url).subscribe(
+      (response) => {
+        this.pdfId = response.pdfId; // Assign the fetched PDF ID
+        console.log('Fetched PDF ID:', this.pdfId);
+      },
+      (error) => {
+        console.error('Failed to fetch PDF ID:', error);
+        alert('PDF ID alınamadı!');
+      }
+    );
+  }
+
+  // Submit the homework with the uploaded file
   // Ödevi yükle ve backend'e gönder
   submitHomework(): void {
     if (!this.selectedFile) {
@@ -64,24 +85,25 @@ export class PopupStudentComponent {
 
     const reader = new FileReader();
 
-    // Dosyayı Base64 formatına çevir
+    // Convert the file to Base64 format
     reader.onload = () => {
       const base64File = reader.result as string;
 
-      // JSON formatında veri oluştur
+      // Create the payload in JSON format
       const payload = {
-        title: this.homework?.title || 'Default Title',
-        content: this.homework?.description || 'Default Content',
+        title: this.homework?.title || '',
+        content: this.homework?.description || '',
         xsize: 1,
         ysize: 7,
         pageSize: 1,
         homeworkId: this.homework?.id || '',
         userId: this.userId,
+        pdfId: this.pdfId, // Include the fetched PDF ID
       };
 
-      console.log('Gönderilen Payload:', payload);
+      console.log('Payload to be sent:', payload);
 
-      // HTTP isteğini gönder
+      // Send the HTTP request
       this.http.post<ResponseData>('http://localhost:8080/pdf/addPdf', payload).subscribe(
         (response) => {
           console.log('Gelen Cevap:', response);
@@ -99,18 +121,18 @@ export class PopupStudentComponent {
           }
         },
         (error) => {
-          console.error('Hata:', error);
+          console.error('Error:', error);
           alert('PDF gönderilemedi!');
         }
       );
     };
 
     reader.onerror = (error) => {
-      console.error('Dosya okunamadı:', error);
+      console.error('Failed to read file:', error);
       alert('Dosya okunamadı!');
     };
 
-    // Dosyayı oku
+    // Read the file
     reader.readAsDataURL(this.selectedFile);
   }
 

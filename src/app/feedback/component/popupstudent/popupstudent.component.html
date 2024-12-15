@@ -27,8 +27,9 @@
 
 
         <!-- PDF Yükleme -->
-        <label for="pdfUpload" class="form-label">PDF Yükle:</label>
+        <label for="pdfUpload" class="form-label" *ngIf="!pdfId" >PDF Yükle:</label>
         <input
+          *ngIf="!pdfId"
           type="file"
           id="pdfUpload"
           class="form-control"
@@ -41,12 +42,16 @@
           Kapat
         </button>
         <button
+          *ngIf="!pdfId"
           type="button"
           class="btn btn-primary"
           (click)="submitHomework()"
         >
           Gönder
         </button>
+        <div *ngIf="pdfId" class="info-message">
+          Bu ödev için PDF zaten yüklendi.
+        </div>
         <button
           type="button"
           class="btn btn-primary"

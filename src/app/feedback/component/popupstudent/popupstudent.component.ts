@@ -2,31 +2,28 @@ import { Component, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
-
 interface ResponseData {
   setId: string;
-  // Diğer gerekli alanları buraya ekleyebilirsiniz
 }
+
 @Component({
   selector: 'app-popup-student',
   templateUrl: './popupstudent.component.html',
   styleUrls: ['./popupstudent.component.css'],
 })
-
 export class PopupStudentComponent {
   @Input() homework: any; // Homework details for the popup
   isVisible: boolean = false; // Popup visibility state
   selectedFile: File | null = null; // Selected file to be uploaded
   userId: string = '';
+  pdfId: string = ''; // Store the fetched PDF ID
 
-  constructor(private http: HttpClient, private router: Router) {
-
-  }
+  constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
-    // Kullanıcı ID'sini sessionStorage veya localStorage'dan al
+    // Retrieve user ID from sessionStorage or localStorage
     const user = JSON.parse(sessionStorage.getItem('user') || '{}');
-    this.userId = user?.id || 'Bilinmiyor'; // Eğer ID yoksa varsayılan değer
+    this.userId = user?.id || 'Bilinmiyor'; // Default value if ID is unavailable
   }
 
   // Navigate to PDF Edit Page
@@ -34,11 +31,11 @@ export class PopupStudentComponent {
     this.router.navigate(['/feedback/PdfEdit']);
   }
 
-
-  // Open the popup with homework details
+  // Open the popup with homework details and fetch the PDF ID
   openPopup(homework: any): void {
     this.homework = homework;
     this.isVisible = true;
+    this.fetchPdfId(); // Fetch the PDF ID from the database
   }
 
   // Close the popup and reset file selection
@@ -55,6 +52,23 @@ export class PopupStudentComponent {
     }
   }
 
+  // Fetch the PDF ID from the database
+  fetchPdfId(): void {
+    const homeworkId = this.homework?.id || ''; // Use the homework ID to fetch the PDF ID
+    const url = `http://localhost:8080/pdf/getPdfId/${homeworkId}`; // Replace with your backend endpoint
+
+    this.http.get<{ pdfId: string }>(url).subscribe(
+      (response) => {
+        this.pdfId = response.pdfId; // Assign the fetched PDF ID
+        console.log('Fetched PDF ID:', this.pdfId);
+      },
+      (error) => {
+        console.error('Failed to fetch PDF ID:', error);
+        alert('PDF ID alınamadı!');
+      }
+    );
+  }
+
   // Submit the homework with the uploaded file
   submitHomework(): void {
     if (!this.selectedFile) {
@@ -64,47 +78,43 @@ export class PopupStudentComponent {
 
     const reader = new FileReader();
 
-    // Dosyayı Base64 formatına çevir
+    // Convert the file to Base64 format
     reader.onload = () => {
       const base64File = reader.result as string;
 
-      // JSON formatında veri oluştur
+      // Create the payload in JSON format
       const payload = {
-        title: 'Math Homework',
-        content: 'Solve the following equations: 2x + 3 = 7, 3x - 4 = 5',
+        title: this.homework?.title || '',
+        content: this.homework?.description || '',
         xsize: 1,
         ysize: 7,
         pageSize: 1,
-        homeworkId: '6754915032c7c93dde20aab2',
-        userId: '67547e225330882809502d47',
+        homeworkId: this.homework?.id || '',
+        userId: this.userId,
+        pdfId: this.pdfId, // Include the fetched PDF ID
       };
 
-      console.log('Gönderilen Payload:', payload);
-      const respo={
-        setId:""
-      }
-      // HTTP isteğini gönder
+      console.log('Payload to be sent:', payload);
+
+      // Send the HTTP request
       this.http.post<ResponseData>('http://localhost:8080/pdf/addPdf', payload).subscribe(
         (response) => {
-
           console.log(response);
-          console.log(response.setId);
           alert('PDF başarıyla gönderildi!');
         },
         (error) => {
-          console.error('Hata:', error);
+          console.error('Error:', error);
           alert('PDF gönderilemedi!');
         }
       );
     };
 
     reader.onerror = (error) => {
-      console.error('Dosya okunamadı:', error);
+      console.error('Failed to read file:', error);
       alert('Dosya okunamadı!');
     };
 
-    // Dosyayı oku
+    // Read the file
     reader.readAsDataURL(this.selectedFile);
   }
-
 }

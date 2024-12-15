@@ -23,7 +23,7 @@
         <p><strong>Açıklama:</strong> {{ homework?.description }}</p>
         <p><strong>Ödev ID:</strong> {{ homework?.id }}</p>
         <p><strong>Kullanıcı ID:</strong> {{ userId }}</p>
-
+        <p><strong>Pdf ID:</strong></p>
 
 
         <!-- PDF Yükleme -->
@@ -51,6 +51,7 @@
           type="button"
           class="btn btn-primary"
           (click)="goToPdfEdit()"
+          [disabled]="!pdfId"
         >
           PDF Edit
         </button>

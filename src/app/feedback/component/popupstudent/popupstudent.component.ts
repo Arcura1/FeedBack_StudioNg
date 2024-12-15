@@ -61,10 +61,15 @@ export class PopupStudentComponent {
   // Fetch the PDF ID from the database
   fetchPdfId(): void {
     const homeworkId = this.homework?.id || ''; // Use the homework ID to fetch the PDF ID
-    const url = `http://localhost:8080/pdf/getPdfId/${homeworkId}`; // Replace with your backend endpoint
+    const url = `http://localhost:8080/pdf/findAllByHU`; // Replace with your backend endpoint
 
-    this.http.get<{ pdfId: string }>(url).subscribe(
+    const model={
+      homeworkId: homeworkId,
+      userId: JSON.parse(sessionStorage.getItem('user') || '{}').id
+    }
+    this.http.get<any>(url).subscribe(
       (response) => {
+        console.log(response);
         this.pdfId = response.pdfId; // Assign the fetched PDF ID
         console.log('Fetched PDF ID:', this.pdfId);
       },

@@ -315,6 +315,7 @@ closePopup() {
 
   onSubmit() {
     console.log("oray")
+    console.log(JSON.parse(sessionStorage.getItem('user') || '{}').id)
     // Formdaki input değerini al
 
 
@@ -326,11 +327,11 @@ closePopup() {
       // pdfId: 123,
       xcoordinate: this.pdfX,
       ycoordinate: this.pdfY,
-      "pdfId": 98765,
+      pdfId: 98765,
       note: this.metin,
       page: this.currentPageNumber,
       user: JSON.parse(sessionStorage.getItem('user') || '{}').id,
-      PdfInfoEntity: this.pdfId
+      pdfInfoEntity: this.pdfId
     };
     console.log(data)
     // PUT isteği gönder

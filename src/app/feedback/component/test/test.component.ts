@@ -12,8 +12,8 @@ export class TestComponent{
   public homework: string = '';
 
   ngOnInit(): void {
-    this.pdf = 'pdf';
-    this.homework = 'homework';
+    this.pdf = '675ee3b5f60ab04c984cf1d4';
+    this.homework = '675eec52ad31a6221c91e50a';
   }
 
 

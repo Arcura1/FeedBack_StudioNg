@@ -8,7 +8,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Gönderilen PDF'ler - {{ homework?.title }}</h5>
+        <h5 class="modal-title">Kullanıcı Listesi - {{ homework?.title }}</h5>
         <button
           type="button"
           class="close btn btn-danger"
@@ -19,24 +19,36 @@
         </button>
       </div>
       <div class="modal-body">
-        <!-- Show homework ID -->
-        <p><strong>Ödev ID:</strong> {{ homework?.id }}</p> <!-- Display homework ID here -->
+        <p><strong>Ödev ID:</strong> {{ homework?.id }}</p>
 
-        <div *ngIf="submittedPdfs.length > 0; else noPdfs">
+        <!-- Kullanıcı listesi -->
+        <div *ngIf="userList.length > 0; else noUsers">
           <ul class="list-group">
-            <li class="list-group-item" *ngFor="let pdf of submittedPdfs">
-              <strong>Öğrenci:</strong> {{ pdf.studentName }} -
-              <a [href]="pdf.fileUrl" target="_blank">PDF'yi Görüntüle</a>
+            <li class="list-group-item" *ngFor="let item of userList">
+              <p><strong>Ad:</strong> {{ item.user?.firstName }} {{ item.user?.lastName }}</p>
+              <p><strong>Email:</strong> {{ item.user?.email }}</p>
+              <p><strong>Telefon:</strong> {{ item.user?.phone }}</p>
+              <p><strong>Rol:</strong> {{ item.user?.role }}</p>
+              <button
+                type="button"
+                class="btn btn-primary"
+                (click)="goToPdfEdit()"
+              >
+                PDF Edit
+              </button>
             </li>
           </ul>
         </div>
 
-        <ng-template #noPdfs>
-          <p>Henüz bu ödev için yüklenen bir PDF yok.</p>
+        <!-- Kullanıcı bulunamadığında gösterilecek mesaj -->
+        <ng-template #noUsers>
+          <p>Bu ödev için kullanıcı bilgisi bulunamadı.</p>
         </ng-template>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="closePopup()">Kapat</button>
+        <button type="button" class="btn btn-secondary" (click)="closePopup()">
+          Kapat
+        </button>
       </div>
     </div>
   </div>

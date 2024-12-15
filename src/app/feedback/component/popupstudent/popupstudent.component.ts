@@ -19,7 +19,7 @@ export class PopupStudentComponent {
   userId: string = ''; // Kullanıcı ID'si
   uploadedPdfId: string | null = null; // Kaydedilen PDF ID'si
   pdfId: string = ''; // Store the fetched PDF ID
-
+  donenData: any = {}; // json da dönen datayı buraya bastırıo
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
@@ -60,25 +60,46 @@ export class PopupStudentComponent {
 
   // Fetch the PDF ID from the database
   fetchPdfId(): void {
-    const homeworkId = this.homework?.id || ''; // Use the homework ID to fetch the PDF ID
-    const url = `http://localhost:8080/pdf/findAllByHU`; // Replace with your backend endpoint
+    const homeworkId = this.homework?.id || ''; // Ödev ID'sini al
+    const userId = JSON.parse(sessionStorage.getItem('user') || '{}').id; // Kullanıcı ID'sini al
 
-    const model={
+    // URL'yi belirliyoruz
+    const url = 'http://localhost:8080/pdf/findAllByHU';
+
+    // Gönderilecek veri (body) hazırlanıyor
+    const body = {
       homeworkId: homeworkId,
-      userId: JSON.parse(sessionStorage.getItem('user') || '{}').id
-    }
-    this.http.get<any>(url).subscribe(
+      userId: userId
+    };
+
+    // HTTP POST isteği gönderiyoruz
+    this.http.post<any>(url, body).subscribe(
       (response) => {
-        console.log(response);
-        this.pdfId = response.pdfId; // Assign the fetched PDF ID
-        console.log('Fetched PDF ID:', this.pdfId);
+        console.log('Gelen Cevap:', response); // Backend yanıtını logla
+        try {
+          if (response) {
+            this.donenData = response; // JSON verisi geçerliyse donenData'ya ata
+            this.pdfId = this.donenData?.id || ''; // Fetched PDF ID'yi ata
+            console.log('Fetched PDF ID:', this.pdfId);
+          } else {
+            throw new Error('Geçersiz JSON formatı');
+          }
+        } catch (error) {
+          console.error('Invalid response format:', error);
+          this.donenData = ''; // Geçersiz JSON olduğunda donenData'yı sıfırla
+          alert('Hatalı JSON formatı alındı!');
+        }
       },
       (error) => {
         console.error('Failed to fetch PDF ID:', error);
         alert('PDF ID alınamadı!');
+        this.donenData = ''; // Hata durumunda donenData'yı sıfırla
       }
     );
+
   }
+
+
 
   // Submit the homework with the uploaded file
   // Ödevi yükle ve backend'e gönder

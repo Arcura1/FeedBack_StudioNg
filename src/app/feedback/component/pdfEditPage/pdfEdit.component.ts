@@ -1,12 +1,8 @@
 import {Component, ElementRef, Input, OnInit, Renderer2, ViewChild} from '@angular/core';
-import {PDFDocumentProxy} from 'pdfjs-dist';
-import {FormsModule} from "@angular/forms";
-import {NgIf} from "@angular/common";
+import {PDFDocumentProxy, PDFPageProxy, PDFDocumentLoadingTask } from 'pdfjs-dist';
 import html2canvas from 'html2canvas';
-import { jsPDF } from 'jspdf';
-import {FeedbackModule} from "../../feedback.module";
-import {NavbarComponent} from "../nawbar/nawbar.component";
-import { PopupComponent } from '../popup/popup.component';
+import {HttpClient} from "@angular/common/http";
+import {ActivatedRoute} from "@angular/router";
 
 declare const pdfjsLib: any;
 
@@ -45,8 +41,31 @@ export class PdfEditComponent implements OnInit {
   // }
   @Input() pdfId: string = '';
   @Input() homeworkId: string = '';
-  public url = 'http://localhost:8080/pdf'+"/pdf"; // PDF dosya URL'si
+  public pdfGetter = {
+
+    homeworkId: this.homeworkId,
+    pdfInfoId: this.pdfId
+  }
+
+  public url = 'http://localhost:8080/pdf' + "/pdfById"; // PDF dosya URL'si
   public loadingTask = pdfjsLib.getDocument(this.url);
+
+
+  fetchAndLoadPdf() {
+    this.http.post(this.url, this.pdfGetter, { responseType: 'blob' }).subscribe({
+      next: (blob) => {
+        // PDF blob'unu URL olarak oluştur
+        const pdfUrl = URL.createObjectURL(blob);
+        // pdfjsLib ile PDF yükleme
+        this.loadingTask = pdfjsLib.getDocument(pdfUrl);
+
+      },
+      error: (err:any) => {
+        console.error('PDF istek hatası:', err);
+      }
+    });
+  }
+
   public currentPageNumber = 1;
   public topPagepdf = 1
   public pdfX: number;
@@ -61,10 +80,24 @@ export class PdfEditComponent implements OnInit {
   public parentMessage: string = '';
   // public isDrawing: boolean=false;
   // public ctx: CanvasRenderingContext2D | null = null;
-  public isDrawing: boolean=false;
+  public isDrawing: boolean = false;
+  public showButtons: any[] = [];
 
 
-  constructor(private renderer:  Renderer2, private elementRef: ElementRef) {
+  constructor(private renderer: Renderer2, private elementRef: ElementRef,private http: HttpClient,private route: ActivatedRoute) {
+    this.http.post(this.url, this.pdfGetter, { responseType: 'blob' }).subscribe({
+      next: (blob) => {
+        // PDF blob'unu URL olarak oluştur
+        const pdfUrl = URL.createObjectURL(blob);
+        // pdfjsLib ile PDF yükleme
+        this.loadingTask = pdfjsLib.getDocument(pdfUrl);
+
+      },
+      error: (err:any) => {
+        console.error('PDF istek hatası:', err);
+      }
+    });
+
     this.startY = 0;
     this.startX = 0;
 
@@ -73,8 +106,20 @@ export class PdfEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.ctx=this.pdfCanvasRef.nativeElement.getContext('2d');
+    // URL parametrelerini almak
+    const homeworkIdFromUrl = this.route.snapshot.paramMap.get('homeworkId');
+    const pdfIdFromUrl = this.route.snapshot.paramMap.get('pdfId');
 
+    // URL'den alınan parametreleri @Input() değerlerine atamak
+    if (homeworkIdFromUrl) {
+      this.homeworkId = homeworkIdFromUrl;
+    }
+    if (pdfIdFromUrl) {
+      this.pdfId = pdfIdFromUrl;
+    }
+    console.log(this.loadingTask)
+    console.log(typeof this.loadingTask)
+    // this.ctx=this.pdfCanvasRef.nativeElement.getContext('2d');
     this.loadingTask.promise.then(
       (pdf: PDFDocumentProxy) => {
         this.topPagepdf = pdf._pdfInfo.numPages
@@ -86,65 +131,58 @@ export class PdfEditComponent implements OnInit {
         console.error('PDF yüklenemedi: ' + reason);
       }
     );
-  this.updateParentMessage();
+    this.updateParentMessage();
   }
 
-updateParentMessage() {
+  updateParentMessage() {
 
-  this.parentMessage = `Tıklanan PDF Koordinatları X: ${this.pdfX.toFixed(2)}, Y: ${this.pdfY.toFixed(2)}`;
-}
-
-handleButtonClick(item: any) {
-  const buttonId = item.id;  // Butonun ID'sini alın
-
-  console.log('Butona tıklandı:', buttonId);  // Burada konsola tıklama işlemi geldiğini kontrol edin
-
-  // API'den veri çekme
-  fetch(`http://localhost:8080/view?NoteId=${buttonId}`)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();  // JSON formatında veri döndür
-    })
-    .then(data => {
-      // API'den gelen veriyi kontrol et
-      if (data && data.note && data.xcoordinate !== undefined && data.ycoordinate !== undefined) {
-        // Koordinatları ve notu konsola yazdır
-        console.log(`Butona tıklandığında gelen veri: ${data.note}, Koordinatlar: X: ${data.xcoordinate}, Y: ${data.ycoordinate}`);
-      } else {
-        console.error('Veri yapısı beklenenden farklı: ', data);
-      }
-    })
-    .catch(error => {
-      console.error('Veri alınırken bir hata oluştu:', error);
-      alert('Veri alınırken bir hata oluştu. Lütfen tekrar deneyin.');
-    });
-}
-
-showPopup(message: string) {
-  const popupElement = document.getElementById('popup');
-  const messageElement = document.getElementById('popup-message');
-
-  if (popupElement && messageElement) {
-    messageElement.textContent = message;  // Mesajı pop-up'a ekle
-    popupElement.style.display = 'block';  // Pop-up'ı göster
+    this.parentMessage = `Tıklanan PDF Koordinatları X: ${this.pdfX.toFixed(2)}, Y: ${this.pdfY.toFixed(2)}`;
   }
-}
 
-closePopup() {
-  const popupElement = document.getElementById('popup');
-  if (popupElement) {
-    popupElement.style.display = 'none';  // Pop-up'ı gizle
+  handleButtonClick(item: any) {
+    const buttonId = item.id;  // Butonun ID'sini alın
+
+    console.log('Butona tıklandı:', buttonId);  // Burada konsola tıklama işlemi geldiğini kontrol edin
+
+    // API'den veri çekme
+    fetch(`http://localhost:8080/view?NoteId=${buttonId}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();  // JSON formatında veri döndür
+      })
+      .then(data => {
+        // API'den gelen veriyi kontrol et
+        if (data && data.note && data.xcoordinate !== undefined && data.ycoordinate !== undefined) {
+          // Koordinatları ve notu konsola yazdır
+          console.log(`Butona tıklandığında gelen veri: ${data.note}, Koordinatlar: X: ${data.xcoordinate}, Y: ${data.ycoordinate}`);
+        } else {
+          console.error('Veri yapısı beklenenden farklı: ', data);
+        }
+      })
+      .catch(error => {
+        console.error('Veri alınırken bir hata oluştu:', error);
+        alert('Veri alınırken bir hata oluştu. Lütfen tekrar deneyin.');
+      });
   }
-}
 
+  showPopup(message: string) {
+    const popupElement = document.getElementById('popup');
+    const messageElement = document.getElementById('popup-message');
 
+    if (popupElement && messageElement) {
+      messageElement.textContent = message;  // Mesajı pop-up'a ekle
+      popupElement.style.display = 'block';  // Pop-up'ı göster
+    }
+  }
 
-
-
-
-
+  closePopup() {
+    const popupElement = document.getElementById('popup');
+    if (popupElement) {
+      popupElement.style.display = 'none';  // Pop-up'ı gizle
+    }
+  }
 
 
   renderPage(pdf: PDFDocumentProxy, pageNumber: number) {
@@ -216,14 +254,6 @@ closePopup() {
         .catch(error => {
           console.error('Veri alınırken bir hata oluştu:', error);
         });
-
-
-
-
-
-
-
-
       // context'in null olmadığını kontrol et
       if (context) {
         // Canvas boyutlarını ayarla
@@ -235,8 +265,6 @@ closePopup() {
           canvasContext: context,
           viewport: viewport
         };
-
-
 
 
         page.render(renderContext).promise.then(() => {
@@ -323,7 +351,7 @@ closePopup() {
     const data = {
       // xcoordinate: this.pdfX,
       // ycoordinate: this.pdfY,
-        // Kullanıcının girdiği metni al
+      // Kullanıcının girdiği metni al
       // pdfId: 123,
       xcoordinate: this.pdfX,
       ycoordinate: this.pdfY,
@@ -380,9 +408,11 @@ closePopup() {
   noteMode() {
     this.modeSelect = 0;
   }
+
   cizgiMode($event: MouseEvent) {
     this.modeSelect = 2;
   }
+
   mousedown($event: MouseEvent) {
     const rect = this.canvasContainerRef.nativeElement.getBoundingClientRect();
     this.startX = $event.clientX - rect.left;
@@ -420,15 +450,13 @@ closePopup() {
   }
 
 
-
   mouseDown($event: MouseEvent) {
     if (this.modeSelect == 1) {
       this.isMouseDown = true;
       const rect = this.canvasContainerRef.nativeElement.getBoundingClientRect();
       this.startX = $event.clientX - rect.left;
       this.startY = $event.clientY - rect.top;
-    }
-    else if(this.modeSelect==2){
+    } else if (this.modeSelect == 2) {
       this.isDrawing = true;
       this.pdfCanvasRef?.nativeElement.getContext('2d')?.beginPath();
       this.pdfCanvasRef?.nativeElement.getContext('2d')?.moveTo($event.offsetX, $event.offsetY);
@@ -438,23 +466,24 @@ closePopup() {
   download($event: MouseEvent) {
     html2canvas(this.canvasContainerRef.nativeElement).then(canvas => {
 
-        const link = document.createElement('a');
-    html2canvas(this.canvasContainerRef.nativeElement, {
-      scale: 2, // Daha yüksek çözünürlük için ölçek artırılır
-      useCORS: true, // Cross-Origin Resource Sharing izinlerini etkinleştir
-      logging: true, // Hata ayıklama için loglama
-      allowTaint: true // Taint edilmiş (dış kaynaktan) içeriklere izin ver
-    }).then(canvas => {
-      // Oluşturulan canvas'ı indirmek için link oluştur
       const link = document.createElement('a');
-      link.download = 'highlighted_pdf.png';
-      link.href = canvas.toDataURL('image/png'); // PNG formatında çıktı
-      link.click();
-    }).catch(error => {
-      console.error('PDF indirilirken bir hata oluştu:', error);
-    });
-  })
+      html2canvas(this.canvasContainerRef.nativeElement, {
+        scale: 2, // Daha yüksek çözünürlük için ölçek artırılır
+        useCORS: true, // Cross-Origin Resource Sharing izinlerini etkinleştir
+        logging: true, // Hata ayıklama için loglama
+        allowTaint: true // Taint edilmiş (dış kaynaktan) içeriklere izin ver
+      }).then(canvas => {
+        // Oluşturulan canvas'ı indirmek için link oluştur
+        const link = document.createElement('a');
+        link.download = 'highlighted_pdf.png';
+        link.href = canvas.toDataURL('image/png'); // PNG formatında çıktı
+        link.click();
+      }).catch(error => {
+        console.error('PDF indirilirken bir hata oluştu:', error);
+      });
+    })
   }
+
   downloadWithoutButton($event: MouseEvent) {
     this.toggleVisibility();
     html2canvas(this.canvasContainerRef.nativeElement).then(canvas => {
@@ -466,6 +495,7 @@ closePopup() {
     });
     this.toggleVisibility();
   }
+
   toggleVisibility() {
     const elements = this.elementRef.nativeElement.querySelectorAll('#notes');
 
@@ -499,10 +529,14 @@ closePopup() {
   // }
 
   mouseMove($event: MouseEvent) {
-    if (this.isDrawing&&this.modeSelect==2) {
+    if (this.isDrawing && this.modeSelect == 2) {
       this.pdfCanvasRef?.nativeElement.getContext('2d')?.lineTo($event.offsetX, $event.offsetY);
       this.pdfCanvasRef?.nativeElement.getContext('2d')?.stroke();
     }
+  }
+
+  refreshPage() {
+    window.location.reload(); // Sayfayı yenile
   }
 
 }

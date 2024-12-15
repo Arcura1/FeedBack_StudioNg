@@ -25,7 +25,6 @@ export class PdfEditComponent implements OnInit {
 
   @ViewChild('canvasContainer', {static: true}) canvasContainerRef!: ElementRef;
   @ViewChild('pdfCanvas', {static: false}) pdfCanvasRef!: ElementRef<HTMLCanvasElement>;
-  @ViewChild('popup') popup!: PopupComponent;
 
 
   // ngOnInit(): void {

@@ -320,10 +320,17 @@ closePopup() {
 
     // Gönderilecek JSON verisi
     const data = {
+      // xcoordinate: this.pdfX,
+      // ycoordinate: this.pdfY,
+        // Kullanıcının girdiği metni al
+      // pdfId: 123,
       xcoordinate: this.pdfX,
       ycoordinate: this.pdfY,
-      note: this.metin,  // Kullanıcının girdiği metni al
-      pdfId: 123
+      "pdfId": 98765,
+      note: this.metin,
+      page: this.currentPageNumber,
+      user: JSON.parse(sessionStorage.getItem('user') || '{}').id,
+      PdfInfoEntity: this.pdfId
     };
     console.log(data)
     // PUT isteği gönder

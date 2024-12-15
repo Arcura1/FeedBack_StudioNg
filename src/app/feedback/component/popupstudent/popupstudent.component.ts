@@ -2,11 +2,17 @@ import { Component, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
+
+interface ResponseData {
+  setId: string;
+  // Diğer gerekli alanları buraya ekleyebilirsiniz
+}
 @Component({
   selector: 'app-popup-student',
   templateUrl: './popupstudent.component.html',
   styleUrls: ['./popupstudent.component.css'],
 })
+
 export class PopupStudentComponent {
   @Input() homework: any; // Homework details for the popup
   isVisible: boolean = false; // Popup visibility state
@@ -74,11 +80,15 @@ export class PopupStudentComponent {
       };
 
       console.log('Gönderilen Payload:', payload);
-
+      const respo={
+        setId:""
+      }
       // HTTP isteğini gönder
-      this.http.post('http://localhost:8080/pdf/addPdf', payload).subscribe(
+      this.http.post<ResponseData>('http://localhost:8080/pdf/addPdf', payload).subscribe(
         (response) => {
+
           console.log(response);
+          console.log(response.setId);
           alert('PDF başarıyla gönderildi!');
         },
         (error) => {

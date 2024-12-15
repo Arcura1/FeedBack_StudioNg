@@ -432,6 +432,34 @@ export class PdfEditComponent implements OnInit {
         console.log(`Başlangıç Koordinatları: X: ${this.startX.toFixed(2)}, Y: ${this.startY.toFixed(2)}`);
         console.log(`Bitiş Koordinatları: X: ${endX.toFixed(2)}, Y: ${endY.toFixed(2)}`);
 
+        let astartX = this.startX.toFixed(2);
+        let astartY = this.startY.toFixed(2);
+        let aendX = endX.toFixed(2);
+        let aendY = endY.toFixed(2);
+
+        const highlightData = {
+          startX: parseFloat(astartX),
+          startY: parseFloat(astartY),
+          endX: parseFloat(aendX),
+          endY: parseFloat(aendY),
+
+        }
+
+        fetch('http://localhost:8080/highlights', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(highlightData)  // highlightData'yı JSON formatında gönderiyoruz
+        })
+          .then(response => response.json())  // Yanıtı JSON olarak alıyoruz
+          .then(data => {
+            console.log('Başarıyla kaydedildi:', data);  // Başarı mesajını konsola yazdırıyoruz
+          })
+          .catch((error) => {
+            console.error('Bir hata oluştu:', error);  // Hata durumunda mesajı yazdırıyoruz
+          });
+
         const highlightDiv = document.createElement('div');
         highlightDiv.className = 'position-absolute bg-warning';
         highlightDiv.id = 'button';

@@ -10,6 +10,11 @@ import {TestComponent} from "./component/test/test.component";
 
 const pageCode="feedback"
 const routes: Routes = [
+
+  {
+    path: 'PdfEdit/:homeworkId/:pdfId',
+    component: PdfEditComponent,
+  },
   { path: '',
     component:MainPageComponent,
     children:[

@@ -64,15 +64,16 @@ export class PopupStudentComponent {
 
       // JSON formatında veri oluştur
       const payload = {
-        title: this.homework?.title || '',
-        content: this.homework?.description || '',
-        xsize: '1', // Statik değer
-        ysize: '7', // Statik değer
-        pageSize: '1', // Statik değer
-        homeworkId: this.homework?.id || '',
-        userId: this.userId || '',
-        file: base64File.split(',')[1], // Base64 içeriği (başındaki `data:...;base64,` kısmı çıkarılır)
+        title: 'Math Homework',
+        content: 'Solve the following equations: 2x + 3 = 7, 3x - 4 = 5',
+        xsize: 1,
+        ysize: 7,
+        pageSize: 1,
+        homeworkId: '6754915032c7c93dde20aab2',
+        userId: '67547e225330882809502d47',
       };
+
+      console.log('Gönderilen Payload:', payload);
 
       // HTTP isteğini gönder
       this.http.post('http://localhost:8080/pdf/addPdf', payload).subscribe(

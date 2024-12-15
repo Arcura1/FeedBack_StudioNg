@@ -7,11 +7,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./popupteacher.component.css'],
 })
 
-
 export class PopupTeacherComponent {
   @Input() homework: any; // Homework passed from parent (initial empty)
   isVisible: boolean = false; // To control visibility of the popup
   userList: any[] = []; // To store user details for the homework
+  pdfId: string = '';
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -20,8 +20,10 @@ export class PopupTeacherComponent {
     this.isVisible = true; // Show the popup
     this.fetchUsersForHomework(this.homework.id); // Fetch user details for the given homework ID
   }
-  goToPdfEdit() {
-    this.router.navigate(['/feedback/PdfEdit']);
+
+  goToPdfEdit(): void {
+    console.log(this.pdfId);
+    this.router.navigate(['/feedback/PdfEdit/', this.homework.id, this.pdfId]);
   }
 
   fetchUsersForHomework(homeworkId: string): void {
@@ -30,7 +32,12 @@ export class PopupTeacherComponent {
       (response) => {
         console.log('API Response:', response); // Log the response
         this.userList = response; // Directly assign the response to userList
-        console.log('User List:', this.userList);
+
+        // Assign the first user's id to pdfId if response is not empty
+        if (response && response.length > 0) {
+          this.pdfId = response[0].id;
+          console.log('PDF ID:', this.pdfId);
+        }
       },
       (error) => {
         console.error('Error fetching user details:', error);

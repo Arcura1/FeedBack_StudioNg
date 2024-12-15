@@ -25,7 +25,6 @@ export class PdfEditComponent implements OnInit {
 
   @ViewChild('canvasContainer', {static: true}) canvasContainerRef!: ElementRef;
   @ViewChild('pdfCanvas', {static: false}) pdfCanvasRef!: ElementRef<HTMLCanvasElement>;
-  @ViewChild('popup') popup!: PopupComponent;
 
 
   // ngOnInit(): void {
@@ -46,7 +45,7 @@ export class PdfEditComponent implements OnInit {
   // }
   @Input() pdfId: string = '';
   @Input() homeworkId: string = '';
-  public url = 'http://localhost:8080/pdf/pdf'; // PDF dosya URL'si
+  public url = 'http://localhost:8080/pdf'+"/pdf"; // PDF dosya URL'si
   public loadingTask = pdfjsLib.getDocument(this.url);
   public currentPageNumber = 1;
   public topPagepdf = 1
@@ -321,10 +320,17 @@ closePopup() {
 
     // Gönderilecek JSON verisi
     const data = {
+      // xcoordinate: this.pdfX,
+      // ycoordinate: this.pdfY,
+        // Kullanıcının girdiği metni al
+      // pdfId: 123,
       xcoordinate: this.pdfX,
       ycoordinate: this.pdfY,
-      note: this.metin,  // Kullanıcının girdiği metni al
-      pdfId: 123
+      "pdfId": 98765,
+      note: this.metin,
+      page: this.currentPageNumber,
+      user: JSON.parse(sessionStorage.getItem('user') || '{}').id,
+      PdfInfoEntity: this.pdfId
     };
     console.log(data)
     // PUT isteği gönder

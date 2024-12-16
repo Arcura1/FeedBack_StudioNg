@@ -444,8 +444,8 @@ export class PdfEditComponent implements OnInit {
           endX: parseFloat(aendX),
           endY: parseFloat(aendY),
           pdfId: this.pdfId,
-          userId: JSON.parse(sessionStorage.getItem('user') || '{}').id
-
+          userId: JSON.parse(sessionStorage.getItem('user') || '{}').id,
+          currentPage: this.currentPageNumber
         }
         const user = JSON.parse(sessionStorage.getItem('user') || '{}').id
         console.log(user);

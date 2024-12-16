@@ -26,6 +26,7 @@
   <form (ngSubmit)="onSubmit()" #myForm="ngForm" class="mb-4">
     <div class="input-group">
       <input id="noteInput" type="text" name="metin" class="form-control" placeholder="Metin giriniz" required [(ngModel)]="metin">
+      <input id="title" type="text" name="title" class="form-control" placeholder="başlık giriniz" required [(ngModel)]="title">
       <button type="submit" class="btn btn-primary" [disabled]="!myForm.form.valid">Gönder</button>
     </div>
   </form>

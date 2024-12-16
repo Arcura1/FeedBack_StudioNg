@@ -1,5 +1,5 @@
 import {Component, ElementRef, Input, OnInit, Renderer2, ViewChild} from '@angular/core';
-import {PDFDocumentProxy, PDFPageProxy, PDFDocumentLoadingTask } from 'pdfjs-dist';
+import {PDFDocumentProxy} from 'pdfjs-dist';
 import html2canvas from 'html2canvas';
 import {HttpClient} from "@angular/common/http";
 import {ActivatedRoute} from "@angular/router";
@@ -10,8 +10,13 @@ interface NoteItem {
   note: string;
   xcoordinate: number;
   ycoordinate: number;
-  page:number;
+  page: number;
   title: string;
+  user: {
+    email: string;
+    firstName: string;
+    id: string;
+  }
 }
 
 @Component({
@@ -23,24 +28,6 @@ export class PdfEditComponent implements OnInit {
 
   @ViewChild('canvasContainer', {static: true}) canvasContainerRef!: ElementRef;
   @ViewChild('pdfCanvas', {static: false}) pdfCanvasRef!: ElementRef<HTMLCanvasElement>;
-
-
-  // ngOnInit(): void {
-  //   const url = 'https://pdfobject.com/pdf/sample.pdf'; // PDF dosya URL'si
-  //   const loadingTask = pdfjsLib.getDocument(url);
-  //
-  //   loadingTask.promise.then(
-  //     (pdf: PDFDocumentProxy) => {
-  //       // PDF başarıyla yüklendiğinde burası çalışır
-  //       console.log('PDF gelmiş');
-  //     },
-  //     (reason: any) => {
-  //       // Hata oluşursa burası çalışır
-  //       console.error('PDF yüklenemedi: ' + reason);
-  //     }
-  //   );
-  //
-  // }
   @Input() pdfId: string = '';
   @Input() homeworkId: string = '';
   public pdfGetter = {
@@ -56,6 +43,7 @@ export class PdfEditComponent implements OnInit {
   public pdfX: number;
   public pdfY: number;
   public metin: any;
+  public title: any;
   public originalViewport: any;
   public isPopupOpena = false; // Pop-up'ın açık olup olmadığını kontrol eden değişken
   public modeSelect: number = 0;
@@ -69,7 +57,7 @@ export class PdfEditComponent implements OnInit {
   public showButtons: any[] = [];
 
 
-  constructor(private renderer: Renderer2, private elementRef: ElementRef,private http: HttpClient,private route: ActivatedRoute) {
+  constructor(private renderer: Renderer2, private elementRef: ElementRef, private http: HttpClient, private route: ActivatedRoute) {
     const homeworkIdFromUrl = this.route.snapshot.paramMap.get('homeworkId');
     const pdfIdFromUrl = this.route.snapshot.paramMap.get('pdfId');
 
@@ -80,10 +68,10 @@ export class PdfEditComponent implements OnInit {
     if (pdfIdFromUrl) {
       this.pdfId = pdfIdFromUrl;
     }
-    this.pdfGetter.pdfInfoId=this.pdfId
-    this.pdfGetter.homeworkId=this.homeworkId
+    this.pdfGetter.pdfInfoId = this.pdfId
+    this.pdfGetter.homeworkId = this.homeworkId
     console.log(this.pdfGetter)
-    this.http.post(this.url, this.pdfGetter, { responseType: 'blob' }).subscribe({
+    this.http.post(this.url, this.pdfGetter, {responseType: 'blob'}).subscribe({
       next: (blob) => {
         // PDF blob'unu URL olarak oluştur
         console.log(blob)
@@ -102,7 +90,7 @@ export class PdfEditComponent implements OnInit {
           }
         );
       },
-      error: (err:any) => {
+      error: (err: any) => {
         console.error('PDF istek hatası:', err);
       }
     });
@@ -203,7 +191,7 @@ export class PdfEditComponent implements OnInit {
       const context = canvas.getContext('2d');
 
 
-      fetch('http://localhost:8080/viewAll'+"/"+this.pdfId)
+      fetch('http://localhost:8080/viewAll' + "/" + this.pdfId)
         .then(response => {
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -224,29 +212,29 @@ export class PdfEditComponent implements OnInit {
             data.forEach((item: NoteItem) => {
               console.log(item.page)
               console.log(this.currentPageNumber)
-              const test =document.querySelectorAll("notes");
+              const test = document.querySelectorAll("notes");
               console.log(test);
-              if(item.page==this.currentPageNumber){
-              const button = document.createElement('button');
-              button.className = 'btn btn-success position-absolute';
-              button.textContent = `Not: ${item.note}`;
-              button.id = 'notes';
+              if (item.page == this.currentPageNumber) {
+                const button = document.createElement('button');
+                button.className = 'btn btn-success position-absolute';
+                button.textContent = `Not: ${item.title}`;
+                button.id = 'notes';
 
-              // Butonu doğru koordinatlarda yerleştir
-              button.style.left = `${((item.xcoordinate / this.originalViewport.width) * rect.width)}px`;
-              button.style.top = `${((item.ycoordinate / this.originalViewport.height) * rect.height)}px`;
+                // Butonu doğru koordinatlarda yerleştir
+                button.style.left = `${((item.xcoordinate / this.originalViewport.width) * rect.width)}px`;
+                button.style.top = `${((item.ycoordinate / this.originalViewport.height) * rect.height)}px`;
 
-              // Butonu ekranda uygun alana ekle
-              this.canvasContainerRef.nativeElement.appendChild(button);
+                // Butonu ekranda uygun alana ekle
+                this.canvasContainerRef.nativeElement.appendChild(button);
 
-              // Butona tıklandığında pop-up açılacak
-              button.addEventListener('click', () => {
-                // Modal mesajını güncelle
-                modalMessage.textContent = `Mesaj: ${item.note}\nKoordinatlar: X: ${item.xcoordinate}, Y: ${item.ycoordinate}`;
+                // Butona tıklandığında pop-up açılacak
+                button.addEventListener('click', () => {
+                  // Modal mesajını güncelle
+                  modalMessage.textContent = `Kişi:${item.user.firstName} Email:${item.user.email} Mesaj: ${item.note}\nKoordinatlar: X: ${item.xcoordinate}, Y: ${item.ycoordinate}`;
 
-                // Modal'ı göster
-                modal.style.display = 'block';
-              });
+                  // Modal'ı göster
+                  modal.style.display = 'block';
+                });
               }
             });
 
@@ -370,6 +358,7 @@ export class PdfEditComponent implements OnInit {
       xcoordinate: this.pdfX,
       ycoordinate: this.pdfY,
       pdfId: 98765,
+      title: this.title,
       note: this.metin,
       page: this.currentPageNumber,
       user: JSON.parse(sessionStorage.getItem('user') || '{}').id,
@@ -413,7 +402,6 @@ export class PdfEditComponent implements OnInit {
 
     }
   }
-
 
 
   higlihtMode() {
@@ -590,10 +578,11 @@ export class PdfEditComponent implements OnInit {
       this.pdfCanvasRef?.nativeElement.getContext('2d')?.stroke();
     }
   }
+
   deleteAllNotes(): void {
     const deleteUrl = `http://localhost:8080/delAll/${this.pdfId}`;
 
-    this.http.delete(deleteUrl, { responseType: 'text' }).subscribe({
+    this.http.delete(deleteUrl, {responseType: 'text'}).subscribe({
       next: (response) => {
         console.log('Server response:', response); // "silindi" cevabı
         alert('All notes have been successfully deleted!'); // Kullanıcıya bilgi mesajı
@@ -605,7 +594,6 @@ export class PdfEditComponent implements OnInit {
       },
     });
   }
-
 
 
   refreshPage() {

@@ -47,25 +47,8 @@ export class PdfEditComponent implements OnInit {
     pdfInfoId: this.pdfId
   }
 
-  public url = 'http://localhost:8080/pdf' + "/pdfById"; // PDF dosya URL'si
+  public url = 'http://localhost:8080/pdf/pdfById'; // PDF dosya URL'si
   public loadingTask = pdfjsLib.getDocument(this.url);
-
-
-  fetchAndLoadPdf() {
-    this.http.post(this.url, this.pdfGetter, { responseType: 'blob' }).subscribe({
-      next: (blob) => {
-        // PDF blob'unu URL olarak oluştur
-        const pdfUrl = URL.createObjectURL(blob);
-        // pdfjsLib ile PDF yükleme
-        this.loadingTask = pdfjsLib.getDocument(pdfUrl);
-
-      },
-      error: (err:any) => {
-        console.error('PDF istek hatası:', err);
-      }
-    });
-  }
-
   public currentPageNumber = 1;
   public topPagepdf = 1
   public pdfX: number;
@@ -85,13 +68,37 @@ export class PdfEditComponent implements OnInit {
 
 
   constructor(private renderer: Renderer2, private elementRef: ElementRef,private http: HttpClient,private route: ActivatedRoute) {
+    const homeworkIdFromUrl = this.route.snapshot.paramMap.get('homeworkId');
+    const pdfIdFromUrl = this.route.snapshot.paramMap.get('pdfId');
+
+    // URL'den alınan parametreleri @Input() değerlerine atamak
+    if (homeworkIdFromUrl) {
+      this.homeworkId = homeworkIdFromUrl;
+    }
+    if (pdfIdFromUrl) {
+      this.pdfId = pdfIdFromUrl;
+    }
+    this.pdfGetter.pdfInfoId=this.pdfId
+    this.pdfGetter.homeworkId=this.homeworkId
+    console.log(this.pdfGetter)
     this.http.post(this.url, this.pdfGetter, { responseType: 'blob' }).subscribe({
       next: (blob) => {
         // PDF blob'unu URL olarak oluştur
+        console.log(blob)
         const pdfUrl = URL.createObjectURL(blob);
         // pdfjsLib ile PDF yükleme
         this.loadingTask = pdfjsLib.getDocument(pdfUrl);
-
+        this.loadingTask.promise.then(
+          (pdf: PDFDocumentProxy) => {
+            this.topPagepdf = pdf._pdfInfo.numPages
+            console.log('PDF gelmiş');
+            console.log(pdf);
+            this.renderPage(pdf, this.currentPageNumber); // 1. sayfayı render et
+          },
+          (reason: any) => {
+            console.error('PDF yüklenemedi: ' + reason);
+          }
+        );
       },
       error: (err:any) => {
         console.error('PDF istek hatası:', err);
@@ -135,7 +142,6 @@ export class PdfEditComponent implements OnInit {
   }
 
   updateParentMessage() {
-
     this.parentMessage = `Tıklanan PDF Koordinatları X: ${this.pdfX.toFixed(2)}, Y: ${this.pdfY.toFixed(2)}`;
   }
 

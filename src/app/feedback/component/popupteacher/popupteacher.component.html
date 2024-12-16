@@ -21,26 +21,23 @@
       <div class="modal-body">
         <p><strong>Ödev ID:</strong> {{ homework?.id }}</p>
 
-        <!-- Kullanıcı listesi -->
+        <!-- Kullanıcı Listesi -->
         <div *ngIf="userList.length > 0; else noUsers">
           <ul class="list-group">
-            <li class="list-group-item" *ngFor="let item of userList">
-              <p><strong>Ad:</strong> {{ item.user?.firstName }} {{ item.user?.lastName }}</p>
-              <p><strong>Email:</strong> {{ item.user?.email }}</p>
-              <p><strong>Telefon:</strong> {{ item.user?.phone }}</p>
-              <p><strong>Rol:</strong> {{ item.user?.role }}</p>
-              <button
-                type="button"
-                class="btn btn-primary"
-                (click)="goToPdfEdit()"
-              >
+            <li class="list-group-item" *ngFor="let user of userList">
+              <p><strong>Ad:</strong> {{ user.user.firstName }} {{ user.user.lastName }}</p>
+              <p><strong>Email:</strong> {{ user.user.email }}</p>
+              <p><strong>Telefon:</strong> {{ user.user.phone }}</p>
+              <p><strong>Rol:</strong> {{ user.user.role }}</p>
+              <!-- PDF Edit Butonu -->
+              <button class="btn btn-primary" (click)="goToPdfEdit(user.user.id)">
                 PDF Edit
               </button>
             </li>
           </ul>
         </div>
 
-        <!-- Kullanıcı bulunamadığında gösterilecek mesaj -->
+        <!-- Kullanıcı Bulunamadığında Gösterilecek Mesaj -->
         <ng-template #noUsers>
           <p>Bu ödev için kullanıcı bilgisi bulunamadı.</p>
         </ng-template>

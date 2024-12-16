@@ -7,50 +7,42 @@ import { Router } from '@angular/router';
   templateUrl: './popupteacher.component.html',
   styleUrls: ['./popupteacher.component.css'],
 })
-
 export class PopupTeacherComponent {
-  @Input() homework: any; // Homework passed from parent (initial empty)
-  isVisible: boolean = false; // To control visibility of the popup
-  userList: any[] = []; // To store user details for the homework
-  pdfIdMap: Map<string, string> = new Map(); // Map to store pdfId for each user
+  @Input() homework: any; // Homework passed from parent
+  isVisible: boolean = false; // To control popup visibility
+  userList: any[] = []; // Store user details
+  pdfIdMap: Map<string, string> = new Map(); // Map for userId -> pdfId mapping
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  // Open the popup and fetch users for the given homework
+  // Open the popup and fetch user details
   openPopup(homework: any): void {
     this.homework = homework;
     this.isVisible = true;
     this.fetchUsersForHomework(this.homework.id);
   }
 
-  // Navigate to PDF Edit page with specific PDF ID and Homework ID
+  // Navigate to PDF Edit page
   goToPdfEdit(userId: string): void {
-    const pdfId = this.pdfIdMap.get(userId); // Get pdfId for the specific user
+    const pdfId = this.pdfIdMap.get(userId);
     if (pdfId) {
-      console.log(`Navigating to PDF Edit with PDF ID: ${pdfId} and Homework ID: ${this.homework.id}`);
       this.router.navigate(['/feedback/PdfEdit/', this.homework.id, pdfId]);
     } else {
-      console.error('PDF ID not found for this user!');
       alert('Bu kullanıcı için PDF ID bulunamadı!');
     }
   }
 
-  // Fetch user details and PDF IDs for the given homework
+  // Fetch user details and PDF IDs
   fetchUsersForHomework(homeworkId: string): void {
     const apiUrl = `http://localhost:8080/pdf/findByH/${homeworkId}`;
     this.http.get<any>(apiUrl).subscribe(
       (response) => {
-        console.log('API Response:', response);
         this.userList = response;
-
-        // Populate pdfIdMap with user IDs and their corresponding pdfId
         this.userList.forEach((user: any) => {
           if (user && user.id) {
             this.pdfIdMap.set(user.user.id, user.id);
           }
         });
-
-        console.log('PDF ID Map:', this.pdfIdMap);
       },
       (error) => {
         console.error('Error fetching user details:', error);
@@ -59,7 +51,22 @@ export class PopupTeacherComponent {
     );
   }
 
-  // Close the popup and reset data
+  // Silme işlemi: Homework ID'yi kullanarak siler
+  deleteHomework(homeworkId: string): void {
+    const deleteUrl = `http://localhost:8080/Homework/del/${homeworkId}`;
+    this.http.delete(deleteUrl).subscribe(
+      () => {
+        alert('Ödev başarıyla silindi!');
+        this.closePopup();
+      },
+      (error) => {
+        console.error('Error deleting homework:', error);
+        alert('Ödev silinirken bir hata oluştu!');
+      }
+    );
+  }
+
+  // Close popup
   closePopup(): void {
     this.isVisible = false;
     this.userList = [];

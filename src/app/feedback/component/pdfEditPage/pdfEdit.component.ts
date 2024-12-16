@@ -407,6 +407,7 @@ export class PdfEditComponent implements OnInit {
   }
 
 
+
   higlihtMode() {
     this.modeSelect = 1;
   }
@@ -581,6 +582,23 @@ export class PdfEditComponent implements OnInit {
       this.pdfCanvasRef?.nativeElement.getContext('2d')?.stroke();
     }
   }
+  deleteAllNotes(): void {
+    const deleteUrl = `http://localhost:8080/delAll/${this.pdfId}`;
+
+    this.http.delete(deleteUrl, { responseType: 'text' }).subscribe({
+      next: (response) => {
+        console.log('Server response:', response); // "silindi" cevabı
+        alert('All notes have been successfully deleted!'); // Kullanıcıya bilgi mesajı
+        this.refreshPage(); // Sayfayı yenile
+      },
+      error: (error) => {
+        console.error('Error occurred while deleting notes:', error);
+        alert('An error occurred while deleting notes. Please try again.');
+      },
+    });
+  }
+
+
 
   refreshPage() {
     window.location.reload(); // Sayfayı yenile

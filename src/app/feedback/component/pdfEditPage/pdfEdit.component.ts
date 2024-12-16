@@ -438,6 +438,47 @@ export class PdfEditComponent implements OnInit {
         console.log(`Başlangıç Koordinatları: X: ${this.startX.toFixed(2)}, Y: ${this.startY.toFixed(2)}`);
         console.log(`Bitiş Koordinatları: X: ${endX.toFixed(2)}, Y: ${endY.toFixed(2)}`);
 
+        let astartX = this.startX.toFixed(2);
+        let astartY = this.startY.toFixed(2);
+        let aendX = endX.toFixed(2);
+        let aendY = endY.toFixed(2);
+
+
+        const highlightData = {
+          startX: parseFloat(astartX),
+          startY: parseFloat(astartY),
+          endX: parseFloat(aendX),
+          endY: parseFloat(aendY),
+          pdfId: this.pdfId,
+          userId: JSON.parse(sessionStorage.getItem('user') || '{}').id,
+          currentPage: this.currentPageNumber
+        }
+        const user = JSON.parse(sessionStorage.getItem('user') || '{}').id
+        console.log(user);
+
+        fetch('http://localhost:8080/highlights', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(highlightData)
+        })
+          .then(response => {
+            if (!response.ok) {
+              return response.json().then(errorData => {
+                throw new Error(JSON.stringify(errorData));
+              });
+            }
+            return response.json();
+          })
+          .then(data => {
+            console.log('Başarıyla kaydedildi:', data);
+          })
+          .catch((error) => {
+            console.error('Bir hata oluştu:', error);  // Detailed error message
+          });
+
+
         const highlightDiv = document.createElement('div');
         highlightDiv.className = 'position-absolute bg-warning';
         highlightDiv.id = 'button';

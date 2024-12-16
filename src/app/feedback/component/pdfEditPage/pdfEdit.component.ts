@@ -18,6 +18,19 @@ interface NoteItem {
     id: string;
   }
 }
+interface highItem {
+  id: String,
+  startX: number,
+  endX: number,
+  startY: number,
+  endY: number,
+  user: {
+    email: string;
+    firstName: string;
+    id: string;
+  }
+  currentPage: number;
+}
 
 @Component({
   selector: 'Pdf-Edit',
@@ -189,6 +202,55 @@ export class PdfEditComponent implements OnInit {
       // Canvas elemanını seç
       const canvas = this.pdfCanvasRef.nativeElement; // @ViewChild ile elde edilen referans
       const context = canvas.getContext('2d');
+      fetch('http://localhost:8080/highlights/viewH' + "/" + this.pdfId)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data:highItem[])=>{
+              const elements = this.elementRef.nativeElement.querySelectorAll('#higlighta');
+              elements.forEach((element: HTMLElement) => {
+                element.remove();
+              })
+
+              data.forEach(value => {
+                if(value.currentPage==this.currentPageNumber){
+                  const highlightDiv = document.createElement('div');
+                  highlightDiv.className = 'position-absolute bg-warning';
+                  highlightDiv.id = 'higlighta';
+                  highlightDiv.style.opacity = '0.5';
+
+                  highlightDiv.style.left = Math.min(value.startX, value.endX) + 'px';
+                  highlightDiv.style.top = Math.min(value.startY, value.endY) + 'px';
+                  highlightDiv.style.width = Math.abs(value.endX - value.startX) + 'px';
+                  highlightDiv.style.height = Math.abs(value.endY - value.startY) + 'px';
+
+                  this.canvasContainerRef.nativeElement.appendChild(highlightDiv);
+
+                  // else if(){
+                  //
+                  // }else if(){
+                  //
+                  // }
+                // console.log(value);
+                // const highlightDiv = document.createElement('div');
+                // highlightDiv.className = 'position-absolute bg-warning';
+                // highlightDiv.id = 'higlighta';
+                // highlightDiv.style.opacity = '0.5';
+                //
+                // highlightDiv.style.left = Math.min(this.startX, value.endX) + 'px';
+                // highlightDiv.style.top = Math.min(this.startY, value.endY) + 'px';
+                // highlightDiv.style.width = Math.abs(value.endX - this.startX) + 'px';
+                // highlightDiv.style.height = Math.abs(value.endY - this.startY) + 'px';
+                //
+                // this.canvasContainerRef.nativeElement.appendChild(highlightDiv);
+                }
+              })
+        })
+
+
 
 
       fetch('http://localhost:8080/viewAll' + "/" + this.pdfId)
@@ -257,6 +319,7 @@ export class PdfEditComponent implements OnInit {
         .catch(error => {
           console.error('Veri alınırken bir hata oluştu:', error);
         });
+
       // context'in null olmadığını kontrol et
       if (context) {
         // Canvas boyutlarını ayarla
@@ -479,7 +542,7 @@ export class PdfEditComponent implements OnInit {
 
         const highlightDiv = document.createElement('div');
         highlightDiv.className = 'position-absolute bg-warning';
-        highlightDiv.id = 'button';
+        highlightDiv.id = 'higlighta';
         highlightDiv.style.opacity = '0.5';
 
         highlightDiv.style.left = Math.min(this.startX, endX) + 'px';

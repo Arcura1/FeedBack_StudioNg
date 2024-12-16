@@ -208,12 +208,13 @@ export class PdfEditComponent implements OnInit {
           const modalMessage = document.getElementById('modalMessage');
           // Modal ve modalMessage null ise, işlem yapma
           if (modal && modalMessage && closeBtn) {
-
+            const elements = this.elementRef.nativeElement.querySelectorAll('#notes');
+            elements.forEach((element: HTMLElement) => {
+              element.remove();
+            });
             data.forEach((item: NoteItem) => {
               console.log(item.page)
               console.log(this.currentPageNumber)
-              const test = document.querySelectorAll("notes");
-              console.log(test);
               if (item.page == this.currentPageNumber) {
                 const button = document.createElement('button');
                 button.className = 'btn btn-success position-absolute';

@@ -201,7 +201,7 @@ export class PdfEditComponent implements OnInit {
       const context = canvas.getContext('2d');
 
 
-      fetch('http://localhost:8080/viewAll')
+      fetch('http://localhost:8080/viewAll'+"/"+this.pdfId)
         .then(response => {
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);

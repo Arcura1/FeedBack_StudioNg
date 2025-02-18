@@ -1,18 +1,28 @@
-
-<nav class="navbar navbar-expand-lg" style="background-color: #333;">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <div class="collapse navbar-collapse justify-content-between">
-      <ul class="navbar-nav">
+    <!-- Navbar Markası veya Logosu -->
+    <a class="navbar-brand" href="#" (click)="goToMain()">Anasayfa</a>
+
+    <!-- Toggler butonu (mobil görünümde) -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navbar İçerikleri -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <!-- Sağdan sola sıralamak için ms-auto kullanıldı -->
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link" (click)="goToMain()" style="color: white;">Anasayfa</a>
+          <a class="nav-link"(click)="goToOrganization()">Kurum</a>
         </li>
-      </ul>
-      <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" (click)="goToProfile()" style="color: white;">Profil</a>
+          <a class="nav-link"  (click)="goToClassroom()">Sınıf</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link"  (click)="goToProfile()">Profil</a>
         </li>
       </ul>
     </div>
   </div>
 </nav>
-

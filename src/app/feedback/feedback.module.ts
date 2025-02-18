@@ -15,6 +15,8 @@ import {FormsModule} from "@angular/forms";
 import {PopupStudentComponent} from "./component/popupstudent/popupstudent.component";
 import {TestComponent} from "./component/test/test.component";
 import {PopupTeacherComponent} from "./component/popupteacher/popupteacher.component";
+import {OrganizationComponent} from "./organization/organization.component";
+import {ClassroomComponent} from "./clasroom/classroom.component";
 
 
 
@@ -38,7 +40,9 @@ import {PopupTeacherComponent} from "./component/popupteacher/popupteacher.compo
     TestComponent,
     PopupStudentComponent,
     PopupTeacherComponent,
-    PopupStudentComponent
+    PopupStudentComponent,
+    OrganizationComponent,
+    ClassroomComponent
   ],
   exports: [
     NavbarComponent,

@@ -7,6 +7,8 @@ import {StudentComponent} from "./component/student/student.component";
 import {PdfEditComponent} from "./component/pdfEditPage/pdfEdit.component";
 import {TeacherComponent} from "./component/Teacher/teacher.component";
 import {TestComponent} from "./component/test/test.component";
+import {OrganizationComponent} from "./organization/organization.component";
+import {ClassroomComponent} from "./clasroom/classroom.component";
 
 const pageCode="feedback"
 const routes: Routes = [
@@ -29,6 +31,8 @@ const routes: Routes = [
   {path:'student',component:StudentComponent},
   {path:'PdfEdit',component:PdfEditComponent},
   {path:'test',component:TestComponent},
+  {path:'organization',component:OrganizationComponent},
+  {path:'classroom',component:ClassroomComponent},
 
 
 ];

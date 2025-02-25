@@ -44,8 +44,9 @@
     </div>
     <div class="form-group">
       <label for="organizationId">Organization ID (opsiyonel):</label>
-      <input type="text" class="form-control" id="organizationId" placeholder="Organization ID"
-             [(ngModel)]="classroom.organization" name="organizationId">
+      <select class="form-control" id="organizationId" [(ngModel)]="selectedOrganization" name="organizationId">
+        <option *ngFor="let org of organizations" [value]="org.id">{{ org.name }}</option>
+      </select>
     </div>
     <button type="submit" class="btn btn-primary">
       {{ classroom.id ? 'Güncelle' : 'Kaydet' }}

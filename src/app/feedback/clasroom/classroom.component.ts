@@ -43,6 +43,8 @@ export class ClassroomComponent implements OnInit {
     organization: this.organization
   };
   apiUrl: string = 'http://localhost:8080/classrooms';
+  organizations: any[] = [];
+  selectedOrganization: string = '';
 
   constructor(private http: HttpClient) { }
 

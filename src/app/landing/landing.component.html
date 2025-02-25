@@ -27,6 +27,12 @@
       color: #bbdefb !important; /* Açık mavi */
     }
 
+    /* Navbar Logosu */
+    .navbar-brand img {
+      height: 40px; /* Logonun boyutunu ayarladık */
+      margin-right: 10px;
+    }
+
     /* Hero Bölümü */
     .hero {
       background: url('logo2.png') no-repeat center center;
@@ -86,7 +92,10 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg">
   <div class="container">
-    <a class="navbar-brand text-white" href="#" (click)="goToEntry()">FeedBack Studio</a>
+    <a class="navbar-brand" href="#">
+      <img src="logo.png" alt="FeedBack Studio Logo"> <!-- Logo buraya eklendi -->
+      FeedBack Studio
+    </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
@@ -94,10 +103,10 @@
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" href="#" (click)="goToEntry()">Giriş Yap</a>
+          <a class="nav-link" (click)="goToEntry()">Giriş Yap</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#" (click)="goToRegister()">Kayıt Ol</a>
+          <a class="nav-link" (click)="goToRegister()">Kayıt Ol</a>
         </li>
       </ul>
     </div>

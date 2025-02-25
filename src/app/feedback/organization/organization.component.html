@@ -1,0 +1,55 @@
+
+<nawbarfeed></nawbarfeed>
+<div class="container mt-3">
+  <h2>Kurum</h2>
+
+  <!-- Organization Form -->
+  <form (ngSubmit)="saveOrganization()" #orgForm="ngForm" class="mb-4">
+    <input type="hidden" [(ngModel)]="organization.id" name="id">
+    <div class="form-group">
+      <label for="name">İsim:</label>
+      <input type="text" class="form-control" id="name" placeholder="Organization ismi" required
+             [(ngModel)]="organization.name" name="name">
+    </div>
+    <div class="form-group">
+      <label for="address">Adres:</label>
+      <input type="text" class="form-control" id="address" placeholder="Adres" required
+             [(ngModel)]="organization.address" name="address">
+    </div>
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" class="form-control" id="email" placeholder="Email" required
+             [(ngModel)]="organization.email" name="email">
+    </div>
+    <button type="submit" class="btn btn-primary">
+      {{ organization.id ? 'Güncelle' : 'Kaydet' }}
+    </button>
+    <button type="button" class="btn btn-secondary ml-2" (click)="resetForm()">Temizle</button>
+  </form>
+
+  <!-- Organization Listesi -->
+  <h3>Kurum Listesi</h3>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>İsim</th>
+      <th>Adres</th>
+      <th>Email</th>
+      <th>İşlemler</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let org of organizations">
+      <td>{{ org.id }}</td>
+      <td>{{ org.name }}</td>
+      <td>{{ org.address }}</td>
+      <td>{{ org.email }}</td>
+      <td>
+        <button class="btn btn-sm btn-info mr-2" (click)="editOrganization(org)">Düzenle</button>
+        <button class="btn btn-sm btn-danger" (click)="deleteOrganization(org.id)">Sil</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

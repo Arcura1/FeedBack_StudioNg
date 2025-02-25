@@ -15,5 +15,11 @@ export class NavbarComponent {
   goToMain() {
     this.router.navigate(['/feedback']);
   }
+  goToClassroom() {
+    this.router.navigate(['/feedback/classroom']);
+  }
+  goToOrganization() {
+    this.router.navigate(['/feedback/organization']);
+  }
 
 }

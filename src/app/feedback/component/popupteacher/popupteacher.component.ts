@@ -50,20 +50,20 @@ export class PopupTeacherComponent {
       }
     );
   }
-
   // Silme işlemi: Homework ID'yi kullanarak siler
   deleteHomework(homeworkId: string): void {
-    const deleteUrl = `http://localhost:8080/Homework/del/${homeworkId}`;
-    this.http.delete(deleteUrl).subscribe(
-      () => {
+    const deleteUrl = `http://localhost:8080/Homework/del/${homeworkId}`; // Template literal kullanımı düzeltildi
+    this.http.delete(deleteUrl, { responseType: 'text' }).subscribe({
+      next: (response) => {
+        console.log('Delete response:', response);
         alert('Ödev başarıyla silindi!');
         this.closePopup();
       },
-      (error) => {
+      error: (error) => {
         console.error('Error deleting homework:', error);
         alert('Ödev silinirken bir hata oluştu!');
       }
-    );
+    });
   }
 
   // Close popup

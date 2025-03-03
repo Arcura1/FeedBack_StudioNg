@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserService } from '../login/user.service';
 import { HttpClient } from '@angular/common/http';
-import { User } from '../login/user'; //
 
 @Component({
   selector: 'app-register',
@@ -10,35 +8,39 @@ import { User } from '../login/user'; //
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
-  firstName: string = ''; //
-  lastName: string = ''; //
-  email: string = ''; //
-  phone: string = ''; //
-  password: string = ''; //
-  role: string = 'student'; // Varsayılan olarak "student" rolü
+  name: string = '';
+  email: string = '';
+  password: string = '';
+  confirmPassword: string = '';
+  role: string = '';
+  hidePassword: boolean = true;
+  hideConfirmPassword: boolean = true;
 
-  private apiUrl = 'http://localhost:8080/api/users/create'; // Backend URL
-
-  constructor(private userService: UserService, private http: HttpClient, private router: Router) {}
+  constructor(private router: Router, private http: HttpClient) {}
 
   register() {
-    const newUser: User = {
-      firstName: this.firstName,
-      lastName: this.lastName,
-      email: this.email,
-      phone: this.phone,
-      password: this.password,
-      role: this.role // Kullanıcının seçtiği rol
-    };
+    // Şifre kontrolü
+    if (this.password !== this.confirmPassword) {
+      document.getElementById('message')!.innerHTML = 
+        '<div class="alert alert-danger">Şifreler eşleşmiyor!</div>';
+      return;
+    }
 
-    this.http.post(this.apiUrl, newUser).subscribe(
-      (response) => {
-        console.log('Kayıt başarılı!', response);
-        this.router.navigate(['/login']); // Kayıttan sonra giriş sayfasına yönlendirme
-      },
-      (error) => {
-        console.error('Kayıt hatası:', error);
-      }
-    );
+    // Tüm alanların doldurulduğunu kontrol et
+    if (!this.name || !this.email || !this.password || !this.role) {
+      document.getElementById('message')!.innerHTML = 
+        '<div class="alert alert-danger">Lütfen tüm alanları doldurun!</div>';
+      return;
+    }
+
+    // Kayıt işlemleri burada yapılacak
+    console.log('Name:', this.name);
+    console.log('Email:', this.email);
+    console.log('Password:', this.password);
+    console.log('Role:', this.role);
+    
+    // Örnek bir kayıt işlemi
+    // Gerçek uygulamada bu kısım API'ye bağlanacak
+    this.router.navigate(['/login']);
   }
 }

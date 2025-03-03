@@ -10,6 +10,7 @@ import { HttpClient } from '@angular/common/http';
 export class LoginComponent {
   email: string = '';
   password: string = '';
+  hidePassword: boolean = true;
 
   private apiUrl = 'http://localhost:8080/api/users/login'; // Backend URL
 

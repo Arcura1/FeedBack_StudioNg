@@ -1,0 +1,77 @@
+/* Genel Stil */
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Ana Konteyner */
+.main-container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  transition: all 0.5s ease-in-out;
+}
+
+/* Öğretmen Arkaplanı */
+.teacher-bg {
+  background: linear-gradient(135deg, #007bff, #6610f2);
+}
+
+/* Öğrenci Arkaplanı */
+.student-bg {
+  background: linear-gradient(135deg, #28a745, #20c997);
+}
+
+/* Admin Arkaplanı */
+.admin-bg {
+  background: linear-gradient(135deg, #ff5733, #c70039);
+}
+
+/* Executive Arkaplanı */
+.executive-bg {
+  background: linear-gradient(135deg, #f4c542, #f39c12);
+}
+
+/* İçerik Bölümü */
+.content-section {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  max-width: 400px;
+}
+
+/* Başlık */
+.title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+/* Açıklama */
+.description {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+/* Buton */
+.btn-go {
+  background: rgba(255, 255, 255, 0.3);
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.btn-go:hover {
+  background: rgba(255, 255, 255, 0.5);
+  transform: scale(1.05);
+}

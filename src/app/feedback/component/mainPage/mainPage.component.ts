@@ -5,6 +5,7 @@ import { PopupComponent } from '../popup/popup.component'; // PopupComponent'i i
 @Component({
   selector: 'mainPage',
   templateUrl: './mainPage.component.html',
+  styleUrls: ['./mainPage.component.css']
 })
 export class MainPageComponent implements OnInit {
   @ViewChild('popup') popup!: PopupComponent;
@@ -33,5 +34,13 @@ export class MainPageComponent implements OnInit {
   }
   goToTeacher() {
     this.router.navigate(['/feedback/teacher']);
+  }
+
+  goToAdmin() {
+    this.router.navigate(['/admin']);
+  }
+
+  goToExecutive() {
+    this.router.navigate(['/executive']);
   }
 }

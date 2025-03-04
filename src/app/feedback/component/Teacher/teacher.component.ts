@@ -4,8 +4,7 @@ import { PopupTeacherComponent } from "../popupteacher/popupteacher.component";
 
 @Component({
   selector: 'app-teacher',
-  templateUrl: './teacher.component.html',
-  styleUrls: ['./teacher.component.css'],
+  templateUrl: './Teacher.component.html',
 })
 export class TeacherComponent implements OnInit {
   @ViewChild('popup') popup!: PopupTeacherComponent;

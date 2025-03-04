@@ -7,7 +7,7 @@
   align-items: center;
   position: relative;
   overflow: hidden;
-  background-image: url('world-map-world-map-background.png'); /* Dünya haritası arka planı */
+  background-image: url('../assets/world-map-background.png'); /* Dünya haritası arka planı */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

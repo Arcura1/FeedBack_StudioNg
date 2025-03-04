@@ -21,14 +21,14 @@ export class RegisterComponent {
   register() {
     // Şifre kontrolü
     if (this.password !== this.confirmPassword) {
-      document.getElementById('message')!.innerHTML = 
+      document.getElementById('message')!.innerHTML =
         '<div class="alert alert-danger">Şifreler eşleşmiyor!</div>';
       return;
     }
 
     // Tüm alanların doldurulduğunu kontrol et
     if (!this.name || !this.email || !this.password || !this.role) {
-      document.getElementById('message')!.innerHTML = 
+      document.getElementById('message')!.innerHTML =
         '<div class="alert alert-danger">Lütfen tüm alanları doldurun!</div>';
       return;
     }
@@ -38,7 +38,7 @@ export class RegisterComponent {
     console.log('Email:', this.email);
     console.log('Password:', this.password);
     console.log('Role:', this.role);
-    
+
     // Örnek bir kayıt işlemi
     // Gerçek uygulamada bu kısım API'ye bağlanacak
     this.router.navigate(['/login']);

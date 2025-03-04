@@ -17,6 +17,8 @@ import {TestComponent} from "./component/test/test.component";
 import {PopupTeacherComponent} from "./component/popupteacher/popupteacher.component";
 import {OrganizationComponent} from "./organization/organization.component";
 import {ClassroomComponent} from "./clasroom/classroom.component";
+import {AdminPageComponent} from "./component/admin/adminPage.component";
+import {ExecutivePageComponent} from "./component/executive/executivePage.component";
 
 
 
@@ -42,7 +44,9 @@ import {ClassroomComponent} from "./clasroom/classroom.component";
     PopupTeacherComponent,
     PopupStudentComponent,
     OrganizationComponent,
-    ClassroomComponent
+    ClassroomComponent,
+    AdminPageComponent,
+    ExecutivePageComponent
   ],
   exports: [
     NavbarComponent,

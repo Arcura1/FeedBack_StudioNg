@@ -5,46 +5,47 @@
       <h2>Kayıt Ol</h2>
       <form id="registerForm" (ngSubmit)="register()" #registerForm="ngForm">
         <mat-form-field appearance="fill" class="full-width" floatLabel="auto">
-        
+
           <input matInput type="text" id="name" required [(ngModel)]="name" name="name" placeholder="Adınızı ve soyadınızı girin">
           <mat-icon matSuffix>person</mat-icon>
         </mat-form-field>
-        
+
         <mat-form-field appearance="fill" class="full-width" floatLabel="auto">
-          
+
           <input matInput type="email" id="email" required [(ngModel)]="email" name="email" placeholder="Emailinizi girin">
           <mat-icon matSuffix>email</mat-icon>
         </mat-form-field>
-        
+
         <mat-form-field appearance="fill" class="full-width" floatLabel="auto">
-        
+
           <input matInput [type]="hidePassword ? 'password' : 'text'" id="password" required [(ngModel)]="password" name="password" placeholder="Şifrenizi girin">
           <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
             <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
           </button>
         </mat-form-field>
-        
+
         <mat-form-field appearance="fill" class="full-width" floatLabel="auto">
-         
+
           <input matInput [type]="hideConfirmPassword ? 'password' : 'text'" id="confirmPassword" required [(ngModel)]="confirmPassword" name="confirmPassword" placeholder="Şifrenizi tekrar girin">
           <button mat-icon-button matSuffix (click)="hideConfirmPassword = !hideConfirmPassword" type="button">
             <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
           </button>
         </mat-form-field>
-        
-        <mat-form-field appearance="fill" class="full-width" floatLabel="auto">
-          <mat-label>Kullanıcı Tipi</mat-label>
-          <mat-select id="role" required [(ngModel)]="role" name="role">
-            <mat-option value="student">Öğrenci</mat-option>
-            <mat-option value="teacher">Öğretmen</mat-option>
-          </mat-select>
-          <mat-icon matSuffix>assignment_ind</mat-icon>
-        </mat-form-field>
-        
+
+        <label for="role">Kullanıcı Tipi</label>
+        <select id="role" name="role" required [(ngModel)]="role">
+          <option value="student">Öğrenci</option>
+          <option value="teacher">Öğretmen</option>
+          <option value="admin">Admin</option>
+          <option value="executive">Yönetici</option>
+        </select>
+
+
+
         <button mat-raised-button color="primary" type="submit" class="register-button">
           <mat-icon>person_add</mat-icon> Kayıt Ol
         </button>
-        
+
         <div class="login-link">
           Zaten hesabınız var mı? <a routerLink="/login">Giriş Yapın</a>
         </div>

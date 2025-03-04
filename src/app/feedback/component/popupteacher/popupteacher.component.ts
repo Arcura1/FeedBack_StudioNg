@@ -11,7 +11,7 @@ export class PopupTeacherComponent {
   @Input() homework: any; // Homework passed from parent
   isVisible: boolean = false; // To control popup visibility
   userList: any[] = []; // Store user details
-  pdfIdMap: Map<string, string> = new Map(); // Map for userId -> pdfId mapping
+  pdfIdMap: Map<number, number> = new Map(); // Map for userId -> pdfId mapping
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -23,7 +23,7 @@ export class PopupTeacherComponent {
   }
 
   // Navigate to PDF Edit page
-  goToPdfEdit(userId: string): void {
+  goToPdfEdit(userId: number): void {
     const pdfId = this.pdfIdMap.get(userId);
     if (pdfId) {
       this.router.navigate(['/feedback/PdfEdit/', this.homework.id, pdfId]);
@@ -33,7 +33,7 @@ export class PopupTeacherComponent {
   }
 
   // Fetch user details and PDF IDs
-  fetchUsersForHomework(homeworkId: string): void {
+  fetchUsersForHomework(homeworkId: number): void {
     const apiUrl = `http://localhost:8080/pdf/findByH/${homeworkId}`;
     this.http.get<any>(apiUrl).subscribe(
       (response) => {
@@ -50,20 +50,20 @@ export class PopupTeacherComponent {
       }
     );
   }
-  // Silme işlemi: Homework ID'yi kullanarak siler
-  deleteHomework(homeworkId: string): void {
-    const deleteUrl = `http://localhost:8080/Homework/del/${homeworkId}`; // Template literal kullanımı düzeltildi
-    this.http.delete(deleteUrl, { responseType: 'text' }).subscribe({
-      next: (response) => {
-        console.log('Delete response:', response);
+
+  deleteHomework(homeworkId: number): void {
+    const deleteUrl = `http://localhost:8080/Homework/del/${homeworkId}`;
+    this.http.delete(deleteUrl, { responseType: 'text' }).subscribe(
+      (response) => {
+        console.log('Delete response:', response); // 'silindi' yazmalı
         alert('Ödev başarıyla silindi!');
         this.closePopup();
       },
-      error: (error) => {
+      (error) => {
         console.error('Error deleting homework:', error);
         alert('Ödev silinirken bir hata oluştu!');
       }
-    });
+    );
   }
 
   // Close popup

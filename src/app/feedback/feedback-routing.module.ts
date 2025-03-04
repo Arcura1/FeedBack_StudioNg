@@ -9,6 +9,8 @@ import {TeacherComponent} from "./component/Teacher/teacher.component";
 import {TestComponent} from "./component/test/test.component";
 import {OrganizationComponent} from "./organization/organization.component";
 import {ClassroomComponent} from "./clasroom/classroom.component";
+import {ExecutivePageComponent} from "./component/executive/executivePage.component";
+import {AdminPageComponent} from "./component/admin/adminPage.component";
 
 const pageCode="feedback"
 const routes: Routes = [
@@ -33,6 +35,8 @@ const routes: Routes = [
   {path:'test',component:TestComponent},
   {path:'organization',component:OrganizationComponent},
   {path:'classroom',component:ClassroomComponent},
+  {path:'executive',component:ExecutivePageComponent},
+  {path:'admin',component:AdminPageComponent},
 
 
 ];

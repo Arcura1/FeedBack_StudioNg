@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-login',

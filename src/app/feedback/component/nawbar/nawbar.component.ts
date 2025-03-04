@@ -1,11 +1,18 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 
 @Component({
   selector: 'nawbarfeed',
   templateUrl: './nawbar.components.html'
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit{
+
+  public user :any;
+
+
+  ngOnInit(): void {
+    this.user= JSON.parse(sessionStorage.getItem('user') || '{}'); // Oturum verilerini JSON olarak al
+  }
   constructor(private router: Router) {}
 
   goToProfile() {
@@ -21,5 +28,6 @@ export class NavbarComponent {
   goToOrganization() {
     this.router.navigate(['/feedback/organization']);
   }
+
 
 }

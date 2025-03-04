@@ -15,7 +15,7 @@ interface NoteItem {
   user: {
     email: string;
     firstName: string;
-    id: string;
+    id: number;
   }
 }
 interface highItem {
@@ -421,7 +421,7 @@ export class PdfEditComponent implements OnInit {
       // pdfId: 123,
       xcoordinate: this.pdfX,
       ycoordinate: this.pdfY,
-      pdfId: 98765,
+      pdfId: 1,
       title: this.title,
       note: this.metin,
       page: this.currentPageNumber,

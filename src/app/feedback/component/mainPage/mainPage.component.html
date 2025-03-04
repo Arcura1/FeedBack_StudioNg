@@ -1,10 +1,5 @@
 <nawbarfeed></nawbarfeed>
 
-<!-- Ana sayfa içeriği -->
-<a>MainPage Works</a>
-<button *ngIf="user.role == 'teacher' || user.role == 'admin' || user.role == 'executive'" (click)="goToTeacher()">Teacher Sayfasına Git</button>
-<button *ngIf="user.role == 'student' || user.role == 'admin' || user.role == 'executive'" (click)="goToStudent()">Student Sayfasına Git</button>
-<!-- Kullanıcı rolüne göre arkaplanı değiştiren ana konteyner -->
 <div [ngClass]="{
     'teacher-bg': user.role === 'teacher',
     'student-bg': user.role === 'student',

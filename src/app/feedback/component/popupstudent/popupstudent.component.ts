@@ -16,9 +16,9 @@
     @Input() homework: any; // Popup içinde gösterilecek ödev detayları
     isVisible: boolean = false; // Popup görünürlük durumu
     selectedFile: File | null = null; // Yüklenmek üzere seçilen dosya
-    userId: string = ''; // Kullanıcı ID'si
+    userId: number =0; // Kullanıcı ID'si
     uploadedPdfId: string | null = null; // Kaydedilen PDF ID'si
-    pdfId: string = ''; // Store the fetched PDF ID
+    pdfId: number = 0; // Store the fetched PDF ID
     donenData: any = {}; // json da dönen datayı buraya bastırıo
     constructor(private http: HttpClient, private router: Router) {}
 

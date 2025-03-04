@@ -6,7 +6,13 @@
       <form id="registerForm" (ngSubmit)="register()" #registerForm="ngForm">
         <mat-form-field appearance="fill" class="full-width" floatLabel="auto">
 
-          <input matInput type="text" id="name" required [(ngModel)]="name" name="name" placeholder="Adınızı ve soyadınızı girin">
+          <input matInput type="text" id="name" required [(ngModel)]="firstName" name="name" placeholder="Adınızı  girin">
+          <mat-icon matSuffix>person</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="full-width" floatLabel="auto">
+
+          <input matInput type="text" id="lastname" required [(ngModel)]="lastName" name="name" placeholder="Soyadınızı girin">
           <mat-icon matSuffix>person</mat-icon>
         </mat-form-field>
 
@@ -14,6 +20,13 @@
 
           <input matInput type="email" id="email" required [(ngModel)]="email" name="email" placeholder="Emailinizi girin">
           <mat-icon matSuffix>email</mat-icon>
+        </mat-form-field>
+
+
+        <mat-form-field appearance="fill" class="full-width" floatLabel="auto">
+          <mat-label>Telefon Numarası</mat-label>
+          <input matInput type="tel" id="phone" required [(ngModel)]="phone" name="phone" placeholder="Telefon numaranızı girin">
+          <mat-icon matSuffix>phone</mat-icon>
         </mat-form-field>
 
         <mat-form-field appearance="fill" class="full-width" floatLabel="auto">

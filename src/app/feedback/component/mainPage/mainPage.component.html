@@ -2,7 +2,7 @@
 
 <!-- Ana sayfa içeriği -->
 <a>MainPage Works</a>
-<button *ngIf="user.role !== 'teacher'" (click)="goToStudent()">Student Sayfasına Git</button>
-<button *ngIf="user.role !== 'student'" (click)="goToTeacher()">Teacher Sayfasına Git</button>
+<button *ngIf="user.role == 'teacher'" (click)="goToTeacher()">Teacher Sayfasına Git</button>
+<button *ngIf="user.role == 'student'" (click)="goToStudent()">Student Sayfasına Git</button>
 
 

@@ -1,0 +1,79 @@
+/* Genel Stil */
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(135deg, #28a745, #20c997);
+  color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Dikeyde ortalama */
+  align-items: center; /* Yatayda ortalama */
+  min-height: 100vh; /* Sayfanın tamamını kapsasın */
+}
+
+/* Navbar'ı koruyarak içeriği ortalamak için */
+.main-container {
+background: linear-gradient(135deg, #28a745, #20c997);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: calc(100vh - 60px); /* Navbar'ın yüksekliğini düş */
+}
+
+/* Öğrenci Paneli Konteyner */
+.student-container {
+
+  text-align: center;
+  padding: 30px;
+  max-width: 900px;
+  width: 90%;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Sayfa Başlığı */
+.page-title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: black;
+}
+
+/* Ödev Kartları */
+.row {
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Kartları ortala */
+  width: 100%;
+}
+
+/* Kartları Daha Estetik Hale Getir */
+.homework-card {
+
+  background: rgba(255, 223, 0, 1); /* Canlı sarı renk */
+
+  border-radius: 15px;
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  transition: all 0.3s ease-in-out;
+  text-align: center;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  max-width: 300px;
+  margin: 15px;
+}
+
+/* Hover Efekti */
+.homework-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.4);
+}
+

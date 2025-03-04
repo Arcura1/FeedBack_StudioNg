@@ -1,22 +1,20 @@
 <nawbarfeed></nawbarfeed>
 
-<p>Student Works!</p>
-<button (click)="goToPdfEdit()">PDF Edit</button>
+<div class="main-container">
+  <div class="student-container">
+    <h2 class="page-title">📚 Ödev Listesi ve Yükleme</h2>
+    <button class="btn-edit" (click)="goToPdfEdit()">📄 PDF Yönetme</button>
 
-<div class="row">
-  <div class="col-md-4" *ngFor="let homework of homeworks">
-    <div class="card" style="width: 18rem; margin: 10px;">
-      <div class="card-body">
-        <h5 class="card-title">{{ homework.title }}</h5>
-        <p class="card-text">{{ homework.description }}</p>
-        <p class="card-text">{{ homework.id }}</p>
-        <button
-          class="btn btn-primary"
-          type="button"
-          (click)="showPopup(homework)"
-        >
-          View Details
-        </button>
+    <div class="row">
+      <div class="col-md-4" *ngFor="let homework of homeworks">
+        <div class="card homework-card">
+          <div class="card-body">
+            <h5 class="card-title">📖 {{ homework.title }}</h5>
+            <p class="card-text description">📝 {{ homework.description }}</p>
+            <p class="card-text homework-id">📌 Ödev ID: {{ homework.id }}</p>
+            <button class="btn-view" (click)="showPopup(homework)">🔍 Detayları Gör</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

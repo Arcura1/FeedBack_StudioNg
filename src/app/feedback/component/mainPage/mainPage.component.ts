@@ -11,7 +11,6 @@ export class MainPageComponent implements OnInit {
   @ViewChild('popup') popup!: PopupComponent;
 
   constructor(private router: Router) {}
-  public parentMessage: string = 'Merhaba, bu bir @Input örneğidir!';
   public user :any;
   // Bileşen yüklendiğinde kullanıcı oturum bilgilerini al
   ngOnInit(): void {

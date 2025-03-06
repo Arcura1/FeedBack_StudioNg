@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { PopupStudentComponent } from '../popupstudent/popupstudent.component';
+import { PopupStudentComponent } from './popupstudent/popupstudent.component';
 
 @Component({
   selector: 'app-student',

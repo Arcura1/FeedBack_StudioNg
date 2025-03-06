@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { PopupTeacherComponent } from "../popupteacher/popupteacher.component";
+import { PopupTeacherComponent } from "./popupteacher/popupteacher.component";
 
 @Component({
   selector: 'app-teacher',

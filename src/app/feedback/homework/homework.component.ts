@@ -1,19 +1,13 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import {PDFDocumentProxy, PDFPageProxy, PDFDocumentLoadingTask } from 'pdfjs-dist';
-import html2canvas from 'html2canvas';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {PopupTeacherComponent} from "../component/Teacher/popupteacher/popupteacher.component";
-
-declare const pdfjsLib: any;
-
+import {HttpClient} from "@angular/common/http";
 
 @Component({
-  selector: 'app-test',
-  templateUrl: './test.component.html',
-  styleUrls: ['./test.component.css']
+  selector: 'app-homework',
+  templateUrl: './homework.component.html'
 })
-export class TestComponent implements OnInit{
+export class HomeworkComponent implements OnInit{
   @Input() classroomId: number = 0;
 
   @ViewChild('popup') popup!: PopupTeacherComponent;

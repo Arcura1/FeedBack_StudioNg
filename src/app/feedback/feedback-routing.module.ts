@@ -11,6 +11,7 @@ import {OrganizationComponent} from "./organization/organization.component";
 import {ClassroomComponent} from "./clasroom/classroom.component";
 import {ExecutivePageComponent} from "./component/executive/executivePage.component";
 import {AdminPageComponent} from "./component/admin/adminPage.component";
+import {HomeworkComponent} from "./homework/homework.component";
 
 const pageCode="feedback"
 const routes: Routes = [
@@ -32,7 +33,8 @@ const routes: Routes = [
   {path:'profile',component:ProfileComponent},
   {path:'student',component:StudentComponent},
   {path:'PdfEdit',component:PdfEditComponent},
-  {path:'test',component:TestComponent},
+  {path:'test/:classroomId',component:TestComponent},
+  {path:'homework/:classroomId',component:HomeworkComponent},
   {path:'organization',component:OrganizationComponent},
   {path:'classroom',component:ClassroomComponent},
   {path:'executive',component:ExecutivePageComponent},

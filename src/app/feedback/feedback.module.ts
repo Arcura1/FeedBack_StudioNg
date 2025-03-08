@@ -19,6 +19,7 @@ import {ExecutivePageComponent} from "./component/executive/executivePage.compon
 import {NavbarComponent} from "./nawbar/nawbar.component";
 import {PopupTeacherComponent} from "./component/Teacher/popupteacher/popupteacher.component";
 import {TestComponent} from "./test/test.component";
+import {HomeworkComponent} from "./homework/homework.component";
 
 
 
@@ -46,7 +47,8 @@ import {TestComponent} from "./test/test.component";
     OrganizationComponent,
     ClassroomComponent,
     AdminPageComponent,
-    ExecutivePageComponent
+    ExecutivePageComponent,
+    HomeworkComponent
   ],
   exports: [
     NavbarComponent,

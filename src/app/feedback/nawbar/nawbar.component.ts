@@ -30,4 +30,9 @@ export class NavbarComponent implements OnInit{
   }
 
 
+  goToHomework() {
+    const classroomId = 1;
+
+    this.router.navigate(['/feedback/homework',classroomId]);
+  }
 }

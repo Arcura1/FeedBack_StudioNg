@@ -6,6 +6,7 @@ export interface Organization {
   name: string;
   address: string;
   email: string;
+  userId: number;
 }
 
 @Component({
@@ -13,13 +14,26 @@ export interface Organization {
   templateUrl: './organization.component.html'
 })
 export class OrganizationComponent implements OnInit {
-  organizations: Organization[] = [];
-  organization: Organization = { name: '', address: '', email: '' };
-  apiUrl: string = 'http://localhost:8080/organization';
+  user: any = {}; // Kullanıcı bilgilerini saklamak için değişken
 
-  constructor(private http: HttpClient) { }
+  organizations: Organization[] = [];
+  organization: Organization = { name: '', address: '', email: '',userId: this.user.id};
+  apiUrl: string = 'http://localhost:8080/organization';
+  protected PickerUser: any[] | undefined;
+
+  constructor(private http: HttpClient) {
+
+    this.user= JSON.parse(sessionStorage.getItem('user') || '{}');
+    this.organization = { name: '', address: '', email: '',userId: this.user.id};
+  }
 
   ngOnInit(): void {
+
+    console.log(this.user.id)
+    console.log(this.organization )
+    this.organization = { name: '', address: '', email: '',userId: this.user.id};
+    this.loadUsers()
+
     this.loadOrganizations();
   }
 
@@ -53,6 +67,7 @@ export class OrganizationComponent implements OnInit {
       this.http.post<Organization>(this.apiUrl, this.organization)
         .subscribe(
           data => {
+            console.log(this.organization)
             alert('Organization oluşturuldu.');
             this.resetForm();
             this.loadOrganizations();
@@ -87,7 +102,20 @@ export class OrganizationComponent implements OnInit {
     }
   }
 
+  loadUsers() {
+    this.http.get<any[]>('http://localhost:8080/api/users/type/GUEST').subscribe(
+      (data) => {
+        console.log(data)
+        this.PickerUser = data.map(user => user);
+        this.PickerUser = data
+      },
+      (error) => {
+        console.error('Kurum tipleri yüklenirken hata oluştu:', error);
+      }
+    );
+  }
+
   resetForm(): void {
-    this.organization = { name: '', address: '', email: '' };
+    this.organization = { name: '', address: '', email: '' ,userId: this.user.id};
   }
 }

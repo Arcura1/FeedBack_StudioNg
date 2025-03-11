@@ -42,10 +42,11 @@
       <label for="description">Açıklama:</label>
       <textarea class="form-control" id="description" rows="2" [(ngModel)]="classroom.description" name="description"></textarea>
     </div>
+    <!-- Dropdown (Kurum Tipi) -->
     <div class="form-group">
-      <label for="organizationId">Organization ID (opsiyonel):</label>
-      <select class="form-control" id="organizationId" [(ngModel)]="selectedOrganization" name="organizationId">
-        <option *ngFor="let org of organizations" [value]="org.id">{{ org.name }}</option>
+      <label for="orgType">Kurum Tipi:</label>
+      <select class="form-control" id="orgType" [(ngModel)]="classroom.userId" name="type">
+        <option *ngFor="let type of PickerUser" [value]="type.id">{{ type.firstName }}</option>
       </select>
     </div>
     <button type="submit" class="btn btn-primary">

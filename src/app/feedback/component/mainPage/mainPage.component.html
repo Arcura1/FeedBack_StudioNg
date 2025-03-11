@@ -1,38 +1,47 @@
 <nawbarfeed></nawbarfeed>
 
 <div [ngClass]="{
-    'teacher-bg': user.role === 'teacher',
-    'student-bg': user.role === 'student',
-    'admin-bg': user.role === 'admin',
-    'executive-bg': user.role === 'executive'
+    'teacher-bg': user.role === 'TEACHER',
+    'student-bg': user.role === 'STUDENT',
+    'admin-bg': user.role === 'ADMIN',
+    'executive-bg': user.role === 'EXECUTIVE'
   }" class="main-container">
 
   <!-- Öğretmen İçeriği -->
-  <div *ngIf="user.role == 'teacher'" class="content-section">
-    <h1 class="title">🧑‍🏫</h1>
-    <p class="description">Ödevleri yönetmek ve öğrencilerle iletişim kurmak için buradasınız.</p>
-    <button class="btn-go" (click)="goToTeacher()">Ödev Görüntüleme Sayfasına Git</button>
+  <div *ngIf="user.role == 'TEACHER'">
+    <div class="content-section">
+      <h1 class="title">🧑‍🏫</h1>
+      <p class="description">Ödevleri yönetmek ve öğrencilerle iletişim kurmak için buradasınız.</p>
+      <button class="btn-go" (click)="goToTeacher()">Ödev Görüntüleme Sayfasına Git</button>
+    </div>
   </div>
 
   <!-- Öğrenci İçeriği -->
-  <div *ngIf="user.role == 'student'" class="content-section">
-    <h1 class="title">🎓</h1>
-    <p class="description">Ödevlerinizi kontrol edin ve öğretmenlerle iletişimde kalın.</p>
-    <button class="btn-go" (click)="goToStudent()">Ödev Sayfasına Git</button>
+  <div *ngIf="user.role == 'STUDENT'">
+    <div class="content-section">
+      <h1 class="title">🎓</h1>
+      <p class="description">Ödevlerinizi kontrol edin ve öğretmenlerle iletişimde kalın.</p>
+      <button class="btn-go" (click)="goToStudent()">Ödev Sayfasına Git</button>
+    </div>
   </div>
 
   <!-- Admin İçeriği -->
-  <div *ngIf="user.role == 'admin'" class="content-section">
-    <h1 class="title">🛠️</h1>
-    <p class="description">Sistem ayarlarını yönetmek ve kullanıcı kontrollerini sağlamak için buradasınız.</p>
-    <button class="btn-go" (click)="goToAdmin()">Yönetim Paneline Git</button>
+  <div *ngIf="user.role == 'ADMIN'">
+    <div class="content-section">
+      <h1 class="title">🛠️</h1>
+      <p class="description">Sistem ayarlarını yönetmek ve kullanıcı kontrollerini sağlamak için buradasınız.</p>
+      <button class="btn-go" (click)="goToAdmin()">Yönetim Paneline Git</button>
+    </div>
   </div>
 
   <!-- Executive İçeriği -->
-  <div *ngIf="user.role == 'executive'" class="content-section">
-    <h1 class="title">💼</h1>
-    <p class="description">Genel raporları görüntüleyebilir ve sistem performansını analiz edebilirsiniz.</p>
-    <button class="btn-go" (click)="goToExecutive()">İstatistikler Sayfasına Git</button>
+  <div *ngIf="user.role == 'EXECUTIVE'">
+    <div class="content-section">
+      <h1 class="title">💼</h1>
+      <p class="description">Genel raporları görüntüleyebilir ve sistem performansını analiz edebilirsiniz.</p>
+      <button class="btn-go" (click)="goToExecutive()">İstatistikler Sayfasına Git</button>
+    </div>
+
   </div>
 
 </div>

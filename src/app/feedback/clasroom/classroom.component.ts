@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {Component, OnInit} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 
 export interface Organization {
   id?: number;
@@ -7,7 +7,6 @@ export interface Organization {
   address: string;
   email: string;
 }
-
 
 
 export interface Classroom {
@@ -22,6 +21,8 @@ export interface Classroom {
   description?: string;
   // İlişkili organization bilgisi sadece id olarak gönderilebilir
   organization?: Organization;
+  organizationId?: number;
+  userId?:number
 }
 
 @Component({
@@ -29,8 +30,11 @@ export interface Classroom {
   templateUrl: './classroom.component.html'
 })
 export class ClassroomComponent implements OnInit {
+
+  user: any = {}; // Kullanıcı bilgilerini saklamak için değişken
+  protected PickerUser: any[] | undefined;
   classrooms: Classroom[] = [];
-  organization: Organization = { name: '', address: '', email: '' };
+  organization: Organization = {name: '', address: '', email: ''};
   classroom: Classroom = {
     name: '',
     floor: 1,
@@ -40,13 +44,18 @@ export class ClassroomComponent implements OnInit {
     hasWhiteboard: false,
     hasAirConditioning: false,
     description: '',
-    organization: this.organization
+    organization: this.organization,
+    organizationId:0,
+    userId:this.user.id
+
   };
   apiUrl: string = 'http://localhost:8080/classrooms';
   organizations: any[] = [];
   selectedOrganization: string = '';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.user= JSON.parse(sessionStorage.getItem('user') || '{}');
+  }
 
   ngOnInit(): void {
     this.loadClassrooms();
@@ -54,8 +63,7 @@ export class ClassroomComponent implements OnInit {
 
   loadClassrooms(): void {
     this.http.get<Classroom[]>(this.apiUrl).subscribe(
-
-      data => this.classrooms=data,
+      data => this.classrooms = data,
       error => {
         console.error('Classroom listesi yüklenirken hata:', error);
         alert('Classroom listesi yüklenirken hata oluştu!');
@@ -97,7 +105,7 @@ export class ClassroomComponent implements OnInit {
 
   editClassroom(cl: Classroom): void {
     // Düzenleme için seçilen classroom bilgisini forma yükle
-    this.classroom = { ...cl };
+    this.classroom = {...cl};
   }
 
   deleteClassroom(id: number | undefined): void {
@@ -129,5 +137,23 @@ export class ClassroomComponent implements OnInit {
       description: '',
       organization: this.organization
     };
+  }
+
+
+  loadUsers() {
+    this.http.get<any[]>('http://localhost:8080/api/users/type/GUEST').subscribe(
+      (data) => {
+        console.log(data)
+        this.PickerUser = data.map(user => user);
+        this.PickerUser = data
+      },
+      (error) => {
+        console.error('Kurum tipleri yüklenirken hata oluştu:', error);
+      }
+    );
+  }
+
+  dropboxFiller(): void {
+
   }
 }

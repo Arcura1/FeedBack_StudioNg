@@ -16,7 +16,7 @@ export class RegisterComponent {
   email: string = ''; //
   phone: string = ''; //
   password: string = ''; //
-  role: string = 'student'; // Varsayılan olarak "student" rolü
+  role: string = 'GUEST'; // Varsayılan olarak "student" rolü
   confirmPassword: string = '';
   hidePassword: boolean = true;
   hideConfirmPassword: boolean = true;
@@ -36,7 +36,7 @@ export class RegisterComponent {
     }
 
     // Tüm alanların doldurulduğunu kontrol et
-    if (!this.firstName || !this.email || !this.password || !this.role) {
+    if (!this.firstName || !this.email || !this.password ) {
       document.getElementById('message')!.innerHTML =
         '<div class="alert alert-danger">Lütfen tüm alanları doldurun!</div>';
       return;

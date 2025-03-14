@@ -20,6 +20,7 @@ import {NavbarComponent} from "./nawbar/nawbar.component";
 import {PopupTeacherComponent} from "./component/Teacher/popupteacher/popupteacher.component";
 import {TestComponent} from "./test/test.component";
 import {HomeworkComponent} from "./homework/homework.component";
+import {GuestComponent} from "./guest/guest.component";
 
 
 
@@ -48,7 +49,8 @@ import {HomeworkComponent} from "./homework/homework.component";
     ClassroomComponent,
     AdminPageComponent,
     ExecutivePageComponent,
-    HomeworkComponent
+    HomeworkComponent,
+    GuestComponent
   ],
   exports: [
     NavbarComponent,

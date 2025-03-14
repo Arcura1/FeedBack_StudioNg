@@ -10,4 +10,7 @@ export class ExecutivePageComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  goToExecutive() {
+
+  }
 }

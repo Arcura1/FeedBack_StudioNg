@@ -44,8 +44,15 @@
     </div>
     <!-- Dropdown (Kurum Tipi) -->
     <div class="form-group">
-      <label for="orgType">Kurum Tipi:</label>
-      <select class="form-control" id="orgType" [(ngModel)]="classroom.userId" name="type">
+      <label for="orgType">Organizasyon seçim:</label>
+      <select class="form-control" id="orgType" [(ngModel)]="classroom.id" name="type">
+        <option *ngFor="let type of PickerOrganization" [value]="type.id">{{ type.firstName }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="orgType">Öğretmeen seçin:</label>
+      <select class="form-control" id="userType" [(ngModel)]="classroom.userId" name="type">
         <option *ngFor="let type of PickerUser" [value]="type.id">{{ type.firstName }}</option>
       </select>
     </div>

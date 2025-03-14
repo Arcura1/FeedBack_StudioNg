@@ -33,6 +33,7 @@ export class ClassroomComponent implements OnInit {
 
   user: any = {}; // Kullanıcı bilgilerini saklamak için değişken
   protected PickerUser: any[] | undefined;
+  protected PickerOrganization: any[] | undefined;
   classrooms: Classroom[] = [];
   organization: Organization = {name: '', address: '', email: ''};
   classroom: Classroom = {
@@ -44,13 +45,12 @@ export class ClassroomComponent implements OnInit {
     hasWhiteboard: false,
     hasAirConditioning: false,
     description: '',
-    organization: this.organization,
     organizationId:0,
     userId:this.user.id
 
   };
   apiUrl: string = 'http://localhost:8080/classrooms';
-  organizations: any[] = [];
+
   selectedOrganization: string = '';
 
   constructor(private http: HttpClient) {
@@ -59,6 +59,7 @@ export class ClassroomComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadClassrooms();
+    this.loadUsers();
   }
 
   loadClassrooms(): void {
@@ -141,7 +142,7 @@ export class ClassroomComponent implements OnInit {
 
 
   loadUsers() {
-    this.http.get<any[]>('http://localhost:8080/api/users/type/GUEST').subscribe(
+    this.http.get<any[]>('http://localhost:8080/api/users/type/TEACHER').subscribe(
       (data) => {
         console.log(data)
         this.PickerUser = data.map(user => user);

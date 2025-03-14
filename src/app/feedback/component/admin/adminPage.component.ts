@@ -10,4 +10,7 @@ export class AdminPageComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  goToAdmin() {
+
+  }
 }

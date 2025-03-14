@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PopupTeacherComponent } from "./popupteacher/popupteacher.component";
+import {ClassroomService} from "./service/classroom.service";
 
 @Component({
   selector: 'app-teacher',
@@ -13,7 +14,7 @@ export class TeacherComponent implements OnInit {
   homeworkDescription: string = '';
   teacherHomeworks: any[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,private classroomService: ClassroomService) {}
 
   ngOnInit(): void {
     const user = JSON.parse(sessionStorage.getItem('user') || '{}');
@@ -30,6 +31,15 @@ export class TeacherComponent implements OnInit {
         alert('Ödevleri alırken bir hata oluştu.');
       }
     );
+    // Buraya istediğin userId'yi yazabilirsin
+    this.classroomService.getClassroomsByUserId(Number(this.id)).subscribe({
+      next: (data) => {
+        this.classrooms = data;
+      },
+      error: (err) => {
+        console.error('API Hatası:', err);
+      }
+    });
   }
 
   sendHomework(): void {
@@ -61,4 +71,12 @@ export class TeacherComponent implements OnInit {
   openPopup(homework: any): void {
     this.popup.openPopup(homework);
   }
+
+  goToTeacher() {
+
+  }
+  classrooms: any[] = [];
+
+
+
 }

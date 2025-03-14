@@ -103,7 +103,7 @@ export class OrganizationComponent implements OnInit {
   }
 
   loadUsers() {
-    this.http.get<any[]>('http://localhost:8080/api/users/type/GUEST').subscribe(
+    this.http.get<any[]>('http://localhost:8080/api/users/type/EXECUTIVE').subscribe(
       (data) => {
         console.log(data)
         this.PickerUser = data.map(user => user);

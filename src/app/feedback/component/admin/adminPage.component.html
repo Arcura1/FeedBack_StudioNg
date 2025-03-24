@@ -1,5 +1,32 @@
-<div class="content-section">
-  <h1 class="title">🛠️</h1>
-  <p class="description">Sistem ayarlarını yönetmek ve kullanıcı kontrollerini sağlamak için buradasınız.</p>
-  <button class="btn-go" (click)="goToAdmin()">Yönetim Paneline Git</button>
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Admin Paneli - Kullanıcı Listesi</h2>
+
+  <table class="table table-bordered table-hover">
+    <thead class="thead-dark">
+    <tr>
+      <th>Ad</th>
+      <th>Soyad</th>
+      <th>Email</th>
+      <th>Telefon</th>
+      <th>Rol</th>
+      <th>Rol Değiştir</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let user of users">
+      <td>{{ user.firstName }}</td>
+      <td>{{ user.lastName }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.phone }}</td>
+      <td>{{ user.role }}</td>
+      <td>
+        <select [value]="user.role" (change)="onRoleChange(user, $event)" class="form-control">
+          <option *ngFor="let role of roles" [value]="role.name">{{ role.name }}</option>
+        </select>
+
+
+      </td>
+    </tr>
+    </tbody>
+  </table>
 </div>

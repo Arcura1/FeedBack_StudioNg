@@ -35,11 +35,14 @@ export class MainPageComponent implements OnInit {
     this.router.navigate(['/feedback/teacher']);
   }
 
-  goToAdmin() {
-    this.router.navigate(['/admin']);
-  }
+goToAdmin() {
+  this.router.navigate(['/feedback/admin']);
+}
+
 
   goToExecutive() {
     this.router.navigate(['/executive']);
   }
+
+
 }

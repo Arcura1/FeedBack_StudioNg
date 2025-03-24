@@ -1,9 +1,9 @@
 export interface User {
-  firstName: string; // Ad
-  lastName: string;  // Soyad
-  email: string;     // Email
-  phone: string;     // Telefon numarası
-  password: string;  // Şifre
+  id?: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  password: string;
   role: string;
 }
-

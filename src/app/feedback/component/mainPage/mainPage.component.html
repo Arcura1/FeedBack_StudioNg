@@ -25,7 +25,11 @@
 
   <!-- Admin İçeriği -->
   <div *ngIf="user.role == 'ADMIN'">
-    <adminPage></adminPage>
+    <div class="content-section">
+      <h1 class="title">🛠️</h1>
+      <p class="description">Sistem ayarlarını yönetmek ve kullanıcı kontrollerini sağlamak için buradasınız.</p>
+      <button class="btn-go" (click)="goToAdmin()">Yönetim Paneline Git</button>
+    </div>
   </div>
 
   <!-- Executive İçeriği -->

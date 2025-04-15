@@ -26,7 +26,7 @@
 
     <!-- Dropdown (Kurum Tipi) -->
     <div class="form-group">
-      <label for="orgType">Kurum Tipi:</label>
+      <label for="orgType">Kurum sahibi:</label>
       <select class="form-control" id="orgType" [(ngModel)]="organization.userId" name="type">
         <option *ngFor="let type of PickerUser" [value]="type.id">{{ type.firstName }}</option>
       </select>

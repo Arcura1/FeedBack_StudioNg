@@ -12,40 +12,28 @@ import {ClassroomComponent} from "./clasroom/classroom.component";
 import {ExecutivePageComponent} from "./component/executive/executivePage.component";
 import {AdminPageComponent} from "./component/admin/adminPage.component";
 import {HomeworkComponent} from "./homework/homework.component";
-
+import {UsermanagementComponent} from "./component/usermanagement/user-management.component";
 const pageCode="feedback"
 const routes: Routes = [
-
-  {
-    path: 'PdfEdit/:homeworkId/:pdfId',
-    component: PdfEditComponent,
-  },
-  { path: '',
-    component:MainPageComponent,
-    children:[
-      {path:'',component:MainPageComponent},
-      {path:'landing',component:MainPageComponent},
-
-
-    ]
-  },
-  {path:'teacher',component:TeacherComponent},
-  {path:'profile',component:ProfileComponent},
-  {path:'student',component:StudentComponent},
-  {path:'PdfEdit',component:PdfEditComponent},
-  {path:'test/:classroomId',component:TestComponent},
-  {path:'homework/:classroomId',component:HomeworkComponent},
-  {path:'organization',component:OrganizationComponent},
-  {path:'classroom',component:ClassroomComponent},
-  {path:'executive',component:ExecutivePageComponent},
-  {path:'admin',component:AdminPageComponent},
-
-
+  { path: 'usermanagement', component: UsermanagementComponent },
+  { path: '', component: MainPageComponent, children: [
+    { path: '', component: MainPageComponent },
+    { path: 'landing', component: MainPageComponent },
+  ] },
+  { path: 'teacher', component: TeacherComponent },
+  { path: 'profile', component: ProfileComponent },
+  { path: 'student', component: StudentComponent },
+  { path: 'PdfEdit', component: PdfEditComponent },
+  { path: 'test/:classroomId', component: TestComponent },
+  { path: 'homework/:classroomId', component: HomeworkComponent },
+  { path: 'organization', component: OrganizationComponent },
+  { path: 'classroom', component: ClassroomComponent },
+  { path: 'executive', component: ExecutivePageComponent },
+  { path: 'admin', component: AdminPageComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class FeedbackRoutingModule {
-}
+export class FeedbackRoutingModule { }

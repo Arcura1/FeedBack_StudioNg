@@ -1,0 +1,29 @@
+.user-management {
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f4f4f4;
+}
+
+select {
+  padding: 5px;
+}
+
+button {
+  padding: 5px 10px;
+  margin-left: 10px;
+}

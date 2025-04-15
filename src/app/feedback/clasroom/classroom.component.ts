@@ -60,6 +60,7 @@ export class ClassroomComponent implements OnInit {
   ngOnInit(): void {
     this.loadClassrooms();
     this.loadUsers();
+    this.loadOrganizations();
   }
 
   loadClassrooms(): void {
@@ -147,6 +148,19 @@ export class ClassroomComponent implements OnInit {
         console.log(data)
         this.PickerUser = data.map(user => user);
         this.PickerUser = data
+      },
+      (error) => {
+        console.error('Kurum tipleri yüklenirken hata oluştu:', error);
+      }
+    );
+  }
+
+  loadOrganizations() {
+    this.http.get<any[]>('http://localhost:8080/organization').subscribe(
+      (data) => {
+        console.log(data)
+        this.PickerOrganization = data.map(organization => organization);
+        this.PickerOrganization = data
       },
       (error) => {
         console.error('Kurum tipleri yüklenirken hata oluştu:', error);

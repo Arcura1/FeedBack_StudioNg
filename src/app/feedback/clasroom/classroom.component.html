@@ -45,8 +45,8 @@
     <!-- Dropdown (Kurum Tipi) -->
     <div class="form-group">
       <label for="orgType">Organizasyon seçim:</label>
-      <select class="form-control" id="orgType" [(ngModel)]="classroom.id" name="type">
-        <option *ngFor="let type of PickerOrganization" [value]="type.id">{{ type.firstName }}</option>
+      <select class="form-control" id="orgType" [(ngModel)]="classroom.organizationId" name="type">
+        <option *ngFor="let type of PickerOrganization" [value]="type.id">{{ type.name }}</option>
       </select>
     </div>
 
@@ -91,7 +91,7 @@
       <td>{{ cl.hasWhiteboard ? 'Var' : 'Yok' }}</td>
       <td>{{ cl.hasAirConditioning ? 'Var' : 'Yok' }}</td>
       <td>{{ cl.description }}</td>
-      <td>{{ cl.organization }}</td>
+      <td>{{ cl.organization?.name }}</td>
       <td>
         <button class="btn btn-sm btn-info mr-2" (click)="editClassroom(cl)">Düzenle</button>
         <button class="btn btn-sm btn-danger" (click)="deleteClassroom(cl.id)">Sil</button>

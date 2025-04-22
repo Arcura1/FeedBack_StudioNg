@@ -1,0 +1,67 @@
+<div class="container mt-4">
+  <h3 class="mb-4">Role & Authority Mapping</h3>
+
+  <form (ngSubmit)="save()" class="row g-3 mb-4">
+    <div class="col-md-5">
+      <input type="text" class="form-control" placeholder="Role Name" [(ngModel)]="newRelation.roleName" name="roleName" required />
+    </div>
+
+    <div class="col-md-5">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Authority Name"
+        [(ngModel)]="newRelation.authorityName"
+        (input)="onAuthorityNameChange()"
+        (blur)="hideSuggestions()"
+        (focus)="onAuthorityNameChange()"
+        [attr.autocomplete]="'off'"
+        name="authorityName"
+        required
+      />
+
+      <ul class="list-group position-absolute w-100 zindex-dropdown mt-1" *ngIf="showSuggestions && filteredAuthorities.length > 0">
+        <li
+          class="list-group-item list-group-item-action"
+          *ngFor="let authority of filteredAuthorities"
+          (click)="selectAuthority(authority)"
+          style="cursor: pointer"
+        >
+          {{ authority.name }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="col-md-2 d-grid">
+      <button class="btn btn-primary" type="submit">
+        {{ selectedId ? 'Update' : 'Add' }}
+      </button>
+    </div>
+
+    <div class="col-12 d-flex justify-content-end">
+      <button type="button" class="btn btn-secondary btn-sm" (click)="reset()">Reset</button>
+    </div>
+  </form>
+
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Role Name</th>
+      <th>Authority Name</th>
+      <th style="width: 150px;">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of roleAuthorities">
+      <td>{{ item.roleName }}</td>
+      <td>{{ item.authorityName }}</td>
+      <td>
+        <div class="d-flex gap-2">
+          <button class="btn btn-sm btn-warning" (click)="edit(item)">Edit</button>
+          <button class="btn btn-sm btn-danger" (click)="delete(item.id!)">Delete</button>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

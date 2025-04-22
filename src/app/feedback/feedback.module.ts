@@ -21,6 +21,11 @@ import {PopupTeacherComponent} from "./component/Teacher/popupteacher/popupteach
 import {TestComponent} from "./test/test.component";
 import {HomeworkComponent} from "./homework/homework.component";
 import {GuestComponent} from "./guest/guest.component";
+import {UserManagementComponent} from "./userManagment/UserManagment.component";
+import {RolePageComponent} from "./userManagment/rolePage/rolePage.component";
+import {AuthorityRoleComponent} from "./userManagment/authorityRole/authorityRole.component";
+import {AuthorityPageComponent} from "./userManagment/authorityPage/authorityPage.component";
+import {UserPageComponent} from "./userManagment/userPage/userPage.component";
 
 
 
@@ -35,6 +40,10 @@ import {GuestComponent} from "./guest/guest.component";
     NavbarComponent,
     StudentComponent,
     TeacherComponent,
+    RolePageComponent,
+    AuthorityPageComponent,
+    UserManagementComponent,
+    AuthorityRoleComponent,
     PopupComponent,
     TeacherComponent,
     PdfEditComponent,
@@ -46,6 +55,7 @@ import {GuestComponent} from "./guest/guest.component";
     PopupTeacherComponent,
     PopupStudentComponent,
     OrganizationComponent,
+    UserPageComponent,
     ClassroomComponent,
     AdminPageComponent,
     ExecutivePageComponent,
@@ -54,7 +64,10 @@ import {GuestComponent} from "./guest/guest.component";
   ],
   exports: [
     NavbarComponent,
-    PopupStudentComponent
+    PopupStudentComponent,
+    AuthorityPageComponent,
+    AuthorityRoleComponent,
+    RolePageComponent
   ],
   imports: [
     CommonModule,

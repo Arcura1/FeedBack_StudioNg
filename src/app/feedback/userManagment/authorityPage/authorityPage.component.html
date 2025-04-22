@@ -1,0 +1,52 @@
+<div class="container mt-4">
+  <h2 class="mb-4">Authority Sorgulama</h2>
+
+  <form class="row g-3 mb-4" (ngSubmit)="searchAuthorities()">
+    <div class="col-md-4">
+      <input type="text" class="form-control" placeholder="Name" [(ngModel)]="query.name" name="name" />
+    </div>
+
+    <div class="col-md-4">
+      <input type="text" class="form-control" placeholder="Authority Type" [(ngModel)]="query.authorityType" name="authorityType" />
+    </div>
+
+    <div class="col-md-4">
+      <input type="text" class="form-control" placeholder="Effect Type" [(ngModel)]="query.effectTypeEnum" name="effectTypeEnum" />
+    </div>
+
+    <div class="col-md-4">
+      <input type="number" class="form-control" placeholder="Classroom ID" [(ngModel)]="query.classroomId" name="classroomId" />
+    </div>
+
+    <div class="col-md-4">
+      <input type="number" class="form-control" placeholder="Organization ID" [(ngModel)]="query.organizationId" name="organizationId" />
+    </div>
+
+    <div class="col-md-4 d-grid">
+      <button type="submit" class="btn btn-primary">Ara</button>
+    </div>
+  </form>
+
+  <div *ngIf="loading" class="alert alert-info">Yükleniyor...</div>
+
+  <div *ngIf="authorities.length > 0">
+    <div class="row">
+      <div class="col-md-6 mb-3" *ngFor="let authority of authorities">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{ authority.name }}</h5>
+            <p class="card-text">{{ authority.description }}</p>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"><strong>Type:</strong> {{ authority.authorityType }}</li>
+              <li class="list-group-item"><strong>Effect:</strong> {{ authority.effectTypeEnum }}</li>
+              <li class="list-group-item"><strong>Classroom ID:</strong> {{ authority.classroomId }}</li>
+              <li class="list-group-item"><strong>Organization ID:</strong> {{ authority.organizationId }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && authorities.length === 0" class="alert alert-warning">Kayıt bulunamadı.</div>
+</div>

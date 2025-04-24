@@ -3,7 +3,8 @@
   <h2>Kullanıcının Sınıfları</h2>
   <ul>
     <li *ngFor="let classroom of classrooms">
-      <p>{{ classroom.name }}</p>
+      <p><strong>Sınıf:</strong> {{ classroom.name }}</p>
+      <p><strong>Organizasyon:</strong> {{ classroom.organization?.name }}</p>
       <button (click)="goToHomework(classroom.id)">Ödev Ata</button>
     </li>
   </ul>

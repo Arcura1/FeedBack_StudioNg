@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ClassroomService {
-  private apiUrl = 'http://localhost:8080/user'; // Backend URL
+  private apiUrl = 'http://localhost:8080/classrooms/user'; // Backend URL
 
   constructor(private http: HttpClient) {}
 

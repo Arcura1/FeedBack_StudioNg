@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PopupTeacherComponent } from "./popupteacher/popupteacher.component";
 import {ClassroomService} from "./service/classroom.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-teacher',
@@ -14,7 +15,8 @@ export class TeacherComponent implements OnInit {
   homeworkDescription: string = '';
   teacherHomeworks: any[] = [];
 
-  constructor(private http: HttpClient,private classroomService: ClassroomService) {}
+
+  constructor(private http: HttpClient,private classroomService: ClassroomService,private router: Router) {}
 
   ngOnInit(): void {
     const user = JSON.parse(sessionStorage.getItem('user') || '{}');
@@ -53,7 +55,7 @@ export class TeacherComponent implements OnInit {
       description: this.homeworkDescription,
       teacherId: this.id,
     };
-
+    console.log(newHomework)
     this.http.post('http://localhost:8080/Homework/add', newHomework).subscribe(
       (response) => {
         alert('Ödev başarıyla gönderildi!');
@@ -73,7 +75,7 @@ export class TeacherComponent implements OnInit {
   }
 
   goToTeacher() {
-
+    this.router.navigate(['/feedback/teacher']);
   }
   classrooms: any[] = [];
 

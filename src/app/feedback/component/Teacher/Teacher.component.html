@@ -3,8 +3,8 @@
   <h2>Kullanıcının Sınıfları</h2>
   <ul>
     <li *ngFor="let classroom of classrooms">
-      <pre>{{ classroom | json }}</pre>
-      <div></div>
+      <p>{{ classroom.name }}</p>
+      <button (click)="goToHomework(classroom.id)">Ödev Ata</button>
     </li>
   </ul>
 </div>

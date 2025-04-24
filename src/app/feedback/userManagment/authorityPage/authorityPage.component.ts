@@ -15,6 +15,7 @@ interface Authority {
 @Component({
   selector: 'app-authority-page',
   templateUrl: './authorityPage.component.html',
+  styleUrls: ['./authorityPage.component.css']
 })
 export class AuthorityPageComponent {
   query = {

@@ -1,0 +1,94 @@
+/* Genel kapsayıcı */
+.container {
+  background: #f9fafb;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+}
+
+/* Başlık */
+h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #1e3a8a;
+  border-bottom: 2px solid #d1d5db;
+  padding-bottom: 0.5rem;
+}
+
+/* Form alanları */
+form input.form-control {
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  transition: all 0.3s ease-in-out;
+}
+
+form input.form-control:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
+}
+
+/* Arama butonu */
+button.btn-primary {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
+  font-weight: 500;
+  border-radius: 8px;
+  padding: 0.5rem;
+  transition: background-color 0.3s;
+}
+
+button.btn-primary:hover {
+  background-color: #2563eb;
+  border-color: #2563eb;
+}
+
+/* Yükleniyor ve Uyarı Mesajları */
+.alert {
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.alert-info {
+  background-color: #e0f2fe;
+  color: #0c4a6e;
+  border: 1px solid #bae6fd;
+}
+
+.alert-warning {
+  background-color: #fff7ed;
+  color: #c2410c;
+  border: 1px solid #fed7aa;
+}
+
+/* Kart görünümü */
+.card {
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.card-text {
+  color: #4b5563;
+  font-size: 0.95rem;
+}
+
+/* Kart detayları */
+.list-group-item {
+  background-color: transparent;
+  border: none;
+  padding-left: 0;
+  font-size: 0.9rem;
+  color: #374151;
+}

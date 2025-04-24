@@ -1,0 +1,103 @@
+/* Kapsayıcı */
+.container {
+  background-color: #ffffff;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+}
+
+/* Başlıklar */
+h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #1e3a8a;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+h4 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #1e40af;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* Form Inputlar */
+input.form-control,
+select.form-select {
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  transition: all 0.3s ease-in-out;
+}
+
+input.form-control:focus,
+select.form-select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
+}
+
+/* Form Butonları */
+button {
+  border-radius: 8px !important;
+  font-weight: 500;
+  transition: all 0.3s ease-in-out;
+}
+
+button.btn-success {
+  background-color: #10b981;
+  border-color: #10b981;
+}
+
+button.btn-success:hover {
+  background-color: #059669;
+  border-color: #059669;
+}
+
+button.btn-secondary {
+  background-color: #6b7280;
+  border-color: #6b7280;
+}
+
+button.btn-secondary:hover {
+  background-color: #4b5563;
+  border-color: #4b5563;
+}
+
+button.btn-warning {
+  background-color: #facc15;
+  border-color: #facc15;
+  color: #111827;
+}
+
+button.btn-warning:hover {
+  background-color: #eab308;
+  border-color: #eab308;
+  color: #1f2937;
+}
+
+button.btn-danger {
+  background-color: #ef4444;
+  border-color: #ef4444;
+}
+
+button.btn-danger:hover {
+  background-color: #dc2626;
+  border-color: #dc2626;
+}
+
+/* Tablo */
+table {
+  font-size: 0.95rem;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+thead {
+  background-color: #e0e7ff;
+  color: #1e3a8a;
+  font-weight: 600;
+}

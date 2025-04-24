@@ -5,6 +5,7 @@ import {HttpClient} from "@angular/common/http";
 @Component({
   selector: 'app-role-page',
   templateUrl: './rolePage.component.html',
+  styleUrls: ['./rolePage.component.css']
 })
 
 

@@ -7,6 +7,7 @@ import {Router} from "@angular/router";
 @Component({
   selector: 'app-teacher',
   templateUrl: './Teacher.component.html',
+  styleUrls: ['./Teacher.component.css']
 })
 export class TeacherComponent implements OnInit {
   @ViewChild('popup') popup!: PopupTeacherComponent;
@@ -77,6 +78,11 @@ export class TeacherComponent implements OnInit {
   goToTeacher() {
     this.router.navigate(['/feedback/teacher']);
   }
+
+goToHomework(classroomId: number) {
+  this.router.navigate(['/feedback/homework',classroomId]);
+}
+
   classrooms: any[] = [];
 
 

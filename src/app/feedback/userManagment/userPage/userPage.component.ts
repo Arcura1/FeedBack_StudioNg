@@ -5,7 +5,8 @@ import { HttpClient } from "@angular/common/http";
 
 @Component({
   selector: 'app-userPage',
-  templateUrl: './userPage.component.html'
+  templateUrl: './userPage.component.html',
+  styleUrls: ['./userPage.component.css']
 })
 export class UserPageComponent implements OnInit {
   roleTypes: string[] = ['ADMIN', 'EXECUTIVE', 'TEACHER', 'STUDENT', 'GUEST', 'CUSTOM'];

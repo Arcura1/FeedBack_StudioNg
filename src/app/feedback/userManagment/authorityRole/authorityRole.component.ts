@@ -18,7 +18,8 @@ interface Authority {
 }
 @Component({
   selector: 'app-authority-role',
-  templateUrl: './authorityRole.component.html'
+  templateUrl: './authorityRole.component.html',
+  styleUrls: ['./authorityRole.component.css']
 })
 export class AuthorityRoleComponent implements OnInit {
   roleAuthorities: RoleAuthority[] = [];

@@ -3,7 +3,8 @@ import { HttpClient } from "@angular/common/http";
 
 @Component({
   selector: 'app-userManagement',
-  templateUrl: './UserManagment.component.html'
+  templateUrl: './UserManagment.component.html',
+  styleUrls: ['./UserManagment.component.css']
 })
 export class UserManagementComponent implements OnInit {
 

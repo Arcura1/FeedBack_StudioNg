@@ -4,19 +4,31 @@
   <form (ngSubmit)="isUpdateMode ? updateUser() : createUser()">
     <div class="row mb-2">
       <div class="col-md-4">
-        <input [(ngModel)]="userForm.firstName" name="firstName" class="form-control" placeholder="Ad" required />
+        <input [(ngModel)]="userForm.firstName" name="firstName" class="form-control" placeholder="Ad" required/>
       </div>
       <div class="col-md-4">
-        <input [(ngModel)]="userForm.lastName" name="lastName" class="form-control" placeholder="Soyad" required />
+        <input [(ngModel)]="userForm.lastName" name="lastName" class="form-control" placeholder="Soyad" required/>
       </div>
       <div class="col-md-4">
-        <input [(ngModel)]="userForm.email" name="email" type="email" class="form-control" placeholder="Email" required />
+        <input [(ngModel)]="userForm.email" name="email" type="email" class="form-control" placeholder="Email"
+               required/>
+      </div>
+      <div class="col-md-4">
+        <input type="text"  (input)="onInputChange($event)" placeholder="Organizasyon ara..."/>
+
+        <select *ngIf="organizations.length > 0"  [(ngModel)]="userForm.organizationId"  name="organizationId" type="organizationId" class="form-control">
+          <option *ngFor="let organization of organizations" [value]="organization.id">
+            {{ organization.name }}
+          </option>
+        </select>
+
       </div>
     </div>
 
     <div class="row mb-2">
       <div class="col-md-4">
-        <input [(ngModel)]="userForm.password" name="password" type="password" class="form-control" placeholder="Şifre" [required]="!isUpdateMode" />
+        <input [(ngModel)]="userForm.password" name="password" type="password" class="form-control" placeholder="Şifre"
+               [required]="!isUpdateMode"/>
       </div>
 
       <div class="col-md-4">
@@ -27,7 +39,8 @@
       </div>
 
       <div class="col-md-4" *ngIf="userForm.role === 'CUSTOM'">
-        <input [(ngModel)]="userForm.role" name="customRole" class="form-control" placeholder="Özel Rol Giriniz" required />
+        <input [(ngModel)]="userForm.role" name="customRole" class="form-control" placeholder="Özel Rol Giriniz"
+               required/>
       </div>
     </div>
 

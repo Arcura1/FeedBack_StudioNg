@@ -6,6 +6,7 @@ export interface Role {
   id?: number;
   name: string;
   description?: string;
+  organizationId:number
   roleTypeEnum: 'ADMIN'| 'EXECUTIVE'| 'TEACHER'| 'STUDENT'| 'GUEST'| 'CUSTOM'; // örnek enum değerleri
 }
 

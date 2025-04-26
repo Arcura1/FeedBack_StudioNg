@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Role, RoleService} from "./roleSrevice";
 import {HttpClient} from "@angular/common/http";
+import {debounceTime, distinctUntilChanged} from "rxjs";
 
 @Component({
   selector: 'app-role-page',
@@ -11,7 +12,7 @@ import {HttpClient} from "@angular/common/http";
 
 export class RolePageComponent implements OnInit {
   roles: Role[] = [];
-  newRole: Role = { name: '', description: '', roleTypeEnum: 'GUEST' };
+  newRole: Role = { name: '', description: '',organizationId: 0, roleTypeEnum: 'GUEST' };
   selectedRoleId: number | null = null;
   query = {
     name: '',
@@ -88,8 +89,9 @@ export class RolePageComponent implements OnInit {
     this.roleService.deleteRole(id).subscribe(() => this.loadRoles());
   }
 
+
   resetForm(): void {
-    this.newRole = { name: '', description: '', roleTypeEnum:"GUEST"};
+    this.newRole = { name: '', description: '',organizationId:0, roleTypeEnum:"GUEST"};
     this.selectedRoleId = null;
   }
 }

@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { HttpClient } from "@angular/common/http";
+import {debounceTime, distinctUntilChanged} from "rxjs";
+import {Organization} from "../../clasroom/classroom.component";
 
 @Component({
   selector: 'app-userPage',
@@ -10,7 +12,7 @@ import { HttpClient } from "@angular/common/http";
 })
 export class UserPageComponent implements OnInit {
   roleTypes: string[] = ['ADMIN', 'EXECUTIVE', 'TEACHER', 'STUDENT', 'GUEST', 'CUSTOM'];
-
+  organizations: Organization[] = [];
   showSuggestions = false;
   users: any[] = [];
   userForm = {
@@ -19,10 +21,12 @@ export class UserPageComponent implements OnInit {
     lastName: '',
     email: '',
     password: '',
+    organizationId:0,
     role: ''
 
   };
   isUpdateMode = false;
+
 
   constructor(private http: HttpClient) {}
 
@@ -65,6 +69,28 @@ export class UserPageComponent implements OnInit {
       });
   }
 
+  onInputChange(event: any) {
+    const inputValue = event.target.value;
+    console.log(event)
+    if (inputValue.length >= 2) { // en az 2 karakter sonra başlasın
+      const payload = {
+        name: inputValue
+      };
+
+      this.http.post<any[]>('http://localhost:8080/organization/search', payload)
+        .pipe(
+          debounceTime(300), // 300ms bekler, hızlı yazınca az istek atar
+          distinctUntilChanged()
+        )
+        .subscribe(response => {
+          console.log(response)
+          this.organizations = response;
+        });
+    } else {
+      this.organizations = []; // boş inputta listeyi temizle
+    }
+  }
+
   editUser(user: any) {
     this.userForm = { ...user };
     this.isUpdateMode = true;
@@ -98,6 +124,7 @@ export class UserPageComponent implements OnInit {
       lastName: '',
       email: '',
       password: '',
+      organizationId: 0,
       role: ''
     };
     this.isUpdateMode = false;

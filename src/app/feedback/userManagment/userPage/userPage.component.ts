@@ -1,7 +1,7 @@
-import { Component, OnInit } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
-import { HttpClient } from "@angular/common/http";
+import {Component, OnInit} from "@angular/core";
+import {CommonModule} from "@angular/common";
+import {FormsModule} from "@angular/forms";
+import {HttpClient} from "@angular/common/http";
 import {debounceTime, distinctUntilChanged} from "rxjs";
 import {Organization} from "../../clasroom/classroom.component";
 
@@ -15,20 +15,26 @@ export class UserPageComponent implements OnInit {
   organizations: any[] = [];
   showSuggestions = false;
   users: any[] = [];
+
+  payload = {
+    name: '',
+    roleTypeEnum: ''
+  };
   userForm = {
     id: null,
     firstName: '',
     lastName: '',
     email: '',
     password: '',
-    roleId:0,
+    roleId: 0,
     role: ''
 
   };
   isUpdateMode = false;
 
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   ngOnInit(): void {
     this.fetchAllUsers();
@@ -43,10 +49,21 @@ export class UserPageComponent implements OnInit {
     setTimeout(() => this.showSuggestions = false, 200); // küçük timeout, tıklamaya zaman tanır
   }
 
-  onRoleChange() {
+  onRoleChange(event:any) {
+    console.log(event)
+    this.payload.roleTypeEnum=this.userForm.role;
+    this.http.post<any[]>('http://localhost:8080/roles/query', this.payload)
+      .pipe(
+        debounceTime(300), // 300ms bekler, hızlı yazınca az istek atar
+        distinctUntilChanged()
+      )
+      .subscribe(response => {
+        console.log(response)
+        this.organizations = response;
+      });
     if (this.userForm.role !== 'CUSTOM') {
       // CUSTOM dışındaki seçimlerde özel role alanını temizle
-      this.userForm.role = this.userForm.role;
+
     }
   }
 
@@ -73,11 +90,9 @@ export class UserPageComponent implements OnInit {
     const inputValue = event.target.value;
     console.log(event)
     if (inputValue.length >= 2) { // en az 2 karakter sonra başlasın
-      const payload = {
-        name: inputValue
-      };
+      this.payload.name = inputValue
 
-      this.http.post<any[]>('http://localhost:8080/roles/query', payload)
+      this.http.post<any[]>('http://localhost:8080/roles/query', this.payload)
         .pipe(
           debounceTime(300), // 300ms bekler, hızlı yazınca az istek atar
           distinctUntilChanged()
@@ -92,8 +107,13 @@ export class UserPageComponent implements OnInit {
   }
 
 
+  onOrganizationChange() {
+    console.log('Organizasyon seçildi:', this.userForm.roleId);
+    // Burada organizasyon seçimi sonrası işlem yapabilirsin.
+  }
+
   editUser(user: any) {
-    this.userForm = { ...user };
+    this.userForm = {...user};
     this.isUpdateMode = true;
   }
 

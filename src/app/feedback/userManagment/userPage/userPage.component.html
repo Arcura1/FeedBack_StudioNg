@@ -16,7 +16,7 @@
       <div class="col-md-4">
         <input type="text"  (input)="onInputChange($event)" placeholder="Organizasyon ara..."/>
 
-        <select *ngIf="organizations.length > 0"  [(ngModel)]="userForm.organizationId"  name="organizationId" type="organizationId" class="form-control">
+        <select *ngIf="organizations.length > 0"  [(ngModel)]="userForm.roleId"  name="organizationId" type="organizationId" class="form-control">
           <option *ngFor="let organization of organizations" [value]="organization.id">
             {{ organization.name }}
           </option>

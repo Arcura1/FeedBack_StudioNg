@@ -12,7 +12,7 @@ import {Organization} from "../../clasroom/classroom.component";
 })
 export class UserPageComponent implements OnInit {
   roleTypes: string[] = ['ADMIN', 'EXECUTIVE', 'TEACHER', 'STUDENT', 'GUEST', 'CUSTOM'];
-  organizations: Organization[] = [];
+  organizations: any[] = [];
   showSuggestions = false;
   users: any[] = [];
   userForm = {
@@ -21,7 +21,7 @@ export class UserPageComponent implements OnInit {
     lastName: '',
     email: '',
     password: '',
-    organizationId:0,
+    roleId:0,
     role: ''
 
   };
@@ -77,7 +77,7 @@ export class UserPageComponent implements OnInit {
         name: inputValue
       };
 
-      this.http.post<any[]>('http://localhost:8080/organization/search', payload)
+      this.http.post<any[]>('http://localhost:8080/roles/query', payload)
         .pipe(
           debounceTime(300), // 300ms bekler, hızlı yazınca az istek atar
           distinctUntilChanged()
@@ -124,7 +124,7 @@ export class UserPageComponent implements OnInit {
       lastName: '',
       email: '',
       password: '',
-      organizationId: 0,
+      roleId: 0,
       role: ''
     };
     this.isUpdateMode = false;

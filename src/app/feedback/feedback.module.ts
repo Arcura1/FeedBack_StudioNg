@@ -26,9 +26,7 @@ import {RolePageComponent} from "./userManagment/rolePage/rolePage.component";
 import {AuthorityRoleComponent} from "./userManagment/authorityRole/authorityRole.component";
 import {AuthorityPageComponent} from "./userManagment/authorityPage/authorityPage.component";
 import {UserPageComponent} from "./userManagment/userPage/userPage.component";
-
-
-
+import { CustomPageComponent } from './component/custom/customPage.component';
 
 
 @NgModule({
@@ -38,6 +36,7 @@ import {UserPageComponent} from "./userManagment/userPage/userPage.component";
     ProfileComponent,
     StudentComponent,
     NavbarComponent,
+    CustomPageComponent,
     StudentComponent,
     TeacherComponent,
     RolePageComponent,

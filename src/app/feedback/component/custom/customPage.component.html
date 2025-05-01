@@ -1,1 +1,7 @@
-<a>custom sayfasındasın</a>
+<ul *ngIf="authorities.length > 0; else noAuth">
+  <li *ngFor="let auth of authorities">{{ auth.name }}</li>
+</ul>
+
+<ng-template #noAuth>
+  <p>Bu role ait yetki bulunamadı.</p>
+</ng-template>

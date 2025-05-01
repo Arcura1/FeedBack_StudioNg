@@ -10,7 +10,7 @@ import { StudentComponent } from './component/student/student.component';
 import {PdfEditComponent} from "./component/pdfEditPage/pdfEdit.component";
 import {TeacherComponent} from "./component/Teacher/teacher.component";
 import {PopupComponent} from "./component/popup/popup.component";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {PopupStudentComponent} from "./component/student/popupstudent/popupstudent.component";
 import {OrganizationComponent} from "./organization/organization.component";
 import {ClassroomComponent} from "./clasroom/classroom.component";
@@ -26,6 +26,8 @@ import {RolePageComponent} from "./userManagment/rolePage/rolePage.component";
 import {AuthorityRoleComponent} from "./userManagment/authorityRole/authorityRole.component";
 import {AuthorityPageComponent} from "./userManagment/authorityPage/authorityPage.component";
 import {UserPageComponent} from "./userManagment/userPage/userPage.component";
+import {CustomPageComponent} from "./component/custom/customPage.component";
+import {UserclassroomComponent} from "./clasroom/user-classroom/userclassroom.component";
 
 
 
@@ -59,7 +61,9 @@ import {UserPageComponent} from "./userManagment/userPage/userPage.component";
     ClassroomComponent,
     AdminPageComponent,
     ExecutivePageComponent,
+    CustomPageComponent,
     HomeworkComponent,
+    UserclassroomComponent,
     GuestComponent
   ],
   exports: [
@@ -73,6 +77,7 @@ import {UserPageComponent} from "./userManagment/userPage/userPage.component";
     CommonModule,
     FeedbackRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
 
 
   ]

@@ -1,0 +1,26 @@
+<div class="container">
+  <h2>Sınıf Kullanıcıları</h2>
+
+  <form (ngSubmit)="onSubmit()">
+    <input type="number" [(ngModel)]="formData.userId" name="classroomId" placeholder="Classroom ID" required />
+    <input type="text" [formControl]="searchControl" placeholder="Sınıf ara..." />
+
+    <select (change)="onClassroomSelect($event)">
+      <option *ngFor="let classroom of classrooms" [value]="formData.classroomId">
+        {{ classroom.name }}
+      </option>
+    </select>
+
+
+
+    <button type="submit">{{ formData.id ? 'Güncelle' : 'Ekle' }}</button>
+  </form>
+
+  <ul>
+    <li *ngFor="let user of classroomUsers">
+      ClassroomID: {{ user.classroomId }} - UserID: {{ user.userId }}
+      <button (click)="editUser(user)">Düzenle</button>
+      <button (click)="deleteUser(user.id)">Sil</button>
+    </li>
+  </ul>
+</div>

@@ -61,10 +61,6 @@ export class UserPageComponent implements OnInit {
         console.log(response)
         this.organizations = response;
       });
-    if (this.userForm.role !== 'CUSTOM') {
-      // CUSTOM dışındaki seçimlerde özel role alanını temizle
-
-    }
   }
 
   fetchAllUsers() {

@@ -28,6 +28,13 @@
       </div>
 
       <div class="col-md-4">
+        <label for="description" class="form-label">Organization</label>
+        <input type="number" [(ngModel)]="newRole.organizationId" class="form-control" placeholder="organizationId">
+      </div>
+
+
+
+      <div class="col-md-4">
         <label for="roleType" class="form-label">Role Type</label>
         <select
           id="roleType"
@@ -59,6 +66,13 @@
     <div class="col-md-4">
       <input [(ngModel)]="query.description" class="form-control" placeholder="Description">
     </div>
+
+    <div class="col-md-4">
+      <label for="description" class="form-label">Organization</label>
+      <input type="number" [(ngModel)]="query.organizationId" class="form-control" placeholder="organizationId">
+    </div>
+
+
     <div class="col-md-4">
       <select [(ngModel)]="query.roleTypeEnum" class="form-select">
         <option value="">-- Select Role Type --</option>

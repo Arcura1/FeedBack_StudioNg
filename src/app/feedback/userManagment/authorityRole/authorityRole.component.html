@@ -2,21 +2,33 @@
   <h3 class="mb-4">Role & Authority Mapping</h3>
 
   <form (ngSubmit)="save()" class="row g-3 mb-4">
-    <div class="col-md-5">
-      <input type="text" class="form-control" placeholder="Role Name" [(ngModel)]="newRelation.roleName" name="roleName" required />
+    <div class="col-md-4" > <!-- role seçilince açılacak -->
+      <input type="text" (input)="onInputChange($event)" placeholder="Organizasyon ara..." />
+
+      <select *ngIf="organizations.length > 0" [(ngModel)]="newRelation.roleId" name="organizationId" class="form-control" (change)="onOrganizationChange()">
+        <option *ngFor="let organization of organizations" [value]="organization.id">
+          {{ organization.name }}
+        </option>
+      </select>
     </div>
+
+    <select [(ngModel)]="selectedAuthorityType" (change)="selectAuthorityType($event)">
+      <option *ngFor="let option of authorityTypeOptions" [ngValue]="option.value">
+        {{ option.label }}
+      </option>
+    </select>
 
     <div class="col-md-5">
       <input
         type="text"
         class="form-control"
         placeholder="Authority Name"
-        [(ngModel)]="newRelation.authorityName"
+        [(ngModel)]="authoritySearchTest"
         (input)="onAuthorityNameChange()"
         (blur)="hideSuggestions()"
         (focus)="onAuthorityNameChange()"
         [attr.autocomplete]="'off'"
-        name="authorityName"
+        name="authorityId"
         required
       />
 
@@ -53,8 +65,8 @@
     </thead>
     <tbody>
     <tr *ngFor="let item of roleAuthorities">
-      <td>{{ item.roleName }}</td>
-      <td>{{ item.authorityName }}</td>
+      <td>{{ item.roleId }}</td>
+      <td>{{ item.authorityId }}</td>
       <td>
         <div class="d-flex gap-2">
           <button class="btn btn-sm btn-warning" (click)="edit(item)">Edit</button>

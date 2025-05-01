@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Role, RoleService} from "./roleSrevice";
 import {HttpClient} from "@angular/common/http";
-import {debounceTime, distinctUntilChanged} from "rxjs";
+import {debounceTime, distinctUntilChanged, Subject, switchMap} from "rxjs";
 
 @Component({
   selector: 'app-role-page',
@@ -12,16 +12,19 @@ import {debounceTime, distinctUntilChanged} from "rxjs";
 
 export class RolePageComponent implements OnInit {
   roles: Role[] = [];
-  newRole: Role = { name: '', description: '',organizationId: 0, roleTypeEnum: 'GUEST' };
+
+  newRole: Role = { name: '', description: '',organizationId: undefined, roleTypeEnum: 'CUSTOM' };
   selectedRoleId: number | null = null;
   query = {
     name: '',
     description: '',
-    roleTypeEnum: ''
+    roleTypeEnum: '',
+    organizationId:undefined,
   };
   loading = false;
-  showSuggestions = false;
-
+  inputText$ = new Subject<string>();
+  suggestions: string[] = [];
+  selectedValue: string | null = null;
 
 
 
@@ -38,7 +41,8 @@ export class RolePageComponent implements OnInit {
     const cleanedQuery = {
       name: this.query.name || null,
       description: this.query.description || null,
-      roleTypeEnum: this.query.roleTypeEnum || null
+      roleTypeEnum: this.query.roleTypeEnum || null,
+      organizationId: this.query.organizationId || null,
     };
 
     this.http.post<Role[]>('http://localhost:8080/roles/query', cleanedQuery).subscribe({
@@ -56,7 +60,8 @@ export class RolePageComponent implements OnInit {
     this.query = {
       name: '',
       description: '',
-      roleTypeEnum: ''
+      roleTypeEnum: '',
+      organizationId: undefined
     };
     this.roles = [];
   }
@@ -91,7 +96,7 @@ export class RolePageComponent implements OnInit {
 
 
   resetForm(): void {
-    this.newRole = { name: '', description: '',organizationId:0, roleTypeEnum:"GUEST"};
+    this.newRole = { name: '', description: '',organizationId:undefined, roleTypeEnum:"CUSTOM"};
     this.selectedRoleId = null;
   }
 }

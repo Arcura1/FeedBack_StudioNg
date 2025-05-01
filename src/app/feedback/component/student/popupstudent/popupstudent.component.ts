@@ -1,4 +1,4 @@
-  import { Component, Input } from '@angular/core';
+  import {Component, Input, OnInit} from '@angular/core';
   import { HttpClient } from '@angular/common/http';
   import { Router } from '@angular/router';
   import {response} from "express";
@@ -12,7 +12,7 @@
     templateUrl: './popupstudent.component.html',
     styleUrls: ['./popupstudent.component.css'],
   })
-  export class PopupStudentComponent {
+  export class PopupStudentComponent  implements OnInit{
     @Input() homework: any; // Popup içinde gösterilecek ödev detayları
     isVisible: boolean = false; // Popup görünürlük durumu
     selectedFile: File | null = null; // Yüklenmek üzere seçilen dosya

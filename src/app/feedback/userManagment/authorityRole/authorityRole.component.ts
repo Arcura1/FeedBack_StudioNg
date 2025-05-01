@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {debounceTime, Subject, switchMap} from "rxjs";
+import {debounceTime, distinctUntilChanged, Subject, switchMap} from "rxjs";
+import {AuthorityType} from "./enum/authorıtyType";
+import {AuthorityTypeOptions} from "./enum/AuthorityTypeOptions";
 
 interface RoleAuthority {
   id?: number;
-  roleName: string;
-  authorityName: string;
+  roleId?: number;
+  authorityId?: number;
 }
 interface Authority {
   id: number;
@@ -23,9 +25,17 @@ interface Authority {
 })
 export class AuthorityRoleComponent implements OnInit {
   roleAuthorities: RoleAuthority[] = [];
-  newRelation: RoleAuthority = { roleName: '', authorityName: '' };
+  newRelation: RoleAuthority = { roleId: undefined, authorityId: undefined };
   selectedId: number | null = null;
+  authorityTypeOptions = AuthorityTypeOptions;
+  selectedAuthorityType: AuthorityType | null = null;
+  authoritySearchTest:String| null = null;
+  organizations: any[] = [];
 
+  payload = {
+    name: '',
+    roleTypeEnum: 'CUSTOM'
+  };
   filteredAuthorities: Authority[] = [];
   showSuggestions = false;
 
@@ -50,7 +60,7 @@ export class AuthorityRoleComponent implements OnInit {
 
 
   onAuthorityNameChange(): void {
-    const name = this.newRelation.authorityName;
+    const name = this.authoritySearchTest;
     if (name && name.trim().length > 0) {
       this.searchSubject.next(name.trim());
     } else {
@@ -71,7 +81,7 @@ export class AuthorityRoleComponent implements OnInit {
   }
 
   selectAuthority(authority: Authority): void {
-    this.newRelation.authorityName = authority.name;
+    this.newRelation.authorityId = authority.id;
     this.showSuggestions = false;
   }
 
@@ -81,8 +91,31 @@ export class AuthorityRoleComponent implements OnInit {
 
 
 
+  onInputChange(event: any) {
+    const inputValue = event.target.value;
+    console.log(event)
+    if (inputValue.length >= 2) { // en az 2 karakter sonra başlasın
+      this.payload.name = inputValue
+
+      this.http.post<any[]>('http://localhost:8080/roles/query', this.payload)
+        .pipe(
+          debounceTime(300), // 300ms bekler, hızlı yazınca az istek atar
+          distinctUntilChanged()
+        )
+        .subscribe(response => {
+          console.log(response)
+          this.organizations = response;
+        });
+    } else {
+      this.organizations = []; // boş inputta listeyi temizle
+    }
+  }
 
 
+  onOrganizationChange() {
+    console.log('Organizasyon seçildi:', this.newRelation.roleId);
+    // Burada organizasyon seçimi sonrası işlem yapabilirsin.
+  }
 
 
   fetchAll() {
@@ -119,7 +152,18 @@ export class AuthorityRoleComponent implements OnInit {
   }
 
   reset() {
-    this.newRelation = { roleName: '', authorityName: '' };
+    this.newRelation = { roleId: undefined, authorityId: undefined };
     this.selectedId = null;
+  }
+
+  selectAuthorityType(event:any) {
+    console.log(this.selectedAuthorityType);
+    console.log(event.target.value);
+    this.selectedAuthorityType=event.target.value;
+    console.log(this.selectedAuthorityType);
+    const temp = {
+      authorityType: this.selectedAuthorityType
+    }
+    console.log(temp)
   }
 }

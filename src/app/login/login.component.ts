@@ -45,6 +45,7 @@ export class LoginComponent {
       firstName: user.firstName,
       role: user.role,
       email: user.email,
+      organizationId:user.organizationId
     };
 
     sessionStorage.setItem('user', JSON.stringify(sessionData));

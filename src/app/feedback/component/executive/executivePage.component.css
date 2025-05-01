@@ -1,19 +1,19 @@
 body {
   margin: 0;
   font-family: 'Arial', sans-serif;
-  background: linear-gradient(135deg, #e0eafc, #cfdef3); /* öğretmen teması */
+  background: linear-gradient(135deg, #f4c542, #f39c12);
   color: black;
   min-height: 100vh;
 }
 
-.teacher-container {
+.executive-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
 }
 
-.teacher-card {
+.executive-card {
   background: rgba(255, 255, 255, 0.9);
   padding: 40px;
   border-radius: 15px;
@@ -26,7 +26,7 @@ body {
 .title {
   font-size: 2.5rem;
   margin-bottom: 10px;
-  color: #2c3e50;
+  color: #b95c00;
 }
 
 .description {
@@ -35,8 +35,8 @@ body {
   color: #333;
 }
 
-.btn-teacher {
-  background-color: #4e54c8;
+.btn-executive {
+  background-color: #f39c12;
   color: white;
   padding: 12px 24px;
   border: none;
@@ -47,7 +47,7 @@ body {
   transition: all 0.3s ease;
 }
 
-.btn-teacher:hover {
-  background-color: #3e42b0;
+.btn-executive:hover {
+  background-color: #c87f0a;
   transform: scale(1.05);
 }

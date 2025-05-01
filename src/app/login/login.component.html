@@ -1,30 +1,28 @@
-<!-- login.component.html -->
-<div class="login-container">
-  <div class="background-gradient"></div>
-  <div class="glass-card">
-    <div class="login-content">
-      <h2>Giriş Yap</h2>
-      <form id="loginForm" (ngSubmit)="login()" #loginForm="ngForm">
-        <mat-form-field appearance="fill" class="full-width" floatLabel="auto">
-          <input matInput type="email" id="email" required [(ngModel)]="email" name="email" placeholder="Emailinizi girin">
-          <mat-icon matSuffix></mat-icon>
-        </mat-form-field>
-        
-        <mat-form-field appearance="fill" class="full-width" floatLabel="auto">
-          <input matInput [type]="hidePassword ? 'password' : 'text'" id="password" required [(ngModel)]="password" name="password" placeholder="Şifrenizi girin">
-          <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
-            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-          </button>
-        </mat-form-field>
-        
-        <button mat-raised-button color="primary" type="submit" class="login-button"> Giriş Yap
+<div class="auth-container">
+  <div class="auth-card">
+    <h2 class="auth-title">Giriş Yap</h2>
+    <form (ngSubmit)="login()" #loginForm="ngForm">
+
+      <mat-form-field appearance="fill" class="full-width">
+        <input matInput type="email" placeholder="Email" [(ngModel)]="email" name="email" required />
+        <mat-icon matSuffix>email</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <input matInput [type]="hidePassword ? 'password' : 'text'" placeholder="Şifre" [(ngModel)]="password" name="password" required />
+        <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
+          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
         </button>
-        
-        <div class="register-link">
-          Hesabınız yok mu? <a routerLink="/register">Kayıt Olun</a>
-        </div>
-      </form>
-      <div id="message" class="mt-3"></div>
-    </div>
+      </mat-form-field>
+
+      <div class="button-wrapper">
+        <button mat-raised-button class="btn-gradient" type="submit">Giriş Yap</button>
+      </div>
+
+
+      <p class="auth-link">
+        Hesabınız yok mu? <a routerLink="/register">Kayıt Olun</a>
+      </p>
+    </form>
   </div>
 </div>

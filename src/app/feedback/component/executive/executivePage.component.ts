@@ -5,6 +5,7 @@ import { PopupComponent } from '../popup/popup.component'; // PopupComponent'i i
 @Component({
   selector: 'executivePage',
   templateUrl: './executivePage.component.html',
+  styleUrls: ['./executivePage.component.css']
 })
 export class ExecutivePageComponent implements OnInit {
   ngOnInit(): void {

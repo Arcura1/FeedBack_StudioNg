@@ -1,67 +1,64 @@
-/* Sayfa genel görünüm */
-body {
-  margin: 0;
+.accordion-container {
+  max-width: 700px;
+  margin: 2rem auto;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   font-family: 'Arial', sans-serif;
-  background: linear-gradient(135deg, #00c9ff, #92fe9d); /* custom için özgün renk geçişi */
-  color: black;
-  min-height: 100vh;
 }
 
-/* Kartı ortalamak için konteyner */
-.custom-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+.accordion-item {
+  border-bottom: 2px solid #ddd;
 }
 
-/* Kart yapısı */
-.custom-card {
-  background: rgba(255, 255, 255, 0.9);
-  padding: 40px;
-  border-radius: 15px;
-  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.3);
-  max-width: 400px;
-  width: 90%;
-  text-align: center;
-  transition: all 0.3s ease;
-}
-
-/* Hover efekti */
-.custom-card:hover {
-  transform: scale(1.03);
-  box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.35);
-}
-
-/* Başlık */
-.title {
-  font-size: 2.5rem;
-  margin-bottom: 10px;
-  color: #006c80;
-}
-
-/* Açıklama yazısı */
-.description {
-  font-size: 16px;
-  margin-bottom: 20px;
-  color: #333;
-}
-
-/* Buton tasarımı */
-.btn-custom {
-  background-color: #00b894;
+.accordion-header {
+  background-color: #006c80;
   color: white;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 25px;
-  font-size: 16px;
   font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  padding: 1rem;
+  font-size: 20px;
 }
 
-/* Buton hover efekti */
-.btn-custom:hover {
-  background-color: #009e79;
-  transform: scale(1.05);
+.accordion-sub-header {
+  cursor: pointer;
+  padding: 1rem;
+  font-size: 18px;
+  background: #00b894;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.3s ease;
+  border-top: 1px solid white;
+}
+
+.accordion-sub-header:hover {
+  background: #009e79;
+}
+
+.accordion-body {
+  padding: 1rem;
+  background-color: #f9f9f9;
+  color: #333;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.arrow {
+  transform: rotate(0deg);
+  transition: transform 0.3s ease;
+}
+
+.arrow.open {
+  transform: rotate(180deg);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

@@ -9,6 +9,12 @@ import { Router } from '@angular/router';
 })
 export class CustomPageComponent implements OnInit {
   authorities: Authority[] = [];
+  selectedSection: string | null = null;
+
+  organizationAuthorities: Authority[] = [];
+  pdfEditAuthorities: Authority[] = [];
+  classroomAuthorities: Authority[] = [];
+  homeworkAuthorities: Authority[] = [];
 
   constructor(private authorityService: AuthorityService, private router: Router) {}
 
@@ -16,20 +22,25 @@ export class CustomPageComponent implements OnInit {
     this.loadAuthorities();
   }
 
-loadAuthorities() {
-  const roleId = 11; // örnek id
-  this.authorityService.getAuthoritiesByRole(roleId).subscribe({
-    next: (data) => {
-      console.log("Gelen veri:", data);
-      this.authorities = data;
-    },
-    error: (err) => {
-      console.error("Yetki alınamadı:", err);
-    }
-  });
-}
+  loadAuthorities(): void {
+    const roleId = 11;
+    this.authorityService.getAuthoritiesByRole(roleId).subscribe({
+      next: (data: Authority[]) => {
+        this.authorities = data;
+console.log("Gelen veri:", data);
+        // Ayrı ayrı kategorilere ayır
+        this.organizationAuthorities = data.filter(a => a.authorityType === 'ORGANIZATION');
+        this.pdfEditAuthorities = data.filter(a => a.authorityType === 'PDF_EDIT');
+        this.classroomAuthorities = data.filter(a => a.authorityType === 'CLASSROOM');
+        this.homeworkAuthorities = data.filter(a => a.authorityType === 'HOMEWORK');
+      },
+      error: (err) => {
+        console.error('Yetki alınamadı:', err);
+      }
+    });
+  }
 
-  goToCustom() {
-    this.router.navigate(['/custom-panel']);
+  toggleAccordion(section: string): void {
+    this.selectedSection = this.selectedSection === section ? null : section;
   }
 }

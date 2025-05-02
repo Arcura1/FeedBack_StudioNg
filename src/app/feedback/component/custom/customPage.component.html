@@ -3,10 +3,10 @@
   <!-- ORGANIZATION -->
   <div class="accordion-item">
     <div class="accordion-header" (click)="toggleAccordion('organization')">
-      Organizasyon
+      <span><i class="icon fa fa-sitemap"></i> Organizasyon</span>
       <span class="arrow" [class.open]="selectedSection === 'organization'">▼</span>
     </div>
-    <div class="accordion-body" *ngIf="selectedSection === 'organization'">
+    <div class="accordion-body" [class.show]="selectedSection === 'organization'">
       <ng-container *ngFor="let auth of organizationAuthorities">
         <p><strong>Yetki:</strong> {{ auth.name }}</p>
         <p><strong>Açıklama:</strong> {{ auth.description }}</p>
@@ -22,13 +22,14 @@
     </div>
   </div>
 
+  <!-- Diğer accordion başlıkları aynı şekilde -->
   <!-- PDF EDIT -->
   <div class="accordion-item">
     <div class="accordion-header" (click)="toggleAccordion('pdf-edit')">
-      PDF Edit
+      <span><i class="icon fa fa-file-pdf-o"></i> PDF Edit</span>
       <span class="arrow" [class.open]="selectedSection === 'pdf-edit'">▼</span>
     </div>
-    <div class="accordion-body" *ngIf="selectedSection === 'pdf-edit'">
+    <div class="accordion-body" [class.show]="selectedSection === 'pdf-edit'">
       <ng-container *ngFor="let auth of pdfEditAuthorities">
         <p><strong>Yetki:</strong> {{ auth.name }}</p>
         <p><strong>Açıklama:</strong> {{ auth.description }}</p>
@@ -47,16 +48,15 @@
   <!-- CLASSROOM -->
   <div class="accordion-item">
     <div class="accordion-header" (click)="toggleAccordion('classroom')">
-      Classroom
+      <span><i class="icon fa fa-university"></i> Classroom</span>
       <span class="arrow" [class.open]="selectedSection === 'classroom'">▼</span>
     </div>
-    <div class="accordion-body" *ngIf="selectedSection === 'classroom'">
+    <div class="accordion-body" [class.show]="selectedSection === 'classroom'">
       <ng-container *ngFor="let auth of classroomAuthorities">
         <p><strong>Yetki:</strong> {{ auth.name }}</p>
         <p *ngIf="auth.classroom?.description">
           <strong>Sınıf Açıklaması:</strong> {{ auth.classroom?.description }}
         </p>
-
         <div *ngIf="auth.classroom">
           <p><strong>Oda:</strong> {{ auth.classroom.roomNumber }}</p>
           <p><strong>Kat:</strong> {{ auth.classroom.floor }}</p>
@@ -73,10 +73,10 @@
   <!-- HOMEWORK -->
   <div class="accordion-item">
     <div class="accordion-header" (click)="toggleAccordion('homework')">
-      Homework
+      <span><i class="icon fa fa-pencil-square-o"></i> Homework</span>
       <span class="arrow" [class.open]="selectedSection === 'homework'">▼</span>
     </div>
-    <div class="accordion-body" *ngIf="selectedSection === 'homework'">
+    <div class="accordion-body" [class.show]="selectedSection === 'homework'">
       <ng-container *ngFor="let auth of homeworkAuthorities">
         <p><strong>Yetki:</strong> {{ auth.name }}</p>
         <p><strong>Açıklama:</strong> {{ auth.description }}</p>
@@ -91,7 +91,6 @@
       </ng-container>
     </div>
   </div>
-
 </div>
 
 <ng-template #noAuth>

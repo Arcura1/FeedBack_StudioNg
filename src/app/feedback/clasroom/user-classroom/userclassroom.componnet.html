@@ -2,18 +2,29 @@
   <h2>Sınıf Kullanıcıları</h2>
 
   <form (ngSubmit)="onSubmit()">
-    <input type="number" [(ngModel)]="formData.userId" name="classroomId" placeholder="Classroom ID" required />
-    <input type="text" [formControl]="searchControl" placeholder="Sınıf ara..." />
+    <input
+      type="number"
+      [(ngModel)]="formData.userId"
+      name="userId"
+      placeholder="User ID"
+      required
+    />
 
-    <select (change)="onClassroomSelect($event)">
-      <option *ngFor="let classroom of classrooms" [value]="formData.classroomId">
+    <input
+      type="text"
+      [formControl]="searchControl"
+      placeholder="Sınıf ara..."
+    />
+
+    <select [(ngModel)]="formData.classroomId" name="classroomId" required>
+      <option *ngFor="let classroom of classrooms" [value]="classroom.id">
         {{ classroom.name }}
       </option>
     </select>
 
-
-
-    <button type="submit">{{ formData.id ? 'Güncelle' : 'Ekle' }}</button>
+    <button type="submit">
+      {{ formData.id ? 'Güncelle' : 'Ekle' }}
+    </button>
   </form>
 
   <ul>

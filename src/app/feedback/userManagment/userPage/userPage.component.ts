@@ -13,7 +13,6 @@ import {Organization} from "../../clasroom/classroom.component";
 export class UserPageComponent implements OnInit {
   roleTypes: string[] = ['ADMIN', 'EXECUTIVE', 'TEACHER', 'STUDENT', 'GUEST', 'CUSTOM'];
   organizations: any[] = [];
-  showSuggestions = false;
   users: any[] = [];
 
   payload = {
@@ -39,19 +38,10 @@ export class UserPageComponent implements OnInit {
   ngOnInit(): void {
     this.fetchAllUsers();
   }
-
-  // selectAuthority(authority: Authority): void {
-  //   this.newRelation.authorityName = authority.name;
-  //   this.showSuggestions = false;
-  // }
-
-  hideSuggestions(): void {
-    setTimeout(() => this.showSuggestions = false, 200); // küçük timeout, tıklamaya zaman tanır
-  }
-
   onRoleChange(event:any) {
     console.log(event)
     this.payload.roleTypeEnum=this.userForm.role;
+    this.userForm.roleId=0;
     this.http.post<any[]>('http://localhost:8080/roles/query', this.payload)
       .pipe(
         debounceTime(300), // 300ms bekler, hızlı yazınca az istek atar
@@ -72,6 +62,7 @@ export class UserPageComponent implements OnInit {
   }
 
   createUser() {
+    console.log(this.userForm)
     this.http.post('http://localhost:8080/api/users/create', this.userForm)
       .subscribe({
         next: () => {
@@ -85,6 +76,7 @@ export class UserPageComponent implements OnInit {
   onInputChange(event: any) {
     const inputValue = event.target.value;
     console.log(event)
+    this.organizations=[];
     if (inputValue.length >= 2) { // en az 2 karakter sonra başlasın
       this.payload.name = inputValue
 
@@ -103,9 +95,12 @@ export class UserPageComponent implements OnInit {
   }
 
 
-  onOrganizationChange() {
+  onOrganizationChange($event:any) {
+
     console.log('Organizasyon seçildi:', this.userForm.roleId);
+    console.log($event.target.value);
     // Burada organizasyon seçimi sonrası işlem yapabilirsin.
+    this.userForm.roleId=$event.target.value;
   }
 
   editUser(user: any) {
@@ -135,6 +130,7 @@ export class UserPageComponent implements OnInit {
   }
 
   resetForm() {
+    this.organizations=[];
     this.userForm = {
       id: null,
       firstName: '',

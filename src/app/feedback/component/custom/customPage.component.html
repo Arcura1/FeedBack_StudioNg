@@ -8,11 +8,11 @@
     </div>
     <div class="accordion-body" [class.show]="selectedSection === 'organization'">
       <ng-container *ngFor="let auth of organizationAuthorities">
-        <p><strong>Yetki:</strong> {{ auth.name }}</p>
-        <p><strong>Açıklama:</strong> {{ auth.description }}</p>
         <div *ngIf="auth.organization">
           <p><strong>ID:</strong> {{ auth.organization.id }}</p>
           <p><strong>Adı:</strong> {{ auth.organization.name }}</p>
+          <p><strong>Email:</strong> {{ auth.organization.email }}</p>
+          <p><strong>Adres:</strong> {{ auth.organization.address }}</p>
         </div>
         <div *ngIf="!auth.organization">
           <p>Organizasyon verisi bulunamadı.</p>
@@ -22,7 +22,6 @@
     </div>
   </div>
 
-  <!-- Diğer accordion başlıkları aynı şekilde -->
   <!-- PDF EDIT -->
   <div class="accordion-item">
     <div class="accordion-header" (click)="toggleAccordion('pdf-edit')">
@@ -31,11 +30,9 @@
     </div>
     <div class="accordion-body" [class.show]="selectedSection === 'pdf-edit'">
       <ng-container *ngFor="let auth of pdfEditAuthorities">
-        <p><strong>Yetki:</strong> {{ auth.name }}</p>
-        <p><strong>Açıklama:</strong> {{ auth.description }}</p>
         <div *ngIf="auth.pdfInfo">
-          <p><strong>ID:</strong> {{ auth.pdfInfo.id }}</p>
-          <p><strong>Başlık:</strong> {{ auth.pdfInfo.title }}</p>
+          <p><strong>pdfInfoId:</strong> {{ auth.pdfInfo.id }}</p>
+          <p><strong>pdfInfo:</strong> {{ auth.pdfInfo | json }}</p>
         </div>
         <div *ngIf="!auth.pdfInfo">
           <p>PDF bilgisi bulunamadı.</p>
@@ -53,12 +50,10 @@
     </div>
     <div class="accordion-body" [class.show]="selectedSection === 'classroom'">
       <ng-container *ngFor="let auth of classroomAuthorities">
-        <p><strong>Yetki:</strong> {{ auth.name }}</p>
-        <p *ngIf="auth.classroom?.description">
-          <strong>Sınıf Açıklaması:</strong> {{ auth.classroom?.description }}
-        </p>
         <div *ngIf="auth.classroom">
-          <p><strong>Oda:</strong> {{ auth.classroom.roomNumber }}</p>
+          <p><strong>ID:</strong> {{ auth.classroom.id }}</p>
+          <p><strong>Adı:</strong> {{ auth.classroom.name }}</p>
+          <p><strong>Açıklama:</strong> {{ auth.classroom.description }}</p>
           <p><strong>Kat:</strong> {{ auth.classroom.floor }}</p>
           <p><strong>Kapasite:</strong> {{ auth.classroom.capacity }}</p>
         </div>
@@ -78,11 +73,9 @@
     </div>
     <div class="accordion-body" [class.show]="selectedSection === 'homework'">
       <ng-container *ngFor="let auth of homeworkAuthorities">
-        <p><strong>Yetki:</strong> {{ auth.name }}</p>
-        <p><strong>Açıklama:</strong> {{ auth.description }}</p>
         <div *ngIf="auth.homework">
-          <p><strong>ID:</strong> {{ auth.homework.id }}</p>
-          <p><strong>Başlık:</strong> {{ auth.homework.title }}</p>
+          <p><strong>homeworkId:</strong> {{ auth.homework.id }}</p>
+          <p><strong>homework:</strong> {{ auth.homework | json }}</p>
         </div>
         <div *ngIf="!auth.homework">
           <p>Ödev bilgisi bulunamadı.</p>
@@ -91,6 +84,7 @@
       </ng-container>
     </div>
   </div>
+
 </div>
 
 <ng-template #noAuth>

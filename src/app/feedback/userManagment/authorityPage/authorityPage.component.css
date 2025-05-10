@@ -1,9 +1,34 @@
 /* Genel kapsayıcı */
+:host {
+  display: block;
+  min-height: 100%;
+  background: url('https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+  background-size: cover;
+  position: relative;
+}
+
+:host::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(9, 19, 56, 0.7);
+  z-index: 0;
+  pointer-events: none;
+}
+
 .container {
-  background: #f9fafb;
+  background: rgba(249, 250, 251, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-radius: 16px;
   padding: 2rem;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  position: relative;
+  z-index: 1;
+  border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 /* Başlık */
@@ -20,11 +45,13 @@ form input.form-control {
   border-radius: 8px;
   border: 1px solid #d1d5db;
   transition: all 0.3s ease-in-out;
+  background: rgba(255, 255, 255, 0.6);
 }
 
 form input.form-control:focus {
   border-color: #3b82f6;
   box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
+  background: rgba(255, 255, 255, 0.85);
 }
 
 /* Arama butonu */
@@ -47,16 +74,18 @@ button.btn-primary:hover {
   border-radius: 10px;
   font-size: 0.95rem;
   font-weight: 500;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
 }
 
 .alert-info {
-  background-color: #e0f2fe;
+  background-color: rgba(224, 242, 254, 0.8);
   color: #0c4a6e;
   border: 1px solid #bae6fd;
 }
 
 .alert-warning {
-  background-color: #fff7ed;
+  background-color: rgba(255, 247, 237, 0.8);
   color: #c2410c;
   border: 1px solid #fed7aa;
 }
@@ -67,10 +96,15 @@ button.btn-primary:hover {
   border-radius: 16px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
   transition: transform 0.2s;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .card:hover {
   transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
 }
 
 .card-title {

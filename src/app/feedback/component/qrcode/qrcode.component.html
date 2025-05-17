@@ -1,14 +1,14 @@
 <div class="qrcode-container">
-  <h3 class="qrcode-title">QR Kodu Oluştur</h3>
+  <h3 class="qrcode-title">Rol Seç ve QR Kodunu Oluştur</h3>
 
-  <input
-    type="text"
-    class="qrcode-input"
-    placeholder="Yönlendirilecek URL girin"
-    [(ngModel)]="targetUrl"
-  />
+  <div class="button-group">
+    <button *ngFor="let role of roles" (click)="updateUrl(role)" class="qr-button">
+      {{ role }}
+    </button>
+  </div>
 
-  <div class="qrcode-box">
+  <div class="qrcode-box" *ngIf="targetUrl">
+    <p class="url-text">{{ targetUrl }}</p>
     <qrcode
       [qrdata]="targetUrl"
       [width]="256"

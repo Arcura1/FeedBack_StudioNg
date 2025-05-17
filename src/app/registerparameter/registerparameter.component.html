@@ -1,0 +1,52 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <h2 class="auth-title">Kayıt Ol</h2>
+    <form (ngSubmit)="register()" #registerForm="ngForm">
+      <mat-form-field appearance="fill" class="full-width">
+        <input matInput type="text" placeholder="Ad" [(ngModel)]="firstName" name="firstName" required />
+        <mat-icon matSuffix>person</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <input matInput type="text" placeholder="Soyad" [(ngModel)]="lastName" name="lastName" required />
+        <mat-icon matSuffix>person</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <input matInput type="email" placeholder="Email" [(ngModel)]="email" name="email" required />
+        <mat-icon matSuffix>email</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <input matInput type="tel" placeholder="Telefon" [(ngModel)]="phone" name="phone" required />
+        <mat-icon matSuffix>phone</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <input matInput [type]="hidePassword ? 'password' : 'text'" placeholder="Şifre" [(ngModel)]="password" name="password" required />
+        <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
+          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <input matInput [type]="hideConfirmPassword ? 'password' : 'text'" placeholder="Şifre Tekrar" [(ngModel)]="confirmPassword" name="confirmPassword" required />
+        <button mat-icon-button matSuffix (click)="hideConfirmPassword = !hideConfirmPassword" type="button">
+          <mat-icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <div id="message" style="margin-bottom: 10px;"></div>
+
+      <div class="button-wrapper">
+        <button mat-raised-button class="btn-gradient" type="submit">
+          <mat-icon>person_add</mat-icon> Kayıt Ol
+        </button>
+      </div>
+
+      <p class="auth-link">
+        Zaten hesabınız var mı? <a routerLink="/login">Giriş Yapın</a>
+      </p>
+    </form>
+  </div>
+</div>

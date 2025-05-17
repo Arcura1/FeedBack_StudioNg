@@ -1,52 +1,49 @@
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
-import {FeedbackComponent} from './feedback.component';
-import {ProfileComponent} from "./Profile/profle.component";
-import {MainPageComponent} from "./component/mainPage/mainPage.component";
-import {StudentComponent} from "./component/student/student.component";
-import {PdfEditComponent} from "./component/pdfEditPage/pdfEdit.component";
-import {TeacherComponent} from "./component/Teacher/teacher.component";
-import {TestComponent} from "./test/test.component";
-import {OrganizationComponent} from "./organization/organization.component";
-import {ClassroomComponent} from "./clasroom/classroom.component";
-import {ExecutivePageComponent} from "./component/executive/executivePage.component";
-import {AdminPageComponent} from "./component/admin/adminPage.component";
-import {HomeworkComponent} from "./homework/homework.component";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+
+import { FeedbackComponent } from './feedback.component';
+import { ProfileComponent } from "./Profile/profle.component";
+import { MainPageComponent } from "./component/mainPage/mainPage.component";
+import { StudentComponent } from "./component/student/student.component";
+import { PdfEditComponent } from "./component/pdfEditPage/pdfEdit.component";
+import { TeacherComponent } from "./component/Teacher/teacher.component";
+import { TestComponent } from "./test/test.component";
+import { OrganizationComponent } from "./organization/organization.component";
+import { ClassroomComponent } from "./clasroom/classroom.component";
+import { ExecutivePageComponent } from "./component/executive/executivePage.component";
+import { AdminPageComponent } from "./component/admin/adminPage.component";
+import { HomeworkComponent } from "./homework/homework.component";
 import { CustomPageComponent } from './component/custom/customPage.component';
-const pageCode="feedback"
+import { QrcodeComponent } from './component/qrcode/qrcode.component'; // ✅ buraya eklendi
+
+const pageCode = "feedback";
+
 const routes: Routes = [
-
+  { path: 'PdfEdit/:homeworkId/:pdfId', component: PdfEditComponent },
   {
-    path: 'PdfEdit/:homeworkId/:pdfId',
-    component: PdfEditComponent,
-  },
-  { path: '',
-    component:MainPageComponent,
-    children:[
-      {path:'',component:MainPageComponent},
-      {path:'landing',component:MainPageComponent},
-
-
+    path: '',
+    component: MainPageComponent,
+    children: [
+      { path: '', component: MainPageComponent },
+      { path: 'landing', component: MainPageComponent }
     ]
   },
-  {path:'teacher',component:TeacherComponent},
-  {path:'profile',component:ProfileComponent},
-  {path:'student',component:StudentComponent},
-  {path:'custom',component:CustomPageComponent},
-  {path:'PdfEdit',component:PdfEditComponent},
-  {path:'test/:classroomId',component:TestComponent},
-  {path:'homework/:classroomId',component:HomeworkComponent},
-  {path:'organization',component:OrganizationComponent},
-  {path:'classroom',component:ClassroomComponent},
-  {path:'executive',component:ExecutivePageComponent},
-  {path:'admin',component:AdminPageComponent},
-
-
+  { path: 'teacher', component: TeacherComponent },
+  { path: 'profile', component: ProfileComponent },
+  { path: 'student', component: StudentComponent },
+  { path: 'custom', component: CustomPageComponent },
+  { path: 'PdfEdit', component: PdfEditComponent },
+  { path: 'test/:classroomId', component: TestComponent },
+  { path: 'homework/:classroomId', component: HomeworkComponent },
+  { path: 'organization', component: OrganizationComponent },
+  { path: 'classroom', component: ClassroomComponent },
+  { path: 'executive', component: ExecutivePageComponent },
+  { path: 'admin', component: AdminPageComponent },
+  { path: 'qrcode', component: QrcodeComponent } // ✅ buraya eklendi
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class FeedbackRoutingModule {
-}
+export class FeedbackRoutingModule { }

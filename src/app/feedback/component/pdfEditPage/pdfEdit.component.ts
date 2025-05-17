@@ -3,6 +3,7 @@ import {PDFDocumentProxy} from 'pdfjs-dist';
 import html2canvas from 'html2canvas';
 import {HttpClient} from "@angular/common/http";
 import {ActivatedRoute} from "@angular/router";
+import jsPDF from "jspdf";
 
 declare const pdfjsLib: any;
 
@@ -116,6 +117,9 @@ export class PdfEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(JSON.parse(sessionStorage.getItem('user') || '{}').id)
+    console.log(JSON.parse(sessionStorage.getItem('user') || '{}').id)
+    console.log(JSON.parse(sessionStorage.getItem('user') || '{}').id)
     // URL parametrelerini almak
     const homeworkIdFromUrl = this.route.snapshot.paramMap.get('homeworkId');
     const pdfIdFromUrl = this.route.snapshot.paramMap.get('pdfId');
@@ -421,12 +425,12 @@ export class PdfEditComponent implements OnInit {
       // pdfId: 123,
       xcoordinate: this.pdfX,
       ycoordinate: this.pdfY,
-      pdfId: 1,
+      pdfId: Number(this.pdfId),
       title: this.title,
       note: this.metin,
       page: this.currentPageNumber,
-      user: JSON.parse(sessionStorage.getItem('user') || '{}').id,
-      pdfInfoEntity: this.pdfId
+      userId: JSON.parse(sessionStorage.getItem('user') || '{}').id,
+      pdfInfoEntityId:Number( this.pdfId)
     };
     console.log(data)
     // PUT isteği gönder
@@ -451,6 +455,7 @@ export class PdfEditComponent implements OnInit {
         console.error("Hata:", error);
         alert("Veri gönderilirken bir hata oluştu!");
       });
+    this.refreshPage();
   }
 
   pdfLocationUpdate($event: MouseEvent) {
@@ -572,35 +577,62 @@ export class PdfEditComponent implements OnInit {
   }
 
   download($event: MouseEvent) {
-    html2canvas(this.canvasContainerRef.nativeElement).then(canvas => {
+    // html2canvas(this.canvasContainerRef.nativeElement).then(canvas => {
+    //
+    //   const link = document.createElement('a');
+    //   html2canvas(this.canvasContainerRef.nativeElement, {
+    //     scale: 2, // Daha yüksek çözünürlük için ölçek artırılır
+    //     useCORS: true, // Cross-Origin Resource Sharing izinlerini etkinleştir
+    //     logging: true, // Hata ayıklama için loglama
+    //     allowTaint: true // Taint edilmiş (dış kaynaktan) içeriklere izin ver
+    //   }).then(canvas => {
+    //     // Oluşturulan canvas'ı indirmek için link oluştur
+    //     const link = document.createElement('a');
+    //     link.download = 'highlighted_pdf.png';
+    //     link.href = canvas.toDataURL('image/png'); // PNG formatında çıktı
+    //     link.click();
+    //   }).catch(error => {
+    //     console.error('PDF indirilirken bir hata oluştu:', error);
+    //   });
+    // })
+    this.generatePdfFromCanvas();
+  }
+  generatePdfFromCanvas(): void {
+    const element = this.canvasContainerRef.nativeElement;
 
-      const link = document.createElement('a');
-      html2canvas(this.canvasContainerRef.nativeElement, {
-        scale: 2, // Daha yüksek çözünürlük için ölçek artırılır
-        useCORS: true, // Cross-Origin Resource Sharing izinlerini etkinleştir
-        logging: true, // Hata ayıklama için loglama
-        allowTaint: true // Taint edilmiş (dış kaynaktan) içeriklere izin ver
-      }).then(canvas => {
-        // Oluşturulan canvas'ı indirmek için link oluştur
-        const link = document.createElement('a');
-        link.download = 'highlighted_pdf.png';
-        link.href = canvas.toDataURL('image/png'); // PNG formatında çıktı
-        link.click();
-      }).catch(error => {
-        console.error('PDF indirilirken bir hata oluştu:', error);
-      });
-    })
+    html2canvas(element, {
+      scale: 2,
+      useCORS: true,
+      logging: true,
+      allowTaint: true
+    }).then(canvas => {
+      const imgData = canvas.toDataURL('image/png');
+
+      // Sayfa boyutu: A4 (210 x 297 mm)
+      const pdf = new jsPDF('p', 'mm', 'a4');
+
+      // Canvas boyutlarını mm cinsine çevir
+      const imgProps = pdf.getImageProperties(imgData);
+      const pdfWidth = 210; // A4 genişliği
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save('highlighted_pdf.pdf');
+    }).catch(error => {
+      console.error('PDF indirilirken bir hata oluştu:', error);
+    });
   }
 
   downloadWithoutButton($event: MouseEvent) {
     this.toggleVisibility();
-    html2canvas(this.canvasContainerRef.nativeElement).then(canvas => {
-
-      const link = document.createElement('a');
-      link.download = 'highlighted_pdf.png';
-      link.href = canvas.toDataURL();
-      link.click();
-    });
+    this.generatePdfFromCanvas();
+    // html2canvas(this.canvasContainerRef.nativeElement).then(canvas => {
+    //
+    //   const link = document.createElement('a');
+    //   link.download = 'highlighted_pdf.png';
+    //   link.href = canvas.toDataURL();
+    //   link.click();
+    // });
     this.toggleVisibility();
   }
 

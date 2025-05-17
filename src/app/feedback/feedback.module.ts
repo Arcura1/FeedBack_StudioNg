@@ -1,34 +1,39 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from "@angular/forms";
-import { QRCodeModule } from 'angularx-qrcode'; // ✅ QR modülü eklendi
 
 import { FeedbackRoutingModule } from './feedback-routing.module';
-
 import { FeedbackComponent } from './feedback.component';
-import { MainPageComponent } from "./component/mainPage/mainPage.component";
-import { ProfileComponent } from "./Profile/profle.component";
+import {MainPageComponent} from "./component/mainPage/mainPage.component";
+import {ProfileComponent} from "./Profile/profle.component";
+
 import { StudentComponent } from './component/student/student.component';
-import { PdfEditComponent } from "./component/pdfEditPage/pdfEdit.component";
-import { TeacherComponent } from "./component/Teacher/teacher.component";
-import { PopupComponent } from "./component/popup/popup.component";
-import { PopupStudentComponent } from "./component/student/popupstudent/popupstudent.component";
-import { OrganizationComponent } from "./organization/organization.component";
-import { ClassroomComponent } from "./clasroom/classroom.component";
-import { AdminPageComponent } from "./component/admin/adminPage.component";
-import { ExecutivePageComponent } from "./component/executive/executivePage.component";
-import { NavbarComponent } from "./nawbar/nawbar.component";
-import { PopupTeacherComponent } from "./component/Teacher/popupteacher/popupteacher.component";
-import { TestComponent } from "./test/test.component";
-import { HomeworkComponent } from "./homework/homework.component";
-import { GuestComponent } from "./guest/guest.component";
-import { UserManagementComponent } from "./userManagment/UserManagment.component";
-import { RolePageComponent } from "./userManagment/rolePage/rolePage.component";
-import { AuthorityRoleComponent } from "./userManagment/authorityRole/authorityRole.component";
-import { AuthorityPageComponent } from "./userManagment/authorityPage/authorityPage.component";
-import { UserPageComponent } from "./userManagment/userPage/userPage.component";
-import { CustomPageComponent } from './component/custom/customPage.component';
-import { QrcodeComponent } from './component/qrcode/qrcode.component'; // ✅ QR bileşeni eklendi
+import {PdfEditComponent} from "./component/pdfEditPage/pdfEdit.component";
+import {TeacherComponent} from "./component/Teacher/teacher.component";
+import {PopupComponent} from "./component/popup/popup.component";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {PopupStudentComponent} from "./component/student/popupstudent/popupstudent.component";
+import {OrganizationComponent} from "./organization/organization.component";
+import {ClassroomComponent} from "./clasroom/classroom.component";
+import {AdminPageComponent} from "./component/admin/adminPage.component";
+import {ExecutivePageComponent} from "./component/executive/executivePage.component";
+import {NavbarComponent} from "./nawbar/nawbar.component";
+import {PopupTeacherComponent} from "./component/Teacher/popupteacher/popupteacher.component";
+import {TestComponent} from "./test/test.component";
+import {HomeworkComponent} from "./homework/homework.component";
+import {GuestComponent} from "./guest/guest.component";
+import {UserManagementComponent} from "./userManagment/UserManagment.component";
+import {RolePageComponent} from "./userManagment/rolePage/rolePage.component";
+import {AuthorityRoleComponent} from "./userManagment/authorityRole/authorityRole.component";
+import {AuthorityPageComponent} from "./userManagment/authorityPage/authorityPage.component";
+import {UserPageComponent} from "./userManagment/userPage/userPage.component";
+import {UserclassroomComponent} from "./clasroom/user-classroom/userclassroom.component";
+import {CustomPageComponent} from "./component/custom/customPage.component";
+import {QrcodeComponent} from "./component/qrcode/qrcode.component";
+import {QRCodeModule} from "angularx-qrcode";
+
+
+
+
 
 @NgModule({
   declarations: [
@@ -37,7 +42,6 @@ import { QrcodeComponent } from './component/qrcode/qrcode.component'; // ✅ QR
     ProfileComponent,
     StudentComponent,
     NavbarComponent,
-    CustomPageComponent,
     StudentComponent,
     TeacherComponent,
     RolePageComponent,
@@ -59,9 +63,12 @@ import { QrcodeComponent } from './component/qrcode/qrcode.component'; // ✅ QR
     ClassroomComponent,
     AdminPageComponent,
     ExecutivePageComponent,
+    CustomPageComponent,
     HomeworkComponent,
     GuestComponent,
-    QrcodeComponent // ✅ buraya eklendi
+    QrcodeComponent, // ✅ buraya eklendi
+    UserclassroomComponent,
+    GuestComponent
   ],
   exports: [
     NavbarComponent,
@@ -74,7 +81,10 @@ import { QrcodeComponent } from './component/qrcode/qrcode.component'; // ✅ QR
     CommonModule,
     FeedbackRoutingModule,
     FormsModule,
-    QRCodeModule // ✅ buraya eklendi
+    QRCodeModule,
+    ReactiveFormsModule,
+
+
   ]
 })
 export class FeedbackModule { }

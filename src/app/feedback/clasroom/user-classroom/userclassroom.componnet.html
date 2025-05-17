@@ -1,0 +1,40 @@
+<div class="container">
+  <h2>Sınıf Kullanıcıları</h2>
+
+  <form (ngSubmit)="onSubmit()">
+    <input type="text" [(ngModel)]="searchText" (input)="onSearchChange()" placeholder="Kullanıcı ara...">
+
+    <select *ngIf="filteredUsers.length > 0" [(ngModel)]="formData.userId" class="dropdown">
+      <option *ngFor="let user of filteredUsers" [value]="user.id" (click)="onUserSelect(user)">
+        {{ user.firstName }} {{ user.lastName }}
+      </option>
+    </select>
+
+
+    <input
+      type="text"
+      [formControl]="searchControl"
+      placeholder="Sınıf ara..."
+    />
+
+
+
+    <select [(ngModel)]="formData.classroomId" name="classroomId" required>
+      <option *ngFor="let classroom of classrooms" [value]="classroom.id">
+        {{ classroom.name }}
+      </option>
+    </select>
+
+    <button type="submit">
+      {{ formData.id ? 'Güncelle' : 'Ekle' }}
+    </button>
+  </form>
+
+  <ul>
+    <li *ngFor="let user of classroomUsers">
+      ClassroomID: {{ user.classroomId }} - UserID: {{ user.userId }}
+      <button (click)="editUser(user)">Düzenle</button>
+      <button (click)="deleteUser(user.id)">Sil</button>
+    </li>
+  </ul>
+</div>

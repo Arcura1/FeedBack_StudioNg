@@ -23,7 +23,7 @@
       <div class="col-md-4" *ngIf="userForm.role"> <!-- role seçilince açılacak -->
         <input type="text" (input)="onInputChange($event)" placeholder="Role ara..." />
 
-        <select *ngIf="organizations.length > 0" [(ngModel)]="userForm.roleId" name="organizationId" class="form-control" (change)="onOrganizationChange()">
+        <select *ngIf="organizations.length > 0" [(ngModel)]="userForm.roleId" name="organizationId" class="form-control" (change)="onOrganizationChange($event)">
           <option *ngFor="let organization of organizations" [value]="organization.id">
             {{ organization.name }}
           </option>

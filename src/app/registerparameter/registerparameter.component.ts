@@ -15,6 +15,7 @@ export class RegisterparameterComponent implements OnInit {
   password: string = '';
   confirmPassword: string = '';
   role: string = 'GUEST';
+  roleIdParam: number = 0;
   hidePassword: boolean = true;
   hideConfirmPassword: boolean = true;
 
@@ -29,8 +30,11 @@ export class RegisterparameterComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       const roleParam = params['role'];
+      const roleIdParam = params['organizationId'];
       if (roleParam) {
         this.role = roleParam.toUpperCase();
+      }      if (roleIdParam) {
+        this.roleIdParam = roleIdParam.toUpperCase();
       }
     });
   }
@@ -53,7 +57,8 @@ export class RegisterparameterComponent implements OnInit {
       email: this.email,
       phone: this.phone,
       password: this.password,
-      role: this.role
+      role: this.role,
+      roleId: this.roleIdParam
     };
 
     this.http.post(this.apiUrl, newUser).subscribe({

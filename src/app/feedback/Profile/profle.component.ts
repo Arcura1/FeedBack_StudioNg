@@ -1,8 +1,9 @@
 import {Component, OnInit} from "@angular/core";
 
 @Component({
-  selector:"profile",
-  templateUrl:"profle.component.html"
+  selector:'profile',
+  templateUrl:'profle.component.html',
+  styleUrls: ['./profle.component.css']
 })
 export class ProfileComponent implements OnInit {
   user: any = {}; // Kullanıcı bilgilerini saklamak için değişken

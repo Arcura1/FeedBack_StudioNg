@@ -2,13 +2,14 @@
   <h2>Sınıf Kullanıcıları</h2>
 
   <form (ngSubmit)="onSubmit()">
-    <input
-      type="number"
-      [(ngModel)]="formData.userId"
-      name="userId"
-      placeholder="User ID"
-      required
-    />
+    <input type="text" [(ngModel)]="searchText" (input)="onSearchChange()" placeholder="Kullanıcı ara...">
+
+    <select *ngIf="filteredUsers.length > 0" [(ngModel)]="formData.userId" class="dropdown">
+      <option *ngFor="let user of filteredUsers" [value]="user.id" (click)="onUserSelect(user)">
+        {{ user.firstName }} {{ user.lastName }}
+      </option>
+    </select>
+
 
     <input
       type="text"

@@ -29,6 +29,11 @@ export class NavbarComponent implements OnInit{
     this.router.navigate(['/feedback/organization']);
   }
 
+logout() {
+  sessionStorage.clear(); // Tüm session'ı temizle
+  localStorage.clear();   // Varsa localStorage da temizlenir
+  this.router.navigate(['/login']); // Giriş ekranına yönlendir
+}
 
   goToHomework() {
     const classroomId = 1;

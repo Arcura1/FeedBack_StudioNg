@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-qrcode',
@@ -6,11 +7,31 @@ import { Component } from '@angular/core';
   styleUrls: ['./qrcode.component.css']
 })
 export class QrcodeComponent {
-  baseUrl: string = 'http://localhost:4200/registerparameter?role=';
-  roles: string[] = ['ADMIN', 'TEACHER', 'STUDENT', 'EXECUTIVE', 'CUSTOM', 'GUEST'];
-  targetUrl: string = '';
+  roles: string[] = ['GUEST', 'CUSTOM', 'TEACHER', 'STUDENT', 'ADMIN', 'EXECUTIVE'];
+  selectedRole: string = '';
+  organizations: any[] = [];
+  selectedOrganizationId: number | null = null;
 
-  updateUrl(role: string) {
-    this.targetUrl = `${this.baseUrl}${role}`;
+  qrUrl: string = '';
+  baseUrl = 'http://localhost:4200/registerparameter';
+
+  constructor(private http: HttpClient) {}
+
+  onRoleSelect() {
+    this.organizations = [];
+    this.selectedOrganizationId = null;
+    this.qrUrl = '';
+
+    const payload = { name: '', roleTypeEnum: this.selectedRole };
+    this.http.post<any[]>('http://localhost:8080/roles/query', payload)
+      .subscribe(data => {
+        this.organizations = data;
+      });
+  }
+
+  onOrganizationSelect() {
+    if (this.selectedRole && this.selectedOrganizationId) {
+      this.qrUrl = `${this.baseUrl}?role=${this.selectedRole}&organizationId=${this.selectedOrganizationId}`;
+    }
   }
 }

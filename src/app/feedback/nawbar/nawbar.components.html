@@ -1,29 +1,29 @@
+<!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <!-- Navbar Markası veya Logosu -->
     <a class="navbar-brand" (click)="goToMain()">Anasayfa</a>
 
-    <!-- Toggler butonu (mobil görünümde) -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- Navbar İçerikleri -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <!-- Sağdan sola sıralamak için ms-auto kullanıldı -->
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link"  *ngIf="user.role == 'ADMIN' " (click)="goToOrganization()">Kurum</a>
+        <li class="nav-item" *ngIf="user.role == 'ADMIN'">
+          <a class="nav-link" (click)="goToOrganization()">Kurum</a>
+        </li>
+        <li class="nav-item" *ngIf="user.role == 'ADMIN' || user.role == 'EXECUTIVE'">
+          <a class="nav-link" (click)="goToClassroom()">Sınıf</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link"  *ngIf="user.role == 'ADMIN' || user.role == 'EXECUTIVE'" (click)="goToClassroom()">Sınıf</a>
+          <a class="nav-link" (click)="goToProfile()">Profil</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link"  (click)="goToProfile()">Profil</a>
+          <a class="nav-link" (click)="goToHomework()">Homework</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link"  (click)="goToHomework()">Homework</a>
+          <a class="nav-link text-danger fw-bold" (click)="logout()">Çıkış Yap</a>
         </li>
       </ul>
     </div>

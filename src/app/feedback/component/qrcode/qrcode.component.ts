@@ -6,9 +6,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./qrcode.component.css']
 })
 export class QrcodeComponent {
-  targetUrl: string = 'https://example.com'; // 🔁 QR yönlendirme adresi (istediğin URL)
+  baseUrl: string = 'http://localhost:4200/registerparameter?role=';
+  roles: string[] = ['ADMIN', 'TEACHER', 'STUDENT', 'EXECUTIVE', 'CUSTOM', 'GUEST'];
+  targetUrl: string = '';
 
-  updateUrl(newUrl: string) {
-    this.targetUrl = newUrl;
+  updateUrl(role: string) {
+    this.targetUrl = `${this.baseUrl}${role}`;
   }
 }

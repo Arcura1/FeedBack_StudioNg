@@ -696,4 +696,19 @@ export class PdfEditComponent implements OnInit {
     window.location.reload(); // Sayfayı yenile
   }
 
+  deleteAllHiglights() {
+    const deleteUrl = `http://localhost:8080/highlights/delAll/${this.pdfId}`;
+
+    this.http.delete(deleteUrl, {responseType: 'text'}).subscribe({
+      next: (response) => {
+        console.log('Server response:', response); // "silindi" cevabı
+        alert('All highlights have been successfully deleted!'); // Kullanıcıya bilgi mesajı
+        this.refreshPage(); // Sayfayı yenile
+      },
+      error: (error) => {
+        console.error('Error occurred while deleting highlights:', error);
+        alert('An error occurred while deleting highlights. Please try again.');
+      },
+    });
+  }
 }

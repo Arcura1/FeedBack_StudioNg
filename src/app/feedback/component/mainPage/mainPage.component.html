@@ -4,14 +4,17 @@
     'teacher-bg': user.role === 'TEACHER',
     'student-bg': user.role === 'STUDENT',
     'admin-bg': user.role === 'ADMIN',
-    'executive-bg': user.role === 'EXECUTIVE'
+    'executive-bg': user.role === 'EXECUTIVE',
+    'custom-bg': user.role === 'CUSTOM'
   }" class="main-container">
 
   <!-- Öğretmen İçeriği -->
   <div *ngIf="user.role == 'TEACHER'">
     <app-teacher></app-teacher>
   </div>
-
+  <div *ngIf="user.role == 'CUSTOM'">
+    <app-custom-page></app-custom-page>
+  </div>
   <!-- Öğrenci İçeriği -->
   <div *ngIf="user.role == 'STUDENT'">
 

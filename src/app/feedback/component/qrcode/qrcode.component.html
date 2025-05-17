@@ -1,0 +1,18 @@
+<div class="qrcode-container">
+  <h3 class="qrcode-title">QR Kodu Oluştur</h3>
+
+  <input
+    type="text"
+    class="qrcode-input"
+    placeholder="Yönlendirilecek URL girin"
+    [(ngModel)]="targetUrl"
+  />
+
+  <div class="qrcode-box">
+    <qrcode
+      [qrdata]="targetUrl"
+      [width]="256"
+      [errorCorrectionLevel]="'M'">
+    </qrcode>
+  </div>
+</div>

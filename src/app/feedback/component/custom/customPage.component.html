@@ -1,1 +1,92 @@
-<a>custom sayfasındasın</a>
+<div class="accordion-container" *ngIf="authorities.length > 0; else noAuth">
+
+  <!-- ORGANIZATION -->
+  <div class="accordion-item">
+    <div class="accordion-header" (click)="toggleAccordion('organization')">
+      <span><i class="icon fa fa-sitemap"></i> Organizasyon</span>
+      <span class="arrow" [class.open]="selectedSection === 'organization'">▼</span>
+    </div>
+    <div class="accordion-body" [class.show]="selectedSection === 'organization'">
+      <ng-container *ngFor="let auth of organizationAuthorities">
+        <div *ngIf="auth.organization">
+          <p><strong>ID:</strong> {{ auth.organization.id }}</p>
+          <p><strong>Adı:</strong> {{ auth.organization.name }}</p>
+          <p><strong>Email:</strong> {{ auth.organization.email }}</p>
+          <p><strong>Adres:</strong> {{ auth.organization.address }}</p>
+        </div>
+        <div *ngIf="!auth.organization">
+          <p>Organizasyon verisi bulunamadı.</p>
+        </div>
+        <hr />
+      </ng-container>
+    </div>
+  </div>
+
+  <!-- PDF EDIT -->
+  <div class="accordion-item">
+    <div class="accordion-header" (click)="toggleAccordion('pdf-edit')">
+      <span><i class="icon fa fa-file-pdf-o"></i> PDF Edit</span>
+      <span class="arrow" [class.open]="selectedSection === 'pdf-edit'">▼</span>
+    </div>
+    <div class="accordion-body" [class.show]="selectedSection === 'pdf-edit'">
+      <ng-container *ngFor="let auth of pdfEditAuthorities">
+        <div *ngIf="auth.pdfInfo">
+          <p><strong>pdfInfoId:</strong> {{ auth.pdfInfo.id }}</p>
+          <p><strong>pdfInfo:</strong> {{ auth.pdfInfo | json }}</p>
+        </div>
+        <div *ngIf="!auth.pdfInfo">
+          <p>PDF bilgisi bulunamadı.</p>
+        </div>
+        <hr />
+      </ng-container>
+    </div>
+  </div>
+
+  <!-- CLASSROOM -->
+  <div class="accordion-item">
+    <div class="accordion-header" (click)="toggleAccordion('classroom')">
+      <span><i class="icon fa fa-university"></i> Classroom</span>
+      <span class="arrow" [class.open]="selectedSection === 'classroom'">▼</span>
+    </div>
+    <div class="accordion-body" [class.show]="selectedSection === 'classroom'">
+      <ng-container *ngFor="let auth of classroomAuthorities">
+        <div *ngIf="auth.classroom">
+          <p><strong>ID:</strong> {{ auth.classroom.id }}</p>
+          <p><strong>Adı:</strong> {{ auth.classroom.name }}</p>
+          <p><strong>Açıklama:</strong> {{ auth.classroom.description }}</p>
+          <p><strong>Kat:</strong> {{ auth.classroom.floor }}</p>
+          <p><strong>Kapasite:</strong> {{ auth.classroom.capacity }}</p>
+        </div>
+        <div *ngIf="!auth.classroom">
+          <p>Sınıf bilgisi bulunamadı.</p>
+        </div>
+        <hr />
+      </ng-container>
+    </div>
+  </div>
+
+  <!-- HOMEWORK -->
+  <div class="accordion-item">
+    <div class="accordion-header" (click)="toggleAccordion('homework')">
+      <span><i class="icon fa fa-pencil-square-o"></i> Homework</span>
+      <span class="arrow" [class.open]="selectedSection === 'homework'">▼</span>
+    </div>
+    <div class="accordion-body" [class.show]="selectedSection === 'homework'">
+      <ng-container *ngFor="let auth of homeworkAuthorities">
+        <div *ngIf="auth.homework">
+          <p><strong>homeworkId:</strong> {{ auth.homework.id }}</p>
+          <p><strong>homework:</strong> {{ auth.homework | json }}</p>
+        </div>
+        <div *ngIf="!auth.homework">
+          <p>Ödev bilgisi bulunamadı.</p>
+        </div>
+        <hr />
+      </ng-container>
+    </div>
+  </div>
+
+</div>
+
+<ng-template #noAuth>
+  <p>Bu role ait yetki bulunamadı.</p>
+</ng-template>

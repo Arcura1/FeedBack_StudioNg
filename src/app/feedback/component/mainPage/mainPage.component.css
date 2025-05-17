@@ -35,6 +35,10 @@ body {
   background: linear-gradient(135deg, #f4c542, #f39c12);
 }
 
+.custom-bg{
+background: brown;
+}
+
 /* İçerik Bölümü */
 .content-section {
   background: rgba(255, 255, 255, 0.2);

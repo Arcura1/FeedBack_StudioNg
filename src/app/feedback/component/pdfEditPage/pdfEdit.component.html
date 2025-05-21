@@ -1,56 +1,69 @@
 <nawbarfeed></nawbarfeed>
 
-<div class="container mt-5">
-  <h2 class="text-center mb-4">Test Works!</h2>
+<div class="min-vh-100 d-flex align-items-center justify-content-center pdf-edit-wrapper">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12">
 
-  <!-- Placeholder for dynamically added buttons -->
-  <div id="buttons-container" class="d-flex justify-content-center mb-4"></div>
-  <div id="modal" class="modal">
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <p id="modalMessage"></p>
+        <!-- PDF Card -->
+        <div class="pdf-card shadow-lg text-white">
+          <h2 class="text-center mb-4 fw-bold">
+            <i class="bi bi-file-earmark-pdf me-2"></i>PDF Editör
+          </h2>
+
+          <!-- PDF ID ve HW ID -->
+          <p class="text-light">PDF ID: <strong>{{ pdfId }}</strong></p>
+          <p class="text-light">Homework ID: <strong>{{ homeworkId }}</strong></p>
+
+          <!-- X/Y -->
+          <div class="mb-3">
+            <label class="form-label text-light">X Değeri: <strong>{{ pdfX.toFixed(2) }}</strong></label><br />
+            <label class="form-label text-light">Y Değeri: <strong>{{ pdfY.toFixed(2) }}</strong></label>
+          </div>
+
+          <!-- Form -->
+          <form (ngSubmit)="onSubmit()" #myForm="ngForm" class="mb-4">
+            <div class="input-group">
+              <input type="text" class="form-control" name="metin" [(ngModel)]="metin" placeholder="Metin giriniz" required>
+              <input type="text" class="form-control" name="title" [(ngModel)]="title" placeholder="Başlık giriniz" required>
+              <button type="submit" class="btn btn-light" [disabled]="!myForm.form.valid">Gönder</button>
+            </div>
+          </form>
+
+          <!-- Butonlar -->
+          <div class="d-flex flex-wrap gap-2 mb-4">
+            <button class="btn btn-outline-light" (click)="pageChangeBackvard()">Geri</button>
+            <button class="btn btn-outline-light" (click)="pageChangeForvard()">İleri</button>
+            <button class="btn btn-warning" (click)="higlihtMode()">Highlight</button>
+            <button class="btn btn-info" (click)="noteMode()">Note</button>
+            <button class="btn btn-success" (click)="download($event)">Download PDF</button>
+            <button class="btn btn-outline-success" (click)="downloadWithoutButton($event)">Download Without Buttons</button>
+            <button class="btn btn-danger" (click)="cizgiMode($event)">Çizgi</button>
+            <button class="btn btn-danger" (click)="deleteAllNotes()">Tüm Notları Sil</button>
+            <button class="btn btn-danger" (click)="deleteAllHiglights()">Tüm Highlightları Sil</button>
+          </div>
+
+          <!-- PDF Canvas -->
+          <div id="pdf-viewer" class="border rounded bg-white p-3 overflow-auto" style="width: max-content" #canvasContainer>
+            <canvas id="pdf-render"
+                    #pdfCanvas
+                    (click)="pdfLocationUpdate($event)"
+                    (mouseup)="mouseup($event)"
+                    (mousemove)="mouseMove($event)"
+                    (mousedown)="mouseDown($event)">
+            </canvas>
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
+</div>
 
-  <button (click)="refreshPage()">Sayfayı Yenile</button>
-  <p>PdfId: {{ pdfId }}</p>
-  <p>HomeworkId: {{ homeworkId }}</p>
-  <!-- X ve Y Değerleri -->
-  <div class="mb-3">
-    <label class="form-label">Tıklanılan X değeri: <strong>{{ pdfX.toFixed(2) }}</strong></label>
-    <br>
-    <label class="form-label">Tıklanılan Y değeri: <strong>{{ pdfY.toFixed(2) }}</strong></label>
-  </div>
-
-  <!-- Form -->
-  <form (ngSubmit)="onSubmit()" #myForm="ngForm" class="mb-4">
-    <div class="input-group">
-      <input id="noteInput" type="text" name="metin" class="form-control" placeholder="Metin giriniz" required [(ngModel)]="metin">
-      <input id="title" type="text" name="title" class="form-control" placeholder="başlık giriniz" required [(ngModel)]="title">
-      <button type="submit" class="btn btn-primary" [disabled]="!myForm.form.valid">Gönder</button>
-    </div>
-  </form>
-
-  <!-- Buttons -->
-  <div class="d-flex justify-content-between flex-wrap">
-    <button class="btn btn-secondary mb-2" (click)="pageChangeBackvard()">Geri</button>
-    <button class="btn btn-secondary mb-2" (click)="pageChangeForvard()">İleri</button>
-    <button class="btn btn-warning mb-2" (click)="higlihtMode()">Highlight</button>
-    <button class="btn btn-info mb-2" (click)="noteMode()">Note</button>
-    <button id="download-btn" class="btn btn-success mb-2" (click)="download($event)">Download PDF</button>
-    <button class="btn btn-success mb-2" (click)="downloadWithoutButton($event)">Download Without Buttons PDF</button>
-    <button class="btn btn-danger mb-2" (click)="cizgiMode($event)">Çizgi</button>
-    <button (click)="deleteAllNotes()" class="btn btn-danger">
-      Pdf Üzerindeki Tüm Notlerı Sil
-    </button>
-    <button (click)="deleteAllHiglights()" class="btn btn-danger">
-      Pdf Üzerindeki Tüm higlihtları Sil
-    </button>
-
-  </div>
-
-  <!-- PDF Viewer -->
-  <div class="border position-relative" id="pdf-viewer" style="width: max-content" #canvasContainer>
-    <canvas (click)="pdfLocationUpdate($event)" (mouseup)="mouseup($event)" (mousemove)="mouseMove($event)" (mousedown)="mouseDown($event)" id="pdf-render" class="" #pdfCanvas></canvas>
+<!-- Modal -->
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <p id="modalMessage"></p>
   </div>
 </div>

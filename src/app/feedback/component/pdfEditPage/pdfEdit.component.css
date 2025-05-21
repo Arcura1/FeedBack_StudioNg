@@ -1,53 +1,59 @@
-/* Modal (Pop-up) arka planı */
+/* Sayfa Arkaplanı (landing uyumlu) */
+.pdf-edit-wrapper {
+  background: linear-gradient(135deg, #e3f2fd 0%, #ffffff 100%);
+  padding: 40px 0;
+}
+
+/* PDF Kartı Arkaplan Geçişli */
+.pdf-card {
+  background: linear-gradient(135deg, #bbdefb, #90caf9);
+  border-radius: 16px;
+  padding: 30px;
+  color: white;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* PDF viewer alanı */
+#pdf-viewer {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  margin-top: 20px;
+  max-width: 100%;
+}
+
+/* Modal */
 .modal {
-  display: none; /* Başlangıçta gizli */
+  display: none;
   position: fixed;
-  z-index: 1;
+  z-index: 999;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0, 0, 0, 0.4); /* Yarı saydam arka plan */
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
-/* Modal içerik kutusu */
 .modal-content {
-  background-color: #fefefe;
+  background-color: #fff;
   margin: 15% auto;
-  padding: 20px;
+  padding: 25px;
   border: 1px solid #888;
   width: 80%;
   max-width: 500px;
+  border-radius: 12px;
 }
 
-/* Kapatma düğmesi */
 .close {
-  color: #aaa;
   float: right;
   font-size: 28px;
   font-weight: bold;
-
-  .container {
-    max-width: 800px;
-    margin: 0 auto;
-  }
-
-  #pdf-viewer {
-    border: 1px solid #ddd;
-    background-color: #f9f9f9;
-    margin-top: 20px;
-  }
-
-  button {
-    margin-right: 10px;
-  }
-
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-
+  color: #aaa;
 }
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }

@@ -31,7 +31,7 @@ export class QrcodeComponent {
 
   onOrganizationSelect() {
     if (this.selectedRole && this.selectedOrganizationId) {
-      this.qrUrl = `${this.baseUrl}?role=${this.selectedRole}&organizationId=${this.selectedOrganizationId}`;
+      this.qrUrl = `${this.baseUrl}?role=${this.selectedRole}&roleId=${this.selectedOrganizationId}`;
     }
   }
 }

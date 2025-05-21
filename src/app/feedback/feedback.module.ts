@@ -30,6 +30,8 @@ import {UserclassroomComponent} from "./clasroom/user-classroom/userclassroom.co
 import {CustomPageComponent} from "./component/custom/customPage.component";
 import {QrcodeComponent} from "./component/qrcode/qrcode.component";
 import {QRCodeModule} from "angularx-qrcode";
+import { DenemeuserclassroomComponent } from './clasroom/denemeuserclassroom/denemeuserclassroom.component';
+
 
 
 
@@ -68,7 +70,8 @@ import {QRCodeModule} from "angularx-qrcode";
     GuestComponent,
     QrcodeComponent, // ✅ buraya eklendi
     UserclassroomComponent,
-    GuestComponent
+    GuestComponent,
+    DenemeuserclassroomComponent
   ],
   exports: [
     NavbarComponent,

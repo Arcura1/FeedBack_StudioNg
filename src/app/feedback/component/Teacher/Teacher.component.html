@@ -1,27 +1,23 @@
-
-<div *ngIf="classrooms.length > 0; else noData">
-  <h2>Kullanıcının Sınıfları</h2>
-  <ul>
-    <li *ngFor="let classroom of classrooms">
-      <p><strong>Sınıf:</strong> {{ classroom.name }}</p>
-      <p><strong>Organizasyon:</strong> {{ classroom.organization?.name }}</p>
-      <button (click)="goToHomework(classroom.id)">Ödev Ata</button>
-    </li>
-  </ul>
-</div>
-
-<ng-template #noData>
-  <p>Herhangi bir sınıf bulunamadı.</p>
-</ng-template>
-
-
 <div class="teacher-container">
-  <div class="teacher-card">
-    <h1 class="title">🧑‍🏫</h1>
-    <p class="description">Ödevleri yönetmek ve öğrencilerle iletişim kurmak için buradasınız.</p>
-    <button class="btn-teacher" (click)="goToTeacher()">Ödev Görüntüleme Sayfasına Git</button>
+  <div *ngIf="classrooms.length > 0; else noData" class="classroom-list">
+    <h2>Size Ait Sınıflar </h2>
+    <div class="row">
+      <div class="classroom-card" *ngFor="let classroom of classrooms">
+        <p><strong>Sınıf:</strong> {{ classroom.name }}</p>
+        <p><strong>Organizasyon:</strong> {{ classroom.organization?.name }}</p>
+        <button (click)="goToHomework(classroom.id)">Ödev Ata</button>
+      </div>
+    </div>
   </div>
+
+  <ng-template #noData>
+    <div class="teacher-card">
+      <h1 class="title">🧑‍🏫</h1>
+      <p>Herhangi bir sınıf bulunamadı.</p>
+    </div>
+  </ng-template>
 </div>
+
 
 
 

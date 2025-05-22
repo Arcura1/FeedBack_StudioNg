@@ -6,6 +6,17 @@
   </div>
   <div class="accordion-body" [class.show]="selectedSection === 'organization'">
 
+    <!-- Organizasyon Seçici -->
+    <div class="form-group" *ngIf="organizationAuthorities.length > 0">
+      <label for="orgSelect">Bir organizasyon seçin:</label>
+      <select class="form-control" id="orgSelect" #orgSelect (change)="onSelectOrganization(orgSelect.value)">
+        <option [value]="''">Seçiniz</option>
+        <option *ngFor="let authority of organizationAuthorities" [value]="authority.organization.id">
+          {{ authority.organization.name }}
+        </option>
+      </select>
+    </div>
+
     <form (ngSubmit)="saveOrganization()" #orgForm="ngForm" class="mb-4" *ngIf="organization">
       <input type="hidden" [(ngModel)]="organization.id" name="id">
 

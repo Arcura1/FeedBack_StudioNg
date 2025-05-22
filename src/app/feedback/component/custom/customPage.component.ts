@@ -15,11 +15,13 @@ export class CustomPageComponent implements OnInit {
   homeworkAuthorities: Authority[] = [];
 
   selectedSection: string | null = null;
-
   organization: any = null;
   apiUrl: string = 'http://localhost:8080/organization';
 
-  constructor(private authorityService: AuthorityService, private http: HttpClient) {}
+  constructor(
+    private authorityService: AuthorityService,
+    private http: HttpClient
+  ) {}
 
   ngOnInit(): void {
     this.loadAuthorities();
@@ -33,17 +35,6 @@ export class CustomPageComponent implements OnInit {
         this.organizationAuthorities = data.filter(
           a => a.authorityType === 'ORGANIZATION' && a.organization
         );
-
-        // 👇 İlk organization'ı forma doldur
-        if (this.organizationAuthorities.length > 0) {
-          const orgData = this.organizationAuthorities[0].organization;
-          this.organization = {
-            id: orgData.id,
-            name: orgData.name,
-            address: orgData.address,
-            email: orgData.email
-          };
-        }
       },
       error: (err) => {
         console.error('Yetkiler yüklenemedi:', err);
@@ -53,6 +44,24 @@ export class CustomPageComponent implements OnInit {
 
   toggleAccordion(section: string): void {
     this.selectedSection = this.selectedSection === section ? null : section;
+  }
+
+  onSelectOrganization(orgId: string): void {
+    const selected = this.organizationAuthorities.find(
+      auth => auth.organization && auth.organization.id === Number(orgId)
+    );
+
+    if (selected && selected.organization) {
+      const orgData = selected.organization;
+      this.organization = {
+        id: orgData.id,
+        name: orgData.name,
+        address: orgData.address,
+        email: orgData.email
+      };
+    } else {
+      this.organization = null;
+    }
   }
 
   saveOrganization(): void {
@@ -66,6 +75,7 @@ export class CustomPageComponent implements OnInit {
       next: () => {
         alert(`Organization ${this.organization.id ? 'güncellendi' : 'oluşturuldu'}.`);
         this.resetForm();
+        this.loadAuthorities();
       },
       error: err => {
         console.error('Kaydetme hatası:', err);

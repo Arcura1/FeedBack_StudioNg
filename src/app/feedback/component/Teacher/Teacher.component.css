@@ -1,212 +1,37 @@
-body {
-  margin: 0;
-  font-family: 'Arial', sans-serif;
-  background: linear-gradient(135deg, #e0eafc, #cfdef3); /* Öğretmen teması */
-  color: black;
-  min-height: 100vh;
-}
-
-/* Ortak kart yapısı: Öğretmen, öğrenci ve ödev */
-.teacher-card,
-.student-container,
-.homework-card {
-  background: linear-gradient(135deg, #ffffff, #dbe8fa); /* Sayfa temasına uyumlu ama belirgin */
-  border: 1px solid #cdd8f0;
-  border-radius: 15px;
-  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.25);
-}
-
-/* Öğretmen panel kapsayıcı */
-.teacher-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 50px auto;
-  max-width: 900px;
-}
-
-/* Öğretmen kart içeriği */
-.teacher-card {
-  padding: 40px;
-  max-width: 400px;
-  width: 90%;
-  text-align: center;
-}
-
-.title {
-  font-size: 2.5rem;
-  margin-bottom: 10px;
-  color: #2c3e50;
-}
-
-.description {
-  font-size: 16px;
-  margin-bottom: 20px;
-  color: #333;
-}
-
-.btn-teacher {
-  background-color: #4e54c8;
-  color: white;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 25px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.btn-teacher:hover {
-  background-color: #3e42b0;
-  transform: scale(1.05);
-}
-
-/* Öğrenci panel kapsayıcı */
-.main-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  min-height: calc(100vh - 60px);
-}
-
-/* Öğrenci kartı */
-.student-container {
-  text-align: center;
-  padding: 30px;
-  max-width: 900px;
-  width: 90%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(10px);
-}
-
-/* Sayfa başlığı */
-.page-title {
-  font-size: 28px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  color: black;
-}
-
-/* PDF yönetme butonu */
-.btn-edit {
-  background-color: #4e54c8;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 20px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.btn-edit:hover {
-  background-color: #3e42b0;
-  transform: scale(1.05);
-}
-
-/* Ödev kart listesi */
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  width: 100%;
-}
-
-/* Ödev kartları */
-.homework-card {
-  padding: 20px;
-  text-align: center;
-  max-width: 300px;
-  margin: 15px;
-  transition: all 0.3s ease-in-out;
-}
-
-.homework-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.4);
-}
-
-.card-title {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.card-text {
-  font-size: 14px;
-  margin-bottom: 8px;
-}
-
-/* Detay butonu */
-.btn-view {
-  background-color: #4e54c8;
-  color: white;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 20px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.btn-view:hover {
-  background-color: #3e42b0;
-  transform: scale(1.05);
-}
-
-/* Sınıf listesi */
-.classroom-list {
+.classroom-card {
   background: linear-gradient(135deg, #ffffff, #dbe8fa);
   border: 1px solid #cdd8f0;
   border-radius: 15px;
-  padding: 30px;
-  max-width: 800px;
-  margin: 40px auto;
   box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
-}
-
-.classroom-list h2 {
-  color: #2c3e50;
+  padding: 20px;
+  margin: 15px;
+  max-width: 300px;
+  width: 100%;
   text-align: center;
-  margin-bottom: 25px;
-}
-
-.classroom-list ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.classroom-list li {
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 15px 20px;
-  margin-bottom: 15px;
-  background: white;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  color: black;
   transition: transform 0.3s ease;
 }
 
-.classroom-list li:hover {
-  transform: scale(1.02);
+.classroom-card:hover {
+  transform: scale(1.03);
 }
 
-.classroom-list button {
+.classroom-card p {
+  margin: 10px 0;
+  color: black;
+}
+
+.classroom-card button {
   background-color: #4e54c8;
-  color: white;
-  border: none;
+  color: black;
   padding: 10px 18px;
+  border: none;
   border-radius: 20px;
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.classroom-list button:hover {
+.classroom-card button:hover {
   background-color: #3e42b0;
 }

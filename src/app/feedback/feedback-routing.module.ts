@@ -14,9 +14,8 @@ import { ExecutivePageComponent } from "./component/executive/executivePage.comp
 import { AdminPageComponent } from "./component/admin/adminPage.component";
 import { HomeworkComponent } from "./homework/homework.component";
 import { CustomPageComponent } from './component/custom/customPage.component';
-import { QrcodeComponent } from './component/qrcode/qrcode.component'; // ✅ buraya eklendi
-
-const pageCode = "feedback";
+import { QrcodeComponent } from './component/qrcode/qrcode.component';
+import { DenemeuserclassroomComponent } from './clasroom/denemeuserclassroom/denemeuserclassroom.component'; // ✅ Eklendi
 
 const routes: Routes = [
   { path: 'PdfEdit/:homeworkId/:pdfId', component: PdfEditComponent },
@@ -39,7 +38,8 @@ const routes: Routes = [
   { path: 'classroom', component: ClassroomComponent },
   { path: 'executive', component: ExecutivePageComponent },
   { path: 'admin', component: AdminPageComponent },
-  { path: 'qrcode', component: QrcodeComponent } // ✅ buraya eklendi
+  { path: 'qrcode', component: QrcodeComponent },
+  { path: 'denemeuserclassroom', component: DenemeuserclassroomComponent }
 ];
 
 @NgModule({

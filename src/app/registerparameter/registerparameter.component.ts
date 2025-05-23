@@ -27,17 +27,21 @@ export class RegisterparameterComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      const roleParam = params['role'];
-      const roleIdParam = params['organizationId'];
-      if (roleParam) {
-        this.role = roleParam.toUpperCase();
-      }      if (roleIdParam) {
-        this.roleIdParam = roleIdParam.toUpperCase();
-      }
-    });
-  }
+ngOnInit(): void {
+  this.route.queryParams.subscribe(params => {
+    const roleParam = params['role'];
+    const roleIdParam = params['roleId'];
+
+    if (roleParam) {
+      this.role = roleParam.toUpperCase();
+    }
+
+    if (roleIdParam) {
+      this.roleIdParam = parseInt(roleIdParam);
+    }
+  });
+}
+
 
   register() {
     const messageEl = document.getElementById('message');

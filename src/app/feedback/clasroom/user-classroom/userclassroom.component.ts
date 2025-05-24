@@ -76,33 +76,85 @@ export class UserclassroomComponent implements OnInit {
   }
 
   onSubmit() {
+    // Form validasyonu
+    if (!this.formData.userId || this.formData.userId === 0) {
+      alert('Lütfen bir kullanıcı seçin!');
+      return;
+    }
+
+    if (!this.formData.classroomId || this.formData.classroomId === 0) {
+      alert('Lütfen bir sınıf seçin!');
+      return;
+    }
+
     if (this.formData.id) {
-      this.classroomUserService.update(this.formData.id, this.formData).subscribe(() => {
-        this.loadUsers();
-        this.resetForm();
+      // Güncelleme işlemi
+      this.classroomUserService.update(this.formData.id, this.formData).subscribe({
+        next: () => {
+          alert('Kullanıcı başarıyla güncellendi!');
+          this.loadUsers();
+          this.resetForm();
+        },
+        error: (error) => {
+          console.error('Güncelleme hatası:', error);
+          alert('Güncelleme sırasında bir hata oluştu!');
+        }
       });
     } else {
-      this.classroomUserService.create(this.formData).subscribe(() => {
-        this.loadUsers();
-        this.resetForm();
+      // Yeni ekleme işlemi - Doğru endpoint kullanılacak
+      this.classroomUserService.create(this.formData).subscribe({
+        next: () => {
+          alert('Kullanıcı sınıfa başarıyla eklendi!');
+          this.loadUsers();
+          this.resetForm();
+        },
+        error: (error) => {
+          console.error('Ekleme hatası:', error);
+          alert('Ekleme sırasında bir hata oluştu!');
+        }
       });
     }
   }
 
   editUser(user: ClassroomUser) {
     this.formData = { ...user };
+
+    // Kullanıcı bilgilerini yükle ve göster
+    this.loadUserDetails(user.userId);
+  }
+
+  // Kullanıcı detaylarını yükle
+  loadUserDetails(userId: number) {
+    this.http.get<any>(`http://localhost:8080/api/users/${userId}`).subscribe({
+      next: (user) => {
+        this.searchText = `${user.firstName} ${user.lastName}`;
+        this.selectedUserId = user.id;
+      },
+      error: (error) => {
+        console.error('Kullanıcı detayları yüklenemedi:', error);
+      }
+    });
   }
 
   deleteUser(id: number | undefined) {
-    if (id) {
-      this.classroomUserService.delete(id).subscribe(() => this.loadUsers());
+    if (id && confirm('Bu kullanıcıyı sınıftan çıkarmak istediğinizden emin misiniz?')) {
+      this.classroomUserService.delete(id).subscribe({
+        next: () => {
+          alert('Kullanıcı sınıftan başarıyla çıkarıldı!');
+          this.loadUsers();
+        },
+        error: (error) => {
+          console.error('Silme hatası:', error);
+          alert('Silme sırasında bir hata oluştu!');
+        }
+      });
     }
   }
 
   clearSearchText() {
     this.searchText = '';
+    this.filteredUsers = [];
   }
-
 
   resetForm() {
     // Form verilerini sıfırla

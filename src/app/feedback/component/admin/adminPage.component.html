@@ -1,11 +1,37 @@
 <div class="admin-container">
-  <!-- Hoş geldin başlığı üstte -->
+  <!-- Hoş geldin mesajı -->
   <h2 class="welcome-text">Hoş geldin, {{ user.firstName }}!</h2>
-<br><br>
-  <!-- Yönetici kartı altta -->
+
+  <!-- Yönetim panel kartı -->
   <div class="admin-card">
     <h1 class="title">🛠️</h1>
     <p class="description">Sistem ayarlarını yönetmek ve kullanıcı kontrollerini sağlamak için buradasınız.</p>
     <button class="btn-admin" (click)="goToAdmin()">Yönetim Paneline Git</button>
+  </div>
+
+  <!-- Kurum Arama Alanı (Sadece ADMIN için) -->
+  <div *ngIf="user.role === 'ADMIN'" class="admin-card search-card mt-4">
+    <h3 style="color: #c70039;">🔍 Kurum Ara</h3>
+    <form (ngSubmit)="searchOrganizationByName()">
+      <div class="form-group">
+        <input type="text" class="form-control" [(ngModel)]="searchQuery.name" name="searchName" placeholder="Kurum adı girin">
+      </div>
+      <button type="submit" class="btn btn-admin mt-2">Ara</button>
+    </form>
+  </div>
+
+  <!-- Arama Sonuçları -->
+  <div class="row w-100 mt-4 px-3" *ngIf="searchResults.length > 0">
+    <div class="col-md-4 mb-4" *ngFor="let org of searchResults">
+      <div class="card org-card shadow">
+        <div class="card-body">
+          <h5 class="card-title">{{ org.name }}</h5>
+          <p class="card-text">
+            <strong>Adres:</strong> {{ org.address }}<br>
+            <strong>Email:</strong> {{ org.email }}
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

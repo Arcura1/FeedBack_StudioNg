@@ -6,7 +6,6 @@ body {
   min-height: 100vh;
 }
 
-/* Ana kapsayıcı: dikey hizalama */
 .admin-container {
   display: flex;
   flex-direction: column;
@@ -16,7 +15,6 @@ body {
   min-height: 100vh;
 }
 
-/* Başlık: karttan bağımsız yukarıda */
 .welcome-text {
   font-size: 2rem;
   font-weight: bold;
@@ -25,32 +23,32 @@ body {
   text-align: center;
 }
 
-/* Kart kutusu */
 .admin-card {
   background: rgba(255, 255, 255, 0.95);
-  padding: 40px;
+  padding: 30px;
   border-radius: 15px;
-  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.3);
-  max-width: 400px;
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2);
+  max-width: 500px;
   width: 100%;
   text-align: center;
 }
 
-/* Kart başlığı */
+.search-card {
+  margin-top: 30px;
+}
+
 .title {
   font-size: 2.5rem;
   margin-bottom: 10px;
   color: #c70039;
 }
 
-/* Açıklama metni */
 .description {
   font-size: 16px;
   margin-bottom: 60px;
   color: #333;
 }
 
-/* Buton stili */
 .btn-admin {
   background-color: #c70039;
   color: white;
@@ -66,4 +64,20 @@ body {
 .btn-admin:hover {
   background-color: #a1002c;
   transform: scale(1.05);
+}
+
+.card.org-card {
+  border-radius: 15px;
+  transition: transform 0.2s ease-in-out;
+  border: none;
+}
+
+.card.org-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.card-title {
+  color: #c70039;
+  font-size: 1.3rem;
 }

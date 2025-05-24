@@ -5,18 +5,20 @@
     <!-- Kullanıcı Arama -->
     <div class="col-md-6">
       <label class="form-label">Kullanıcı Ara</label>
-      <input
-        type="text"
-        class="form-control"
-        [(ngModel)]="searchText"
-        name="searchText"
-        (input)="onSearchChange()"
-        placeholder="İsim veya soyisim girin..."
-      />
+      <div class="input-group">
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="searchText"
+          name="searchText"
+          (input)="onSearchChange()"
+          placeholder="İsim veya soyisim girin..."
+        />
+      </div>
     </div>
 
-    <!-- Kullanıcı Dropdown -->
-    <div class="col-md-6" *ngIf="filteredUsers.length > 0">
+    <!-- Kullanıcı Seç (HER ZAMAN GÖRÜNÜR) -->
+    <div class="col-md-6">
       <label class="form-label">Kullanıcı Seç</label>
       <select
         class="form-select"
@@ -56,10 +58,15 @@
       </select>
     </div>
 
-    <!-- Buton -->
-    <div class="col-12">
+    <!-- Ekle ve Temizle Butonları -->
+    <div class="col-md-6">
       <button type="submit" class="btn btn-success w-100">
         {{ formData.id ? 'Güncelle' : 'Ekle' }}
+      </button>
+    </div>
+    <div class="col-md-6">
+      <button type="button" class="btn btn-danger w-100" (click)="resetForm()">
+        Temizle
       </button>
     </div>
   </form>
@@ -85,7 +92,8 @@
         </button>
         <button
           class="btn btn-outline-danger btn-sm"
-          (click)="deleteUser(user.id)"
+          type="button"
+          (click)="clearSearchText()"
         >
           Sil
         </button>

@@ -28,17 +28,16 @@
         />
       </div>
 
-      <div class="col-md-4">
-        <label for="organizationId" class="form-label">Organization</label>
-        <input
-          type="number"
-          id="organizationId"
-          [(ngModel)]="newRole.organizationId"
-          class="form-control"
-          name="organizationId"
-          required
-          placeholder="organizationId"
-        />
+
+      <div class="col-md-4" > <!-- role seçilince açılacak -->
+        <label class="form-label">Organization</label>
+        <input type="text" (input)="onInputChangeadd($event)" [(ngModel)]="organizationTextAdd" placeholder="Organizasyon ara..." />
+
+        <select *ngIf="organizationsa.length > 0" [(ngModel)]="newRole.organizationId" name="organizationId" class="form-control" required (change)="onOrganizationChange()">
+          <option *ngFor="let organizationa of organizationsa" [value]="organizationa.id">
+            {{ organizationa.name }}
+          </option>
+        </select>
       </div>
 
       <div class="col-md-4">
@@ -82,10 +81,18 @@
     <div class="col-md-4">
       <input [(ngModel)]="query.description" class="form-control" placeholder="Description" />
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4" > <!-- role seçilince açılacak -->
       <label class="form-label">Organization</label>
-      <input type="number" [(ngModel)]="query.organizationId" class="form-control" placeholder="organizationId" />
+      <input type="text" (input)="onInputChange($event)" [(ngModel)]="organizationText" placeholder="Organizasyon ara..." />
+
+      <select *ngIf="organizations.length > 0" [(ngModel)]="query.organizationId" name="organizationId" class="form-control" (change)="onOrganizationChange()">
+        <option *ngFor="let organization of organizations" [value]="organization.id">
+          {{ organization.name }}
+        </option>
+      </select>
     </div>
+
+
     <div class="col-md-4">
       <select [(ngModel)]="query.roleTypeEnum" class="form-select">
         <option value="">-- Select Role Type --</option>

@@ -13,6 +13,9 @@ import {debounceTime, distinctUntilChanged, Subject, switchMap} from "rxjs";
 export class RolePageComponent implements OnInit {
   roles: Role[] = [];
 
+  organizations: any[] = [];
+  organizationsa: any[] = [];
+
   newRole: Role = { name: '', description: '',organizationId: undefined, roleTypeEnum: 'CUSTOM' };
   selectedRoleId: number | null = null;
   query = {
@@ -34,6 +37,63 @@ export class RolePageComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadRoles();
+  }
+  payload = {
+    name: ''
+  };
+  organizationText: any= "";
+
+
+
+  payloadAdd = {
+    name: ''
+  };
+  organizationTextAdd: any= "";
+
+  onOrganizationChange() {
+    console.log('Organizasyon seçildi:');
+    // Burada organizasyon seçimi sonrası işlem yapabilirsin.
+  }
+
+
+
+  onInputChange(event: any) {
+    const inputValue = event.target.value;
+    console.log(event)
+    if (inputValue.length >= 2) { // en az 2 karakter sonra başlasın
+      this.payload.name = inputValue
+
+      this.http.post<any[]>('http://localhost:8080/organization/search', this.payload)
+        .pipe(
+          debounceTime(300), // 300ms bekler, hızlı yazınca az istek atar
+          distinctUntilChanged()
+        )
+        .subscribe(response => {
+          console.log(response)
+          this.organizations = response;
+        });
+    } else {
+      this.organizations = []; // boş inputta listeyi temizle
+    }
+  }
+  onInputChangeadd(event: any) {
+    const inputValue = event.target.value;
+    console.log(event)
+    if (inputValue.length >= 2) { // en az 2 karakter sonra başlasın
+      this.payload.name = inputValue
+
+      this.http.post<any[]>('http://localhost:8080/organization/search', this.payload)
+        .pipe(
+          debounceTime(300), // 300ms bekler, hızlı yazınca az istek atar
+          distinctUntilChanged()
+        )
+        .subscribe(response => {
+          console.log(response)
+          this.organizationsa = response;
+        });
+    } else {
+      this.organizationsa = []; // boş inputta listeyi temizle
+    }
   }
   searchRoles() {
     this.loading = true;
@@ -63,6 +123,10 @@ export class RolePageComponent implements OnInit {
       roleTypeEnum: '',
       organizationId: undefined
     };
+    this.organizationText=""
+    this.organizationTextAdd=""
+    this.organizations = [];
+    this.organizationsa= [];
     this.roles = [];
   }
 
@@ -88,6 +152,15 @@ export class RolePageComponent implements OnInit {
   editRole(role: Role): void {
     this.newRole = { ...role };
     this.selectedRoleId = role.id || null;
+
+    this.http.get<any>('http://localhost:8080/organization/'+role.organizationId)
+      .subscribe(response => {
+        this.organizationTextAdd=response.name;
+        console.log(response)
+        console.log(this.organizationTextAdd)
+      });
+
+
   }
 
   deleteRole(id: number): void {
@@ -98,5 +171,10 @@ export class RolePageComponent implements OnInit {
   resetForm(): void {
     this.newRole = { name: '', description: '',organizationId:undefined, roleTypeEnum:"CUSTOM"};
     this.selectedRoleId = null;
+
+    this.organizationText=""
+    this.organizationTextAdd=""
+    this.organizations = [];
+    this.organizationsa= [];
   }
 }

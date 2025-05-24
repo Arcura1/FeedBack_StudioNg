@@ -1,40 +1,103 @@
-<div class="container">
-  <h2>Sınıf Kullanıcıları</h2>
+<div class="container mt-4">
+  <h2 class="mb-4 text-primary">Sınıf Kullanıcı Yönetimi</h2>
 
-  <form (ngSubmit)="onSubmit()">
-    <input type="text" [(ngModel)]="searchText" (input)="onSearchChange()" placeholder="Kullanıcı ara...">
+  <form (ngSubmit)="onSubmit()" class="row g-3">
+    <!-- Kullanıcı Arama -->
+    <div class="col-md-6">
+      <label class="form-label">Kullanıcı Ara</label>
+      <div class="input-group">
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="searchText"
+          name="searchText"
+          (input)="onSearchChange()"
+          placeholder="İsim veya soyisim girin..."
+        />
+      </div>
+    </div>
 
-    <select *ngIf="filteredUsers.length > 0" [(ngModel)]="formData.userId" class="dropdown">
-      <option *ngFor="let user of filteredUsers" [value]="user.id" (click)="onUserSelect(user)">
-        {{ user.firstName }} {{ user.lastName }}
-      </option>
-    </select>
+    <!-- Kullanıcı Seç (HER ZAMAN GÖRÜNÜR) -->
+    <div class="col-md-6">
+      <label class="form-label">Kullanıcı Seç</label>
+      <select
+        class="form-select"
+        [(ngModel)]="formData.userId"
+        name="userId"
+        required
+      >
+        <option *ngFor="let user of filteredUsers" [value]="user.id">
+          {{ user.firstName }} {{ user.lastName }}
+        </option>
+      </select>
+    </div>
 
+    <!-- Sınıf Arama -->
+    <div class="col-md-6">
+      <label class="form-label">Sınıf Ara</label>
+      <input
+        type="text"
+        class="form-control"
+        [formControl]="searchControl"
+        placeholder="Sınıf adı girin..."
+      />
+    </div>
 
-    <input
-      type="text"
-      [formControl]="searchControl"
-      placeholder="Sınıf ara..."
-    />
+    <!-- Sınıf Seçimi -->
+    <div class="col-md-6">
+      <label class="form-label">Sınıf Seç</label>
+      <select
+        class="form-select"
+        [(ngModel)]="formData.classroomId"
+        name="classroomId"
+        required
+      >
+        <option *ngFor="let classroom of classrooms" [value]="classroom.id">
+          {{ classroom.name }}
+        </option>
+      </select>
+    </div>
 
-
-
-    <select [(ngModel)]="formData.classroomId" name="classroomId" required>
-      <option *ngFor="let classroom of classrooms" [value]="classroom.id">
-        {{ classroom.name }}
-      </option>
-    </select>
-
-    <button type="submit">
-      {{ formData.id ? 'Güncelle' : 'Ekle' }}
-    </button>
+    <!-- Ekle ve Temizle Butonları -->
+    <div class="col-md-6">
+      <button type="submit" class="btn btn-success w-100">
+        {{ formData.id ? 'Güncelle' : 'Ekle' }}
+      </button>
+    </div>
+    <div class="col-md-6">
+      <button type="button" class="btn btn-danger w-100" (click)="resetForm()">
+        Temizle
+      </button>
+    </div>
   </form>
 
-  <ul>
-    <li *ngFor="let user of classroomUsers">
-      ClassroomID: {{ user.classroomId }} - UserID: {{ user.userId }}
-      <button (click)="editUser(user)">Düzenle</button>
-      <button (click)="deleteUser(user.id)">Sil</button>
+  <hr class="my-4" />
+
+  <h4 class="mb-3">Kayıtlı Kullanıcılar</h4>
+  <ul class="list-group">
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+      *ngFor="let user of classroomUsers"
+    >
+      <div>
+        <strong>Sınıf:</strong> {{ user.classroomId }} |
+        <strong>Kullanıcı:</strong> {{ user.userId }}
+      </div>
+      <div>
+        <button
+          class="btn btn-outline-primary btn-sm me-2"
+          (click)="editUser(user)"
+        >
+          Düzenle
+        </button>
+        <button
+          class="btn btn-outline-danger btn-sm"
+          type="button"
+          (click)="clearSearchText()"
+        >
+          Sil
+        </button>
+      </div>
     </li>
   </ul>
 </div>

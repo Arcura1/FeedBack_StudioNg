@@ -1,51 +1,253 @@
-<!-- ORGANIZATION Accordion -->
-<div class="accordion-item">
-  <div class="accordion-header" (click)="toggleAccordion('organization')">
-    <span><i class="icon fa fa-sitemap"></i> Organizasyon</span>
-    <span class="arrow" [class.open]="selectedSection === 'organization'">▼</span>
+<!-- src/app/custom-page/customPage.component.html -->
+
+<div class="accordion">
+  <!-- ORGANIZATION Accordion -->
+  <div class="accordion-item">
+    <div class="accordion-header" (click)="toggleAccordion('organization')">
+      <span><i class="icon fa fa-sitemap"></i> Organizasyon</span>
+      <span class="arrow" [class.open]="selectedSection === 'organization'">▼</span>
+    </div>
+
+    ```
+    <div class="accordion-body" [class.show]="selectedSection === 'organization'">
+      <div class="form-group" *ngIf="organizationAuthorities.length > 0">
+        <label for="orgSelect">Bir organizasyon seçin:</label>
+        <select class="form-control" id="orgSelect" #orgSelect (change)="onSelectOrganization(orgSelect.value)">
+          <option [value]="''">Seçiniz</option>
+          <option *ngFor="let authority of organizationAuthorities" [value]="authority.organization.id + '|' + authority.effectTypeEnum">
+            {{ authority.organization.name }} ({{ authority.effectTypeEnum }})
+          </option>
+        </select>
+      </div>
+
+      <form *ngIf="organization" (ngSubmit)="saveOrganization()" #orgForm="ngForm" class="mb-4">
+        <input type="hidden" [(ngModel)]="organization.id" name="id" />
+
+        <div class="form-group">
+          <label for="organizationName">İsim:</label>
+          <input type="text"
+                 class="form-control"
+                 id="organizationName"
+                 [(ngModel)]="organization.name"
+                 name="organizationName"
+                 [readonly]="selectedAuthority?.effectTypeEnum === 'READ'"
+                 required />
+        </div>
+
+        <div class="form-group">
+          <label for="address">Adres:</label>
+          <input type="text" class="form-control" id="address" [(ngModel)]="organization.address" name="address" [readonly]="selectedAuthority?.effectTypeEnum === 'READ'" required />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" class="form-control" id="email" [(ngModel)]="organization.email" name="email" [readonly]="selectedAuthority?.effectTypeEnum === 'READ'" required />
+        </div>
+
+        <div *ngIf="selectedAuthority?.effectTypeEnum === 'UPDATE'">
+          <button type="submit" class="btn btn-primary">{{ organization.id ? 'Güncelle' : 'Kaydet' }}</button>
+          <button type="button" class="btn btn-secondary ml-2" (click)="resetForm()">Temizle</button>
+        </div>
+      </form>
+
+      <div *ngIf="!organizationAuthorities.length">
+        <p>Yetkili organizasyon verisi bulunamadı.</p>
+      </div>
+    </div>
+    ```
+
   </div>
-  <div class="accordion-body" [class.show]="selectedSection === 'organization'">
 
-    <!-- Organizasyon Seçici -->
-    <div class="form-group" *ngIf="organizationAuthorities.length > 0">
-      <label for="orgSelect">Bir organizasyon seçin:</label>
-      <select class="form-control" id="orgSelect" #orgSelect (change)="onSelectOrganization(orgSelect.value)">
-        <option [value]="''">Seçiniz</option>
-        <option *ngFor="let authority of organizationAuthorities" [value]="authority.organization.id">
-          {{ authority.organization.name }}
-        </option>
-      </select>
+  <!-- CLASSROOM Accordion -->
+
+  <div class="accordion-item">
+    <div class="accordion-header" (click)="toggleAccordion('classroom')">
+      <span><i class="icon fa fa-university"></i> Sınıf</span>
+      <span class="arrow" [class.open]="selectedSection === 'classroom'">▼</span>
     </div>
 
-    <form (ngSubmit)="saveOrganization()" #orgForm="ngForm" class="mb-4" *ngIf="organization">
-      <input type="hidden" [(ngModel)]="organization.id" name="id">
-
-      <div class="form-group">
-        <label for="name">İsim:</label>
-        <input type="text" class="form-control" id="name" placeholder="Organization ismi" required
-               [(ngModel)]="organization.name" name="name">
+    ```
+    <div class="accordion-body" [class.show]="selectedSection === 'classroom'">
+      <div class="form-group" *ngIf="classroomAuthorities.length > 0">
+        <label for="classroomSelect">Bir sınıf seçin:</label>
+        <select class="form-control" id="classroomSelect" #classroomSelect (change)="onSelectClassroom(classroomSelect.value)">
+          <option [value]="''">Seçiniz</option>
+          <option *ngFor="let authority of classroomAuthorities" [value]="authority.classroom?.id + '|' + authority.effectTypeEnum">
+            {{ authority.classroom?.name }} ({{ authority.effectTypeEnum }})
+          </option>
+        </select>
       </div>
 
-      <div class="form-group">
-        <label for="address">Adres:</label>
-        <input type="text" class="form-control" id="address" placeholder="Adres" required
-               [(ngModel)]="organization.address" name="address">
+      <form *ngIf="classroom" (ngSubmit)="saveClassroom()" #classroomForm="ngForm" class="mb-4">
+        <input type="hidden" [(ngModel)]="classroom.id" name="id" />
+
+        <div class="form-group">
+          <label for="classroomName">Sınıf Adı:</label>
+          <input type="text"
+                 class="form-control"
+                 id="classroomName"
+                 [(ngModel)]="classroom.name"
+                 name="name"
+                 [readonly]="selectedClassroomAuthority?.effectTypeEnum === 'READ'"
+                 required />
+
+        </div>
+
+        <div class="form-group">
+          <label for="floor">Kat:</label>
+          <input type="number" class="form-control" id="floor" [(ngModel)]="classroom.floor" name="floor" [readonly]="selectedClassroomAuthority?.effectTypeEnum === 'READ'" required />
+        </div>
+
+        <div class="form-group">
+          <label for="roomNumber">Oda No:</label>
+          <input type="text" class="form-control" id="roomNumber" [(ngModel)]="classroom.roomNumber" name="roomNumber" [readonly]="selectedClassroomAuthority?.effectTypeEnum === 'READ'" required />
+        </div>
+
+        <div class="form-group">
+          <label for="capacity">Kapasite:</label>
+          <input type="number" class="form-control" id="capacity" [(ngModel)]="classroom.capacity" name="capacity" [readonly]="selectedClassroomAuthority?.effectTypeEnum === 'READ'" required />
+        </div>
+
+        <div *ngIf="selectedClassroomAuthority?.effectTypeEnum === 'UPDATE'">
+          <button type="submit" class="btn btn-primary">{{ classroom.id ? 'Güncelle' : 'Kaydet' }}</button>
+          <button type="button" class="btn btn-secondary ml-2" (click)="resetClassroomForm()">Temizle</button>
+        </div>
+      </form>
+
+      <div *ngIf="!classroomAuthorities.length">
+        <p>Yetkili sınıf verisi bulunamadı.</p>
       </div>
-
-      <div class="form-group">
-        <label for="email">Email:</label>
-        <input type="email" class="form-control" id="email" placeholder="Email" required
-               [(ngModel)]="organization.email" name="email">
-      </div>
-
-      <button type="submit" class="btn btn-primary">
-        {{ organization.id ? 'Güncelle' : 'Kaydet' }}
-      </button>
-      <button type="button" class="btn btn-secondary ml-2" (click)="resetForm()">Temizle</button>
-    </form>
-
-    <div *ngIf="!organizationAuthorities.length">
-      <p>Yetkili organizasyon verisi bulunamadı.</p>
     </div>
+    ```
+
+  </div>
+
+  <!-- HOMEWORK Accordion -->
+
+  <div class="accordion-item">
+    <div class="accordion-header" (click)="toggleAccordion('homework')">
+      <span><i class="icon fa fa-book"></i> Ödev</span>
+      <span class="arrow" [class.open]="selectedSection === 'homework'">▼</span>
+    </div>
+
+    ```
+    <div class="accordion-body" [class.show]="selectedSection === 'homework'">
+      <div class="form-group" *ngIf="homeworkAuthorities.length > 0">
+        <label for="homeworkSelect">Bir ödev seçin:</label>
+        <select class="form-control" id="homeworkSelect" #homeworkSelect (change)="onSelectHomework(homeworkSelect.value)">
+          <option [value]="''">Seçiniz</option>
+          <option *ngFor="let authority of homeworkAuthorities" [value]="authority.homework?.id + '|' + authority.effectTypeEnum">
+            {{ authority.homework?.name }} ({{ authority.effectTypeEnum }})
+          </option>
+        </select>
+      </div>
+
+      <form *ngIf="homework" (ngSubmit)="saveHomework()" #homeworkForm="ngForm" class="mb-4">
+        <input type="hidden" [(ngModel)]="homework.id" name="id" />
+
+        <div class="form-group">
+          <label for="homeworkName">Ödev Adı:</label>
+          <input type="text" class="form-control" id="homeworkName" [(ngModel)]="homework.name" name="name" [readonly]="selectedHomeworkAuthority?.effectTypeEnum === 'READ'" required />
+        </div>
+
+        <div *ngIf="selectedHomeworkAuthority?.effectTypeEnum === 'UPDATE'">
+          <button type="submit" class="btn btn-primary">{{ homework.id ? 'Güncelle' : 'Kaydet' }}</button>
+          <button type="button" class="btn btn-secondary ml-2" (click)="resetHomeworkForm()">Temizle</button>
+        </div>
+      </form>
+
+      <div *ngIf="!homeworkAuthorities.length">
+        <p>Yetkili ödev verisi bulunamadı.</p>
+      </div>
+    </div>
+    ```
+
+  </div>
+
+  <!-- PDF_EDIT Accordion -->
+
+  <div class="accordion-item">
+    <div class="accordion-header" (click)="toggleAccordion('pdf')">
+      <span><i class="icon fa fa-file-pdf-o"></i> PDF</span>
+      <span class="arrow" [class.open]="selectedSection === 'pdf'">▼</span>
+    </div>
+
+    ```
+    <div class="accordion-body" [class.show]="selectedSection === 'pdf'">
+      <div class="form-group" *ngIf="pdfEditAuthorities.length > 0">
+        <label for="pdfSelect">Bir PDF seçin:</label>
+        <select class="form-control" id="pdfSelect" #pdfSelect (change)="onSelectPdf(pdfSelect.value)">
+          <option [value]="''">Seçiniz</option>
+          <option *ngFor="let authority of pdfEditAuthorities" [value]="authority.pdfInfo?.id + '|' + authority.effectTypeEnum">
+            {{ authority.pdfInfo?.name }} ({{ authority.effectTypeEnum }})
+          </option>
+        </select>
+      </div>
+
+      <form *ngIf="pdf" (ngSubmit)="savePdf()" #pdfForm="ngForm" class="mb-4">
+        <input type="hidden" [(ngModel)]="pdf.id" name="id" />
+
+        <div class="form-group">
+          <label for="pdfName">PDF Adı:</label>
+          <input type="text" class="form-control" id="pdfName" [(ngModel)]="pdf.name" name="name" [readonly]="selectedPdfAuthority?.effectTypeEnum === 'READ'" required />
+        </div>
+
+        <div *ngIf="selectedPdfAuthority?.effectTypeEnum === 'UPDATE'">
+          <button type="submit" class="btn btn-primary">{{ pdf.id ? 'Güncelle' : 'Kaydet' }}</button>
+          <button type="button" class="btn btn-secondary ml-2" (click)="resetPdfForm()">Temizle</button>
+        </div>
+      </form>
+
+      <div *ngIf="!pdfEditAuthorities.length">
+        <p>Yetkili PDF verisi bulunamadı.</p>
+      </div>
+    </div>
+    <!-- CLASSROOM_USER Accordion -->
+
+    <div class="accordion-item">
+      <div class="accordion-header" (click)="toggleAccordion('classroomUser')">
+        <span><i class="icon fa fa-users"></i> Sınıf Kullanıcısı</span>
+        <span class="arrow" [class.open]="selectedSection === 'classroomUser'">▼</span>
+      </div>
+
+      <div class="accordion-body" [class.show]="selectedSection === 'classroomUser'">
+        <div class="form-group" *ngIf="classroomUserAuthorities.length > 0">
+          <label for="classroomUserSelect">Bir sınıf kullanıcısı seçin:</label>
+          <select class="form-control" id="classroomUserSelect" #classroomUserSelect (change)="onSelectClassroomUser(classroomUserSelect.value)">
+            <option [value]="''">Seçiniz</option>
+            <option *ngFor="let authority of classroomUserAuthorities"
+                    [value]="authority.classroomUser?.id + '|' + authority.effectTypeEnum">
+              {{ authority.classroomUser?.name }} ({{ authority.effectTypeEnum }})
+            </option>
+          </select>
+        </div>
+
+        ```
+        <form *ngIf="classroomUser" (ngSubmit)="saveClassroomUser()" #classroomUserForm="ngForm" class="mb-4">
+          <input type="hidden" [(ngModel)]="classroomUser.id" name="id" />
+
+          <div class="form-group">
+            <label for="classroomUserName">Kullanıcı Adı:</label>
+            <input type="text" class="form-control" id="classroomUserName" [(ngModel)]="classroomUser.name"
+                   name="name" [readonly]="selectedClassroomUserAuthority?.effectTypeEnum === 'READ'" required />
+          </div>
+
+          <div *ngIf="selectedClassroomUserAuthority?.effectTypeEnum === 'UPDATE'">
+            <button type="submit" class="btn btn-primary">
+              {{ classroomUser.id ? 'Güncelle' : 'Kaydet' }}
+            </button>
+            <button type="button" class="btn btn-secondary ml-2" (click)="resetClassroomUserForm()">Temizle</button>
+          </div>
+        </form>
+
+        <div *ngIf="!classroomUserAuthorities.length">
+          <p>Yetkili sınıf kullanıcısı verisi bulunamadı.</p>
+        </div>
+        ```
+
+      </div>
+    </div>
+
+
   </div>
 </div>

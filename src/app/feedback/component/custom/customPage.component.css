@@ -1,65 +1,66 @@
 .accordion-container {
-  max-width: 750px;
+  max-width: 850px;
   margin: 2rem auto;
   background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
   overflow: hidden;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .accordion-item {
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #ddd;
+  transition: all 0.3s ease;
 }
 
 .accordion-header {
-  background: linear-gradient(to right, #006c80, #009688);
+  background: linear-gradient(to right, #00796b, #26a69a);
   color: white;
-  padding: 1rem 1.2rem;
-  font-size: 1.1rem;
-  font-weight: bold;
+  padding: 1.2rem 1.5rem;
+  font-size: 1.15rem;
+  font-weight: 600;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: background 0.3s ease;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .accordion-header:hover {
-  background: linear-gradient(to right, #005462, #00796b);
+  background: linear-gradient(to right, #00695c, #009688);
+  box-shadow: inset 0 -4px 0 rgba(255, 255, 255, 0.2);
 }
 
 .accordion-header .icon {
-  margin-right: 8px;
+  margin-right: 10px;
+  font-size: 1.2rem;
 }
 
 .accordion-body {
   max-height: 0;
   overflow: hidden;
-  background-color: #f5f5f5;
-  padding: 0 1.2rem;
+  background-color: #fafafa;
+  padding: 0 1.5rem;
   transition: max-height 0.4s ease, padding 0.3s ease;
-  color: #333;
+  color: #444;
   font-size: 0.95rem;
 }
 
 .accordion-body.show {
-  max-height: 1000px;
-  padding: 1rem 1.2rem;
+  max-height: 1200px;
+  padding: 1.2rem 1.5rem;
+  border-left: 4px solid #009688;
+  background-color: #fefefe;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.03);
 }
 
 .accordion-body p {
-  margin: 0.4rem 0;
-}
-
-.accordion-body hr {
-  margin: 1rem 0;
-  border: none;
-  border-top: 1px solid #ccc;
+  margin: 0.5rem 0;
 }
 
 .arrow {
   display: inline-block;
+  font-size: 1rem;
   transition: transform 0.3s ease;
 }
 
@@ -67,14 +68,68 @@
   transform: rotate(180deg);
 }
 
+/* Input ve form elemanları */
+.form-group label {
+  font-weight: 600;
+  margin-top: 1rem;
+  display: block;
+}
+
+.form-control {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.95rem;
+  margin-top: 0.25rem;
+  transition: border-color 0.2s;
+}
+
+.form-control:focus {
+  border-color: #009688;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 150, 136, 0.2);
+}
+
+.btn {
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  margin-top: 1rem;
+  transition: background 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #009688;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #00796b;
+}
+
+.btn-secondary {
+  background-color: #ccc;
+  color: #333;
+}
+
+.btn-secondary:hover {
+  background-color: #b0b0b0;
+}
+
 /* Mobile responsive */
 @media (max-width: 600px) {
   .accordion-header {
     font-size: 1rem;
-    padding: 0.8rem;
+    padding: 0.9rem 1rem;
   }
 
   .accordion-body {
+    font-size: 0.9rem;
+    padding: 1rem;
+  }
+
+  .form-control {
     font-size: 0.9rem;
   }
 }

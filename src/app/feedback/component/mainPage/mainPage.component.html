@@ -10,18 +10,20 @@
 
   <!-- Öğretmen İçeriği -->
   <div *ngIf="user.role == 'TEACHER'">
-    <h2 style="margin-bottom:10%">Hoş geldin, {{ user.firstName }}!</h2>
+    <h2 class="title">Hoş geldin, {{ user.firstName }}!</h2>
     <app-teacher></app-teacher>
   </div>
+<!-- CUSTOM -->
   <div *ngIf="user.role == 'CUSTOM'">
+    <h2 class="title">Hoş geldin, {{ user.firstName }}!</h2>
     <app-custom-page></app-custom-page>
   </div>
   <!-- Öğrenci İçeriği -->
   <div *ngIf="user.role == 'STUDENT'">
-    <h2 style="margin-bottom:20%">Hoş geldin, {{ user.firstName }}!</h2>
+    <h2 class="title">Hoş geldin, {{ user.firstName }}!</h2>
 
     <div class="content-section">
-      <h1 class="title">🎓</h1>
+      <h1>🎓</h1>
       <p class="description">Ödevlerinizi kontrol edin ve öğretmenlerle iletişimde kalın.</p>
       <button class="btn-go" (click)="goToStudent()">Ödev Sayfasına Git</button>
     </div>
@@ -30,12 +32,13 @@
 
   <!-- Admin İçeriği -->
   <div *ngIf="user.role == 'ADMIN'">
+    <h2 class="title">Hoş geldin, {{ user.firstName }}!</h2>
     <adminPage></adminPage>
   </div>
 
   <!-- Executive İçeriği -->
   <div *ngIf="user.role == 'EXECUTIVE'">
-    <h2 style="margin-bottom:20%">Hoş geldin, {{ user.firstName }}!</h2>
+    <h2 class="title">Hoş geldin, {{ user.firstName }}!</h2>
     <executivePage></executivePage>
   </div>
 

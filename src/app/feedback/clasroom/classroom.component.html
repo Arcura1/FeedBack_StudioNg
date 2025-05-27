@@ -51,11 +51,12 @@
     </div>
 
     <div class="form-group">
-      <label for="orgType">Öğretmeen seçin:</label>
+      <label for="orgType">Öğretmen seçin:</label>
       <select class="form-control" id="userType" [(ngModel)]="classroom.userId" name="type">
         <option *ngFor="let type of PickerUser" [value]="type.id">{{ type.firstName }}</option>
       </select>
     </div>
+    <br>
     <button type="submit" class="btn btn-primary">
       {{ classroom.id ? 'Güncelle' : 'Kaydet' }}
     </button>

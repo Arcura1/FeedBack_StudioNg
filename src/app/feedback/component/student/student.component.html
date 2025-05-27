@@ -2,7 +2,8 @@
 
 <div class="main-container">
   <div class="student-container">
-    <h2 class="page-title">📚 Ödev Listesi ve Yükleme</h2>
+    <h2 class="page-title" style="color: white">Ödev Listesi ve Yükleme</h2>
+    <br><br>
     <button class="btn-edit" (click)="goToPdfEdit()">📄 PDF Yönetme</button>
 
     <div class="row">
@@ -12,7 +13,7 @@
             <h5 class="card-title">📖 {{ homework.title }}</h5>
             <p class="card-text description">📝 {{ homework.description }}</p>
             <p class="card-text homework-id">📌 Ödev ID: {{ homework.id }}</p>
-            <button class="btn-view" (click)="showPopup(homework)">🔍 Detayları Gör</button>
+            <button class="btn-view" (click)="showPopup(homework)">Detayları Gör</button>
           </div>
         </div>
       </div>

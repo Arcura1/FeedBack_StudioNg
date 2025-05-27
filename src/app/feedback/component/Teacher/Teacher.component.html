@@ -1,6 +1,6 @@
 <div class="teacher-container">
   <div *ngIf="classrooms.length > 0; else noData" class="classroom-list">
-    <h2>Size Ait Sınıflar </h2>
+    <h2 class="title">SINIFLARINIZIN LİSTESİ </h2>
     <div class="row">
       <div class="classroom-card" *ngFor="let classroom of classrooms">
         <p><strong>Sınıf:</strong> {{ classroom.name }}</p>

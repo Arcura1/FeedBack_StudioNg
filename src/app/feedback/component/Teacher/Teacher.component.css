@@ -4,7 +4,7 @@
   border-radius: 15px;
   box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
   padding: 20px;
-  margin: 15px;
+  margin: 17px;
   max-width: 300px;
   width: 100%;
   text-align: center;
@@ -32,6 +32,13 @@
   transition: background-color 0.3s ease;
 }
 
+
 .classroom-card button:hover {
   background-color: #3e42b0;
+}
+.title {
+  font-size: 28px;
+  font-weight: bold;
+  color: white;
+  margin-top: 70px;
 }

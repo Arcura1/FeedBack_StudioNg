@@ -10,6 +10,7 @@ import { TeacherComponent } from "./component/Teacher/teacher.component";
 import { TestComponent } from "./test/test.component";
 import { OrganizationComponent } from "./organization/organization.component";
 import { ClassroomComponent } from "./clasroom/classroom.component";
+import { UserClassroomComponent } from "./clasroom/user-classroom/userclassroom.component";
 import { ExecutivePageComponent } from "./component/executive/executivePage.component";
 import { AdminPageComponent } from "./component/admin/adminPage.component";
 import { HomeworkComponent } from "./homework/homework.component";
@@ -37,6 +38,7 @@ const routes: Routes = [
   { path: 'classroom', component: ClassroomComponent },
   { path: 'executive', component: ExecutivePageComponent },
   { path: 'admin', component: AdminPageComponent },
+  { path: 'userclassroom', component: UserClassroomComponent },
   { path: 'qrcode', component: QrcodeComponent },
 ];
 

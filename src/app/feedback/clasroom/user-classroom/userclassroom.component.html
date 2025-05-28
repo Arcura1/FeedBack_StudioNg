@@ -1,0 +1,65 @@
+<div class="container mt-4">
+  <h3>👤 Kullanıcının Sınıfını Değiştir</h3>
+
+  <!-- Kullanıcı seçimi (native select) -->
+  <div class="form-group mb-3">
+    <label for="userSelect"><strong>Kullanıcı Seç</strong></label>
+    <select id="userSelect" class="form-control" [(ngModel)]="selectedUserId" (change)="onUserChange()">
+      <option [value]="null">-- Kullanıcı Seçin --</option>
+      <option *ngFor="let user of PickerUser" [value]="user.id">
+        {{ user.firstName }} {{ user.lastName }}
+      </option>
+    </select>
+  </div>
+
+  <!-- Mevcut sınıf bilgisi -->
+  <div *ngIf="selectedUserClassroomId !== null" class="mb-3">
+    <strong>📌 Şu Anki Sınıf:</strong> {{ selectedUserClassroomId }}
+  </div>
+
+  <!-- Yeni sınıf seçimi (native select) -->
+  <div class="form-group mb-3">
+    <label for="classroomSelect"><strong>Yeni Sınıf Seç</strong></label>
+    <select id="classroomSelect" class="form-control" [(ngModel)]="newClassroomId">
+      <option [value]="null">-- Sınıf Seçin --</option>
+      <option *ngFor="let c of classrooms" [value]="c.id">
+        {{ c.name }}
+      </option>
+    </select>
+  </div>
+
+  <!-- Güncelleme butonu -->
+  <button class="btn btn-primary" (click)="updateUserClassroom()">Sınıfı Güncelle</button>
+
+  <!-- Bilgi mesajı -->
+  <div class="alert alert-info mt-3" *ngIf="message">
+    {{ message }}
+  </div>
+</div>
+
+<!-- Yeni kullanıcı sınıfa ekle -->
+<div class="form-group mb-3 mt-5">
+  <label for="newUserSelect"><strong>Yeni Kullanıcı Seç</strong></label>
+  <select id="newUserSelect" class="form-control" [(ngModel)]="newUserId">
+    <option [value]="null">-- Kullanıcı Seçin --</option>
+    <option *ngFor="let user of AllUsers" [value]="user.id">
+      {{ user.firstName }} {{ user.lastName }}
+    </option>
+  </select>
+</div>
+
+<div class="form-group mb-3">
+  <label for="newUserClassroom"><strong>Sınıf Seç</strong></label>
+  <select id="newUserClassroom" class="form-control" [(ngModel)]="newUserClassroomId">
+    <option [value]="null">-- Sınıf Seçin --</option>
+    <option *ngFor="let c of classrooms" [value]="c.id">
+      {{ c.name }}
+    </option>
+  </select>
+</div>
+
+<button class="btn btn-success" (click)="addUserToClassroom()">Yeni Kullanıcıyı Sınıfa Ekle</button>
+
+<div class="alert alert-success mt-3" *ngIf="addMessage">
+  {{ addMessage }}
+</div>

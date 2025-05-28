@@ -1,6 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatOptionModule } from '@angular/material/core'; // mat-option için
+import { MatSelectModule } from '@angular/material/select';
 import { FeedbackRoutingModule } from './feedback-routing.module';
 import { FeedbackComponent } from './feedback.component';
 import {MainPageComponent} from "./component/mainPage/mainPage.component";
@@ -26,7 +30,7 @@ import {RolePageComponent} from "./userManagment/rolePage/rolePage.component";
 import {AuthorityRoleComponent} from "./userManagment/authorityRole/authorityRole.component";
 import {AuthorityPageComponent} from "./userManagment/authorityPage/authorityPage.component";
 import {UserPageComponent} from "./userManagment/userPage/userPage.component";
-import {UserclassroomComponent} from "./clasroom/user-classroom/userclassroom.component";
+import {UserClassroomComponent} from "./clasroom/user-classroom/userclassroom.component";
 import {CustomPageComponent} from "./component/custom/customPage.component";
 import {QrcodeComponent} from "./component/qrcode/qrcode.component";
 import {QRCodeModule} from "angularx-qrcode";
@@ -64,8 +68,8 @@ import {QRCodeModule} from "angularx-qrcode";
     CustomPageComponent,
     HomeworkComponent,
     GuestComponent,
-    QrcodeComponent, // ✅ buraya eklendi
-    UserclassroomComponent,
+    QrcodeComponent,
+    UserClassroomComponent,
     GuestComponent,
   ],
   exports: [
@@ -75,14 +79,18 @@ import {QRCodeModule} from "angularx-qrcode";
     AuthorityRoleComponent,
     RolePageComponent
   ],
-  imports: [
-    CommonModule,
-    FeedbackRoutingModule,
-    FormsModule,
-    QRCodeModule,
-    ReactiveFormsModule,
+imports: [
+  CommonModule,
+  FeedbackRoutingModule,
+  FormsModule,
+  ReactiveFormsModule,
+  QRCodeModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatAutocompleteModule,
+  MatOptionModule,
+  MatSelectModule
+]
 
-
-  ]
 })
 export class FeedbackModule { }

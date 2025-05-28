@@ -1,171 +1,135 @@
 import { Component, OnInit } from '@angular/core';
-import { ClassroomUser } from "./queryModel/ClassroomUser";
-import { ClassroomUserService } from "./service/service";
-import { ClassroomService } from "../../component/Teacher/service/classroom.service";
-import { debounceTime, Subject, switchMap } from "rxjs";
-import { FormControl } from "@angular/forms";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient } from '@angular/common/http';
+import { ClassroomUser } from './queryModel/ClassroomUser';
 
 @Component({
   selector: 'app-classroom-user',
-  templateUrl: './userclassroom.componnet.html'
+  templateUrl: './userclassroom.component.html',
 })
-export class UserclassroomComponent implements OnInit {
-  classroomUsers: ClassroomUser[] = [];
-  formData: ClassroomUser = { classroomId: 0, userId: 0 };
-  classrooms: { id: number; name: string }[] = [];
-  searchControl = new FormControl('');
+export class UserClassroomComponent implements OnInit {
+  PickerUser: any[] = [];     // Güncelleme için (sınıfı olan kullanıcılar)
+  AllUsers: any[] = [];       // Ekleme için (tüm kullanıcılar)
+  classrooms: any[] = [];
 
-  searchText: string = '';
-  filteredUsers: any[] = [];
+  // Güncelleme için
   selectedUserId: number | null = null;
+  selectedUserClassroomId: number | null = null;
+  selectedClassroomUserEntityId: number | null = null;
+  newClassroomId: number | null = null;
+  message: string = '';
 
-  private searchSubject = new Subject<string>();
+  // Ekleme için
+  newUserId: number | null = null;
+  newUserClassroomId: number | null = null;
+  addMessage: string = '';
 
-  constructor(
-    private http: HttpClient,
-    private classroomService: ClassroomService,
-    private classroomUserService: ClassroomUserService
-  ) {
-    this.searchSubject.pipe(debounceTime(300)).subscribe(searchText => {
-      this.searchUsers(searchText);
-    });
+  constructor(private http: HttpClient) {}
+
+  ngOnInit(): void {
+    this.loadUsersForUpdate(); // sadece sınıfı olan kullanıcılar
+    this.loadUsersForAdd();    // tüm kullanıcılar
+    this.loadClassrooms();
   }
 
-  ngOnInit() {
-    this.loadUsers();
-    this.setupSearch();
-  }
-
-  setupSearch() {
-    this.searchControl.valueChanges
-      .pipe(
-        debounceTime(300),
-        switchMap(value => this.classroomService.searchClassrooms({ name: value }))
-      )
-      .subscribe(data => {
-        this.classrooms = data;
+  // Güncelleme için kullanıcıları yükle (sınıfı olanlar)
+  loadUsersForUpdate(): void {
+    this.http.get<any[]>('http://localhost:8080/classroom-users')
+      .subscribe({
+        next: data => {
+          this.PickerUser = data.map(item => item.user);
+        },
+        error: () => this.message = '❌ Kullanıcılar yüklenemedi.'
       });
   }
 
-  loadUsers() {
-    this.classroomUserService.getAll().subscribe(users => {
-      this.classroomUsers = users;
-    });
+  // Ekleme için tüm kullanıcıları yükle
+  loadUsersForAdd(): void {
+    this.http.get<any[]>('http://localhost:8080/api/users/getAll')
+      .subscribe({
+        next: data => this.AllUsers = data,
+        error: () => this.addMessage = '❌ Tüm kullanıcılar yüklenemedi.'
+      });
   }
 
-  onSearchChange() {
-    this.searchSubject.next(this.searchText);
+  loadClassrooms(): void {
+    this.http.get<any[]>('http://localhost:8080/classrooms')
+      .subscribe({
+        next: data => this.classrooms = data,
+        error: () => this.message = '❌ Sınıflar yüklenemedi.'
+      });
   }
 
-  searchUsers(query: string) {
-    const body = {
-      firstName: query,
+  onUserChange(): void {
+    if (this.selectedUserId === null) return;
+
+    this.http.get<ClassroomUser[]>(`http://localhost:8080/classroom-users/byUser/${this.selectedUserId}`)
+      .subscribe({
+        next: data => {
+          if (data.length > 0) {
+            this.selectedUserClassroomId = data[0].classroomId ?? null;
+            this.selectedClassroomUserEntityId = data[0].id ?? null;
+          } else {
+            this.selectedUserClassroomId = null;
+            this.selectedClassroomUserEntityId = null;
+          }
+        },
+        error: () => {
+          this.message = '❌ Kullanıcının sınıf bilgisi alınamadı.';
+        }
+      });
+  }
+
+  updateUserClassroom(): void {
+    if (
+      this.selectedUserId === null ||
+      this.newClassroomId === null ||
+      this.selectedClassroomUserEntityId === null
+    ) {
+      this.message = '⚠️ Gerekli alanlar eksik.';
+      return;
+    }
+
+    const payload: ClassroomUser = {
+      userId: this.selectedUserId,
+      classroomId: this.newClassroomId
     };
 
-    this.http.post<any[]>('http://localhost:8080/api/users/search', body).subscribe(users => {
-      this.filteredUsers = users;
-    });
+    this.http.put(`http://localhost:8080/classroom-users/${this.selectedClassroomUserEntityId}`, payload)
+      .subscribe({
+        next: () => {
+          this.message = '✅ Kullanıcının sınıfı başarıyla güncellendi.';
+          this.loadUsersForUpdate(); // sınıfı olan kullanıcıları güncelle
+        },
+        error: err => {
+          console.error("❌ PUT HATASI:", err);
+          this.message = '❌ Güncelleme sırasında hata oluştu.';
+        }
+      });
   }
 
-  onUserSelect(user: any) {
-    this.selectedUserId = user.id;
-    this.filteredUsers = [];
-    this.formData.userId = user.id;
-    this.searchText = `${user.firstName} ${user.lastName}`;
-  }
-
-  onSubmit() {
-    // Form validasyonu
-    if (!this.formData.userId || this.formData.userId === 0) {
-      alert('Lütfen bir kullanıcı seçin!');
+  addUserToClassroom(): void {
+    if (this.newUserId === null || this.newUserClassroomId === null) {
+      this.addMessage = '⚠️ Lütfen hem kullanıcıyı hem de sınıfı seçin.';
       return;
     }
 
-    if (!this.formData.classroomId || this.formData.classroomId === 0) {
-      alert('Lütfen bir sınıf seçin!');
-      return;
-    }
+    const payload: ClassroomUser = {
+      userId: this.newUserId,
+      classroomId: this.newUserClassroomId
+    };
 
-    if (this.formData.id) {
-      // Güncelleme işlemi
-      this.classroomUserService.update(this.formData.id, this.formData).subscribe({
+    this.http.post('http://localhost:8080/classroom-users', payload)
+      .subscribe({
         next: () => {
-          alert('Kullanıcı başarıyla güncellendi!');
-          this.loadUsers();
-          this.resetForm();
+          this.addMessage = '✅ Yeni kullanıcı başarıyla sınıfa eklendi.';
+          this.newUserId = null;
+          this.newUserClassroomId = null;
+          this.loadUsersForUpdate(); // sınıfı olan kullanıcılar listesi de güncellenmeli
         },
-        error: (error) => {
-          console.error('Güncelleme hatası:', error);
-          alert('Güncelleme sırasında bir hata oluştu!');
+        error: err => {
+          console.error('❌ POST HATASI:', err);
+          this.addMessage = '❌ Kullanıcı sınıfa eklenemedi.';
         }
       });
-    } else {
-      // Yeni ekleme işlemi - Doğru endpoint kullanılacak
-      this.classroomUserService.create(this.formData).subscribe({
-        next: () => {
-          alert('Kullanıcı sınıfa başarıyla eklendi!');
-          this.loadUsers();
-          this.resetForm();
-        },
-        error: (error) => {
-          console.error('Ekleme hatası:', error);
-          alert('Ekleme sırasında bir hata oluştu!');
-        }
-      });
-    }
-  }
-
-  editUser(user: ClassroomUser) {
-    this.formData = { ...user };
-
-    // Kullanıcı bilgilerini yükle ve göster
-    this.loadUserDetails(user.userId);
-  }
-
-  // Kullanıcı detaylarını yükle
-  loadUserDetails(userId: number) {
-    this.http.get<any>(`http://localhost:8080/api/users/${userId}`).subscribe({
-      next: (user) => {
-        this.searchText = `${user.firstName} ${user.lastName}`;
-        this.selectedUserId = user.id;
-      },
-      error: (error) => {
-        console.error('Kullanıcı detayları yüklenemedi:', error);
-      }
-    });
-  }
-
-  deleteUser(id: number | undefined) {
-    if (id && confirm('Bu kullanıcıyı sınıftan çıkarmak istediğinizden emin misiniz?')) {
-      this.classroomUserService.delete(id).subscribe({
-        next: () => {
-          alert('Kullanıcı sınıftan başarıyla çıkarıldı!');
-          this.loadUsers();
-        },
-        error: (error) => {
-          console.error('Silme hatası:', error);
-          alert('Silme sırasında bir hata oluştu!');
-        }
-      });
-    }
-  }
-
-  clearSearchText() {
-    this.searchText = '';
-    this.filteredUsers = [];
-  }
-
-  resetForm() {
-    // Form verilerini sıfırla
-    this.formData = { classroomId: 0, userId: 0 };
-
-    // Arama alanlarını temizle
-    this.searchText = '';
-    this.searchControl.setValue('');
-
-    // Listeyi temizle
-    this.filteredUsers = [];
-    this.selectedUserId = null;
   }
 }

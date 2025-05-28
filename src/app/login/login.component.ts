@@ -38,19 +38,22 @@ export class LoginComponent {
     );
   }
 
-  // Kullanıcı bilgilerini sessionStorage'da sakla
-  private setUserSession(user: any) {
-    const sessionData = {
-      id: user.id,
-      firstName: user.firstName,
-      role: user.role,
-      email: user.email,
-      organizationId:user.organizationId
-    };
+// Kullanıcı bilgilerini sessionStorage'da sakla
+private setUserSession(user: any) {
+  const sessionData = {
+    id: user.id,
+    firstName: user.firstName,
+    role: user.role,
+    email: user.email,
+    organizationId: user.organizationId
+  };
 
-    sessionStorage.setItem('user', JSON.stringify(sessionData));
-    console.log('Kullanıcı oturumu ayarlandı:', sessionData);
-  }
+  sessionStorage.setItem('user', JSON.stringify(sessionData));
+  sessionStorage.setItem('userId', user.id.toString()); // ✅ EKLENDİ
+
+  console.log('Kullanıcı oturumu ayarlandı:', sessionData);
+}
+
 
   // Form gönderildiğinde login fonksiyonunu çağır
   onSubmit() {

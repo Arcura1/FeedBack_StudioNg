@@ -21,7 +21,13 @@ import { QrcodeComponent } from './component/qrcode/qrcode.component';
 import { RoleGuard } from '../auth/role.guard';
 
 const routes: Routes = [
-  { path: 'PdfEdit/:homeworkId/:pdfId', component: PdfEditComponent },
+  {
+    path: 'PdfEdit/:homeworkId/:pdfId',
+    component: PdfEditComponent,
+    canActivate: [RoleGuard],
+    data: { roles: ['ADMIN', 'EXECUTIVE', 'TEACHER', 'STUDENT'] }
+  },
+
 
   {
     path: '',
@@ -70,7 +76,7 @@ const routes: Routes = [
     data: { roles: ['ADMIN'] }
   },
   {
-    path: 'test/:classroomId',
+    path: 'usermanagement',
     component: TestComponent,
     canActivate: [RoleGuard],
     data: { roles: ['ADMIN'] }
@@ -96,10 +102,35 @@ const routes: Routes = [
 
   // 🌐 Genel erişim (isteğe göre RoleGuard eklenebilir)
   { path: 'profile', component: ProfileComponent },
-  { path: 'PdfEdit', component: PdfEditComponent },
-  { path: 'homework/:classroomId', component: HomeworkComponent },
-  { path: 'userclassroom', component: UserClassroomComponent },
-  { path: 'qrcode', component: QrcodeComponent }
+  {
+    path: 'PdfEdit',
+    component: PdfEditComponent,
+    canActivate: [RoleGuard],
+    data: { roles: ['ADMIN', 'EXECUTIVE', 'TEACHER', 'STUDENT'] }
+  },
+
+
+  {
+    path: 'homework/:classroomId',
+    component: HomeworkComponent,
+    canActivate: [RoleGuard],
+    data: { roles: ['TEACHER', 'ADMIN'] }
+  },
+
+  {
+    path: 'userclassroom',
+    component: UserClassroomComponent,
+    canActivate: [RoleGuard],
+    data: { roles: ['EXECUTIVE', 'ADMIN'] }
+  },
+
+  {
+    path: 'qrcode',
+    component: QrcodeComponent,
+    canActivate: [RoleGuard],
+    data: { roles: ['ADMIN'] }
+  }
+
 ];
 
 @NgModule({

@@ -29,10 +29,6 @@ export class CustomPageComponent implements OnInit {
   selectedPdfAuthority: Authority | null = null;
   pdf: any = null;
 
-  // CLASSROOM_USER
-  classroomUserAuthorities: Authority[] = [];
-  selectedClassroomUserAuthority: Authority | null = null;
-  classroomUser: any = null;
 
   // UI
   selectedSection: string | null = null;
@@ -42,7 +38,6 @@ export class CustomPageComponent implements OnInit {
   apiUrlClassroom = 'http://localhost:8080/classrooms';
   apiUrlHomework = 'http://localhost:8080/homework';
   apiUrlPdf = 'http://localhost:8080/pdf';
-  apiUrlClassroomUser = 'http://localhost:8080/classroom-user';
 
   constructor(
     private authorityService: AuthorityService,
@@ -79,7 +74,6 @@ loadAuthorities(): void {
       this.classroomAuthorities = data.filter(a => a.authorityType === 'CLASSROOM' && a.classroom);
       this.homeworkAuthorities = data.filter(a => a.authorityType === 'HOMEWORK' && a.homework);
       this.pdfEditAuthorities = data.filter(a => a.authorityType === 'PDF_EDIT' && a.pdfInfo);
-      this.classroomUserAuthorities = data.filter(a => a.authorityType === 'CLASSROOM_USER' && a.classroomUser);
     },
     error: err => {
       console.error('Yetkiler yüklenemedi:', err);
@@ -205,31 +199,4 @@ const req = this.homework.id
     this.selectedPdfAuthority = null;
   }
 
-  // CLASSROOM_USER
-  onSelectClassroomUser(value: string): void {
-    const [id, effect] = value.split('|');
-    const selected = this.classroomUserAuthorities.find(a => a.classroomUser?.id === +id && a.effectTypeEnum === effect);
-    this.selectedClassroomUserAuthority = selected ?? null;
-    this.classroomUser = selected?.classroomUser ?? null;
-  }
-
-  saveClassroomUser(): void {
-    if (!this.classroomUser) return;
-    const req = this.classroomUser.id
-      ? this.http.put(`${this.apiUrlClassroomUser}/${this.classroomUser.id}`, this.classroomUser)
-      : this.http.post(this.apiUrlClassroomUser, this.classroomUser);
-    req.subscribe({
-      next: () => {
-        alert('Sınıf kullanıcısı kaydedildi.');
-        this.resetClassroomUserForm();
-        this.loadAuthorities();
-      },
-      error: err => alert('Sınıf kullanıcısı kaydedilirken hata.')
-    });
-  }
-
-  resetClassroomUserForm(): void {
-    this.classroomUser = null;
-    this.selectedClassroomUserAuthority = null;
-  }
 }

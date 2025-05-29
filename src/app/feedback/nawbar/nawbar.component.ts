@@ -25,6 +25,9 @@ export class NavbarComponent implements OnInit{
   goToClassroom() {
     this.router.navigate(['/feedback/classroom']);
   }
+  goToUsermanagement() {
+    this.router.navigate(['/feedback/usermanagement']);
+  }
   goToOrganization() {
     this.router.navigate(['/feedback/organization']);
   }

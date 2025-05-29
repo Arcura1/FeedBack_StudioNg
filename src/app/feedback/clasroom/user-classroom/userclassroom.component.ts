@@ -56,16 +56,21 @@ export class UserClassroomComponent implements OnInit {
   }
 
   // Ekleme için tüm kullanıcıları yükle
-  loadUsersForAdd(): void {
-    this.http.get<any[]>('http://localhost:8080/api/users/getAll')
-      .subscribe({
-        next: data => {
-          this.AllUsers = data;
-          this.filterNewUsers(); // Kullanıcıları yükledikten sonra filtrele
-        },
-        error: () => this.addMessage = '❌ Tüm kullanıcılar yüklenemedi.'
-      });
-  }
+loadUsersForAdd(): void {
+  const payload = {
+    roleType: 'STUDENT' // Backend'te RoleTypeEnum karşılığı
+  };
+
+  this.http.post<any[]>('http://localhost:8080/api/users/search', payload)
+    .subscribe({
+      next: data => {
+        this.AllUsers = data;
+        this.filterNewUsers(); // Kullanıcıları yükledikten sonra filtrele
+      },
+      error: () => this.addMessage = '❌ Öğrenci kullanıcılar yüklenemedi.'
+    });
+}
+
 
   loadClassrooms(): void {
     this.http.get<any[]>('http://localhost:8080/classrooms')

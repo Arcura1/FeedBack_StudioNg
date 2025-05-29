@@ -1,6 +1,6 @@
 :host {
   display: block;
-  background: #434b66;
+  background-color: #D2B48C; /* Pastel Kahverengi */
   min-height: 100vh;
   padding: 1rem;
 }

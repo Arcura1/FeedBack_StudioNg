@@ -762,4 +762,20 @@ export class PdfEditComponent implements OnInit {
     this.renderer.appendChild(canvasContainer, button);
     this.showButtons.push(button); // Butonu listeye ekle (kaldırmak için)
   }
+
+  postToPdfAnalyzer() {
+    const postUrl = 'http://localhost:8080/pdfAnalyzer/'+this.pdfId+JSON.parse(sessionStorage.getItem('user') || '{}').id;
+
+    this.http.post(postUrl, null, { responseType: 'text' }).subscribe({
+      next: (response) => {
+        console.log('Server response:', response);
+        alert('PDF analysis triggered successfully!');
+        this.refreshPage(); // isteğe bağlı: sayfayı yenile
+      },
+      error: (error) => {
+        console.error('Error occurred while posting to pdfAnalyzer:', error);
+        alert('An error occurred while sending the request. Please try again.');
+      },
+    });
+  }
 }

@@ -127,7 +127,7 @@
           <select class="form-control" id="homeworkSelect" #homeworkSelect (change)="onSelectHomework(homeworkSelect.value)">
             <option [value]="''">Seçiniz</option>
             <option *ngFor="let authority of homeworkAuthorities" [value]="authority.homework?.id + '|' + authority.effectTypeEnum">
-              {{ authority.homework?.name }} ({{ authority.effectTypeEnum }})
+              {{ authority.homework?.title }} ({{ authority.effectTypeEnum }})
             </option>
           </select>
         </div>
@@ -137,7 +137,7 @@
 
           <div class="form-group">
             <label for="homeworkName">Ödev Adı:</label>
-            <input type="text" class="form-control" id="homeworkName" [(ngModel)]="homework.name" name="name" [readonly]="selectedHomeworkAuthority?.effectTypeEnum === 'READ'" required />
+            <input type="text" class="form-control" id="homeworkName" [(ngModel)]="homework.title" name="name" [readonly]="selectedHomeworkAuthority?.effectTypeEnum === 'READ'" required />
           </div>
 
           <div *ngIf="selectedHomeworkAuthority?.effectTypeEnum === 'UPDATE'">

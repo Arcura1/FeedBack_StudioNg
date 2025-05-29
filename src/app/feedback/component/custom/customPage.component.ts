@@ -159,9 +159,9 @@ loadAuthorities(): void {
 
   saveHomework(): void {
     if (!this.homework) return;
-    const req = this.homework.id
-      ? this.http.put(`${this.apiUrlHomework}/${this.homework.id}`, this.homework)
-      : this.http.post(this.apiUrlHomework, this.homework);
+const req = this.homework.id
+  ? this.http.put(`${this.apiUrlHomework}/put`, this.homework)
+  : this.http.post(`${this.apiUrlHomework}/add`, this.homework);
     req.subscribe({
       next: () => {
         alert('Ödev kaydedildi.');

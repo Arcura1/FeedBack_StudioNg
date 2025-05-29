@@ -28,7 +28,7 @@ export class StudentComponent implements OnInit {
     const userId = Number(userIdStr);
 
     // Kullanıcıya ait ödevleri getir
-    this.http.get<any[]>(`http://localhost:8080/Homework/getByUser/${userId}`)
+    this.http.get<any[]>(`http://localhost:8080/homework/getByUser/${userId}`)
       .subscribe({
         next: (data) => {
           this.homeworks = data;

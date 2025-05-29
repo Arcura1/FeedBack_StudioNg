@@ -52,7 +52,7 @@ export class PopupTeacherComponent {
   }
 
   deleteHomework(homeworkId: number): void {
-    const deleteUrl = `http://localhost:8080/Homework/del/${homeworkId}`;
+    const deleteUrl = `http://localhost:8080/homework/del/${homeworkId}`;
     this.http.delete(deleteUrl, { responseType: 'text' }).subscribe(
       (response) => {
         console.log('Delete response:', response); // 'silindi' yazmalı

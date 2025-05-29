@@ -23,7 +23,7 @@ export class TeacherComponent implements OnInit {
     const user = JSON.parse(sessionStorage.getItem('user') || '{}');
     this.id = user.id;
 
-    this.http.get<any[]>('http://localhost:8080/Homework/getAll').subscribe(
+    this.http.get<any[]>('http://localhost:8080/homework/getAll').subscribe(
       (data) => {
         this.teacherHomeworks = data.filter(
           (homework) => homework.teacher?.id === this.id
@@ -57,7 +57,7 @@ export class TeacherComponent implements OnInit {
       teacherId: this.id,
     };
     console.log(newHomework)
-    this.http.post('http://localhost:8080/Homework/add', newHomework).subscribe(
+    this.http.post('http://localhost:8080/homework/add', newHomework).subscribe(
       (response) => {
         alert('Ödev başarıyla gönderildi!');
         this.homeworkTitle = '';

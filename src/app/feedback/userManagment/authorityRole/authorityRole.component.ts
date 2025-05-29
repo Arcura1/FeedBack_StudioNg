@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {debounceTime, distinctUntilChanged, Subject, switchMap} from "rxjs";
-import {AuthorityType} from "./enum/authorıtyType";
-import {AuthorityTypeOptions} from "./enum/AuthorityTypeOptions";
+import { debounceTime, distinctUntilChanged, Subject, switchMap } from 'rxjs';
+import { AuthorityType } from './enum/authorıtyType';
+import { AuthorityTypeOptions } from './enum/AuthorityTypeOptions';
 
 interface RoleAuthority {
   id?: number;
@@ -18,6 +18,12 @@ interface Authority {
   classroomId: number;
   organizationId: number;
 }
+interface Role {
+  id: number;
+  name: string;
+  roleTypeEnum: string;
+}
+
 @Component({
   selector: 'app-authority-role',
   templateUrl: './authorityRole.component.html',
@@ -27,27 +33,22 @@ export class AuthorityRoleComponent implements OnInit {
   roleAuthorities: RoleAuthority[] = [];
   newRelation: RoleAuthority = { roleId: undefined, authorityId: undefined };
   selectedId: number | null = null;
+
   authorityTypeOptions = AuthorityTypeOptions;
   selectedAuthorityType: AuthorityType | null = null;
-  authoritySearchTest:String| null = null;
-  organizations: any[] = [];
-
-  payload = {
-    name: '',
-    roleTypeEnum: 'CUSTOM'
-  };
+  authoritySearchTest: string | null = null;
   filteredAuthorities: Authority[] = [];
   showSuggestions = false;
 
+  roles: Role[] = [];
 
-  private searchSubject = new Subject<string>();
-
+  private authoritySearchSubject = new Subject<string>();
 
   constructor(private http: HttpClient) {
-    this.searchSubject.pipe(
+    this.authoritySearchSubject.pipe(
       debounceTime(300),
-      switchMap((text) => this.fetchAuthorities(text))
-    ).subscribe((data) => {
+      switchMap(text => this.fetchAuthorities(text))
+    ).subscribe(data => {
       this.filteredAuthorities = data;
       this.showSuggestions = true;
     });
@@ -57,12 +58,29 @@ export class AuthorityRoleComponent implements OnInit {
     this.fetchAll();
   }
 
+  // ROLE SEARCH
+  onRoleSearch(event: any) {
+    const inputValue = event.target.value;
+    if (inputValue.length >= 2) {
+      const payload = {
+        name: inputValue,
+        roleTypeEnum: 'CUSTOM'
+      };
+      this.http.post<Role[]>('http://localhost:8080/roles/query', payload)
+        .pipe(debounceTime(300), distinctUntilChanged())
+        .subscribe(response => {
+          this.roles = response;
+        });
+    } else {
+      this.roles = [];
+    }
+  }
 
-
+  // AUTHORITY SEARCH
   onAuthorityNameChange(): void {
-    const name = this.authoritySearchTest;
-    if (name && name.trim().length > 0) {
-      this.searchSubject.next(name.trim());
+    const name = this.authoritySearchTest?.trim();
+    if (name && name.length > 0) {
+      this.authoritySearchSubject.next(name);
     } else {
       this.filteredAuthorities = [];
       this.showSuggestions = false;
@@ -72,7 +90,7 @@ export class AuthorityRoleComponent implements OnInit {
   fetchAuthorities(name: string) {
     const body = {
       name,
-      authorityType: null,
+      authorityType: this.selectedAuthorityType,
       effectTypeEnum: null,
       classroomId: null,
       organizationId: null
@@ -83,57 +101,33 @@ export class AuthorityRoleComponent implements OnInit {
   selectAuthority(authority: Authority): void {
     this.newRelation.authorityId = authority.id;
     this.showSuggestions = false;
+    this.authoritySearchTest = authority.name;
   }
 
   hideSuggestions(): void {
-    setTimeout(() => this.showSuggestions = false, 200); // küçük timeout, tıklamaya zaman tanır
+    setTimeout(() => this.showSuggestions = false, 200);
   }
 
-
-
-  onInputChange(event: any) {
-    const inputValue = event.target.value;
-    console.log(event)
-    if (inputValue.length >= 2) { // en az 2 karakter sonra başlasın
-      this.payload.name = inputValue
-
-      this.http.post<any[]>('http://localhost:8080/roles/query', this.payload)
-        .pipe(
-          debounceTime(300), // 300ms bekler, hızlı yazınca az istek atar
-          distinctUntilChanged()
-        )
-        .subscribe(response => {
-          console.log(response)
-          this.organizations = response;
-        });
-    } else {
-      this.organizations = []; // boş inputta listeyi temizle
-    }
+  selectAuthorityType(event: any) {
+    this.selectedAuthorityType = event.target.value;
   }
-
-
-  onOrganizationChange() {
-    console.log('Organizasyon seçildi:', this.newRelation.roleId);
-    // Burada organizasyon seçimi sonrası işlem yapabilirsin.
-  }
-
 
   fetchAll() {
-    this.http.get<RoleAuthority[]>('/api/role-authorities').subscribe(data => {
+    this.http.get<RoleAuthority[]>('http://localhost:8080/role-authorities').subscribe(data => {
       this.roleAuthorities = data;
     });
   }
 
   save() {
+    this.newRelation.roleId=Number(this.newRelation.roleId)
     const payload = { ...this.newRelation };
-
     if (this.selectedId) {
-      this.http.put(`/api/role-authorities/${this.selectedId}`, payload).subscribe(() => {
+      this.http.put(`http://localhost:8080/role-authorities/${this.selectedId}`, payload).subscribe(() => {
         this.fetchAll();
         this.reset();
       });
     } else {
-      this.http.post('/api/role-authorities', payload).subscribe(() => {
+      this.http.post('http://localhost:8080/role-authorities', payload).subscribe(() => {
         this.fetchAll();
         this.reset();
       });
@@ -146,7 +140,7 @@ export class AuthorityRoleComponent implements OnInit {
   }
 
   delete(id: number) {
-    this.http.delete(`/api/role-authorities/${id}`).subscribe(() => {
+    this.http.delete(`http://localhost:8080/role-authorities/${id}`).subscribe(() => {
       this.fetchAll();
     });
   }
@@ -154,16 +148,8 @@ export class AuthorityRoleComponent implements OnInit {
   reset() {
     this.newRelation = { roleId: undefined, authorityId: undefined };
     this.selectedId = null;
-  }
-
-  selectAuthorityType(event:any) {
-    console.log(this.selectedAuthorityType);
-    console.log(event.target.value);
-    this.selectedAuthorityType=event.target.value;
-    console.log(this.selectedAuthorityType);
-    const temp = {
-      authorityType: this.selectedAuthorityType
-    }
-    console.log(temp)
+    this.authoritySearchTest = '';
+    this.filteredAuthorities = [];
+    this.roles = [];
   }
 }

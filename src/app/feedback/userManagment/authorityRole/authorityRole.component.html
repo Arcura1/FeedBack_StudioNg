@@ -2,23 +2,27 @@
   <h3 class="mb-4">Role & Authority Mapping</h3>
 
   <form (ngSubmit)="save()" class="row g-3 mb-4">
-    <div class="col-md-4" > <!-- role seçilince açılacak -->
-      <input type="text" (input)="onInputChange($event)" placeholder="Organizasyon ara..." />
-
-      <select *ngIf="organizations.length > 0" [(ngModel)]="newRelation.roleId" name="organizationId" class="form-control" (change)="onOrganizationChange()">
-        <option *ngFor="let organization of organizations" [value]="organization.id">
-          {{ organization.name }}
+    <!-- ROLE Seçimi -->
+    <div class="col-md-4">
+      <input type="text" (input)="onRoleSearch($event)" placeholder="Role ara..." class="form-control mb-2" />
+      <select *ngIf="roles.length > 0" [(ngModel)]="newRelation.roleId" name="roleId" class="form-control">
+        <option *ngFor="let role of roles" [value]="role.id">
+          {{ role.name }}
         </option>
       </select>
     </div>
 
-    <select [(ngModel)]="selectedAuthorityType" (change)="selectAuthorityType($event)">
-      <option *ngFor="let option of authorityTypeOptions" [ngValue]="option.value">
-        {{ option.label }}
-      </option>
-    </select>
+    <!-- AUTHORITY TYPE -->
+    <div class="col-md-3">
+      <select [(ngModel)]="selectedAuthorityType" name="authorityType" class="form-control" (change)="selectAuthorityType($event)">
+        <option *ngFor="let option of authorityTypeOptions" [value]="option.value">
+          {{ option.label }}
+        </option>
+      </select>
+    </div>
 
-    <div class="col-md-5">
+    <!-- AUTHORITY SEARCH -->
+    <div class="col-md-5 position-relative">
       <input
         type="text"
         class="form-control"
@@ -28,7 +32,7 @@
         (blur)="hideSuggestions()"
         (focus)="onAuthorityNameChange()"
         [attr.autocomplete]="'off'"
-        name="authorityId"
+        name="authorityName"
         required
       />
 
@@ -44,6 +48,7 @@
       </ul>
     </div>
 
+    <!-- SUBMIT BUTTON -->
     <div class="col-md-2 d-grid">
       <button class="btn btn-primary" type="submit">
         {{ selectedId ? 'Update' : 'Add' }}
@@ -58,8 +63,8 @@
   <table class="table table-striped">
     <thead>
     <tr>
-      <th>Role Name</th>
-      <th>Authority Name</th>
+      <th>Role ID</th>
+      <th>Authority ID</th>
       <th style="width: 150px;">Actions</th>
     </tr>
     </thead>

@@ -12,7 +12,9 @@ import { OrganizationComponent } from "./organization/organization.component";
 import { ClassroomComponent } from "./clasroom/classroom.component";
 import { UserClassroomComponent } from "./clasroom/user-classroom/userclassroom.component";
 import { ExecutivePageComponent } from "./component/executive/executivePage.component";
+import {executivePageQr} from "./component/executive/executiveqr/executivePageQr.component";
 import { AdminPageComponent } from "./component/admin/adminPage.component";
+import {GuestPageComponent} from "./component/guest/guestPage.component";
 import { HomeworkComponent } from "./homework/homework.component";
 import { CustomPageComponent } from './component/custom/customPage.component';
 import { QrcodeComponent } from './component/qrcode/qrcode.component';
@@ -37,7 +39,9 @@ const routes: Routes = [
   { path: 'organization', component: OrganizationComponent },
   { path: 'classroom', component: ClassroomComponent },
   { path: 'executive', component: ExecutivePageComponent },
+  { path: 'executivePageQr', component: executivePageQr },
   { path: 'admin', component: AdminPageComponent },
+  { path: 'guestPage', component: GuestPageComponent },
   { path: 'userclassroom', component: UserClassroomComponent },
   { path: 'qrcode', component: QrcodeComponent },
 ];

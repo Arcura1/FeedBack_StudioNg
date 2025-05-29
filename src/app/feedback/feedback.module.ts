@@ -19,12 +19,13 @@ import {PopupStudentComponent} from "./component/student/popupstudent/popupstude
 import {OrganizationComponent} from "./organization/organization.component";
 import {ClassroomComponent} from "./clasroom/classroom.component";
 import {AdminPageComponent} from "./component/admin/adminPage.component";
+import {GuestPageComponent} from "./component/guest/guestPage.component";
 import {ExecutivePageComponent} from "./component/executive/executivePage.component";
+import {executivePageQr} from "./component/executive/executiveqr/executivePageQr.component";
 import {NavbarComponent} from "./nawbar/nawbar.component";
 import {PopupTeacherComponent} from "./component/Teacher/popupteacher/popupteacher.component";
 import {TestComponent} from "./test/test.component";
 import {HomeworkComponent} from "./homework/homework.component";
-import {GuestComponent} from "./guest/guest.component";
 import {UserManagementComponent} from "./userManagment/UserManagment.component";
 import {RolePageComponent} from "./userManagment/rolePage/rolePage.component";
 import {AuthorityRoleComponent} from "./userManagment/authorityRole/authorityRole.component";
@@ -64,13 +65,13 @@ import {QRCodeModule} from "angularx-qrcode";
     UserPageComponent,
     ClassroomComponent,
     AdminPageComponent,
+    GuestPageComponent,
     ExecutivePageComponent,
+    executivePageQr,
     CustomPageComponent,
     HomeworkComponent,
-    GuestComponent,
     QrcodeComponent,
     UserClassroomComponent,
-    GuestComponent,
   ],
   exports: [
     NavbarComponent,

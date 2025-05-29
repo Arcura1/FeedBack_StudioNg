@@ -1,0 +1,56 @@
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(135deg, #cccccc, #999999); /* Gri tonlu arka plan */
+  color: black;
+  min-height: 100vh;
+}
+
+.guest-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  min-height: 100vh;
+}
+
+.guest-card {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 40%;
+}
+
+.title {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: #555; /* Daha yumuşak gri */
+}
+
+.description {
+  font-size: 16px;
+  margin-bottom: 60px;
+  color: #333;
+}
+
+.btn-guest {
+  background-color: #666;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-guest:hover {
+  background-color: #444;
+  transform: scale(1.05);
+}

@@ -30,6 +30,10 @@ html, body {
 .teacher-bg {
   background: linear-gradient(135deg, #007bff, #6610f2);
 }
+/* Guest Arkaplanı */
+.guest-bg {
+  background: linear-gradient(135deg, #bbbbbb, #888888);
+}
 
 /* Öğrenci Arkaplanı */
 .student-bg {

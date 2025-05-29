@@ -1,12 +1,24 @@
 <nawbarfeed></nawbarfeed>
 
 <div [ngClass]="{
-    'teacher-bg': user.role === 'TEACHER',
-    'student-bg': user.role === 'STUDENT',
-    'admin-bg': user.role === 'ADMIN',
-    'executive-bg': user.role === 'EXECUTIVE',
-    'custom-bg': user.role === 'CUSTOM'
-  }" class="main-container">
+  'teacher-bg': user.role === 'TEACHER',
+  'student-bg': user.role === 'STUDENT',
+  'admin-bg': user.role === 'ADMIN',
+  'executive-bg': user.role === 'EXECUTIVE',
+  'custom-bg': user.role === 'CUSTOM',
+  'guest-bg': user.role === 'GUEST'
+}" class="main-container">
+
+  <!-- Guest İçeriği -->
+  <div *ngIf="user.role == 'GUEST'">
+    <h2 class="title">Hoş geldin, {{ user.firstName || 'Ziyaretçi' }}!</h2>
+
+    <div class="content-section">
+      <h1>👤</h1>
+      <p class="description">Sayın Ziyaretçi, en kısa sürede role sahip olacaksınız.</p>
+      <button class="btn-go" (click)="goToHome()">Ana Sayfaya Dön</button>
+    </div>
+  </div>
 
   <!-- Öğretmen İçeriği -->
   <div *ngIf="user.role == 'TEACHER'">

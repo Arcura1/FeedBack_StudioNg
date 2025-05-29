@@ -1,0 +1,31 @@
+<div class="qrcode-container">
+  <h3 class="qrcode-title">QR Oluşturucu</h3>
+
+  <!-- ROL SEÇ -->
+  <div class="mb-3">
+    <label>Rol Seçin:</label>
+    <select class="form-select" [(ngModel)]="selectedRole" (change)="onRoleSelect()">
+      <option value="">-- Rol Seçin --</option>
+      <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+    </select>
+  </div>
+
+  <!-- ORGANİZASYON SEÇ -->
+  <div class="mb-3" *ngIf="organizations.length > 0">
+    <label>Organizasyon Seçin:</label>
+    <select class="form-select" [(ngModel)]="selectedOrganizationId" (change)="onOrganizationSelect()">
+      <option value="">-- Organizasyon Seçin --</option>
+      <option *ngFor="let org of organizations" [value]="org.id">{{ org.name }}</option>
+    </select>
+  </div>
+
+  <!-- QR GÖSTER -->
+  <div class="qrcode-box" *ngIf="qrUrl">
+    <p class="url-text">{{ qrUrl }}</p>
+    <qrcode
+      [qrdata]="qrUrl"
+      [width]="256"
+      [errorCorrectionLevel]="'M'">
+    </qrcode>
+  </div>
+</div>

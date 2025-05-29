@@ -8,10 +8,11 @@ import { PopupComponent } from '../popup/popup.component'; // PopupComponent'i i
   styleUrls: ['./executivePage.component.css']
 })
 export class ExecutivePageComponent implements OnInit {
+    constructor(private router: Router) {}
   ngOnInit(): void {
   }
 
   goToExecutive() {
-
+  this.router.navigate(['/feedback/executivePageQr']);
   }
 }

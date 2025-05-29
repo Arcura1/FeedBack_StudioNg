@@ -126,3 +126,85 @@ button.btn.btn-danger::before {
   background: linear-gradient(45deg, #ff8a80, #ff5252, #ff8a80); /* Kırmızı parlama efekti */
 }
 
+/* Modal stilleri */
+.modal {
+  display: none; /* Başlangıçta gizli */
+  position: fixed; /* Sayfada sabit kalır */
+  z-index: 1000; /* Diğer öğelerin üzerinde */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; /* Gerekirse kaydırma */
+  background-color: rgba(0,0,0,0.5); /* Yarı saydam siyah arka plan */
+  backdrop-filter: blur(5px); /* Arka planı blurla */
+  align-items: flex-start; /* Dikeyde üste yasla */
+  justify-content: center; /* Yatayda ortala */
+  padding-top: 10vh; /* Üstten boşluk (viewport yüksekliğinin %10'u) */
+}
+
+.modal.show {
+  display: flex; /* Göstermek için flex kullan */
+}
+
+.modal-content {
+  background-color: #ffffff; /* Daha temiz bir beyaz */
+  padding: 25px 30px; /* Üst/alt ve sağ/sol padding artırıldı */
+  border: none; /* Kenarlık kaldırıldı, gölge yeterli */
+  width: 90%; /* Genişlik biraz artırıldı */
+  max-width: 550px; /* Maksimum genişlik biraz artırıldı */
+  border-radius: 12px; /* Köşe yuvarlaklığı biraz artırıldı */
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15); /* Daha yumuşak ve belirgin gölge */
+  text-align: left; /* İçerik sola hizalandı */
+  position: relative; /* Kapatma butonu için */
+  animation: fadeInModal 0.3s ease-out; /* Açılış animasyonu */
+}
+
+@keyframes fadeInModal {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Modal içindeki başlık (p#modalMessage içindeki <b>Başlık:</b>) */
+#modalMessage b {
+  font-size: 1.1em; /* Font boyutu biraz büyütüldü */
+  font-weight: 600; /* Font kalınlığı artırıldı */
+  color: #333;
+  display: block; /* Her bilgi satırı ayrı blok */
+  margin-bottom: 8px; /* Alt boşluk */
+}
+
+#modalMessage br {
+  display: none; /* HTML'den gelen <br> etiketlerini gizle, CSS ile boşluk yönetimi */
+}
+
+/* Modal içindeki genel metin */
+#modalMessage {
+  font-size: 1em;
+  color: #555;
+  line-height: 1.6; /* Satır yüksekliği artırıldı */
+}
+
+.close {
+  color: #777; /* Renk biraz koyulaştırıldı */
+  position: absolute; /* Modal contente göre konumlandırıldı */
+  top: 10px; /* Üstten boşluk */
+  right: 15px; /* Sağdan boşluk */
+  font-size: 32px; /* Boyut biraz büyütüldü */
+  font-weight: bold;
+  transition: color 0.2s ease; /* Yumuşak renk geçişi */
+}
+
+.close:hover,
+.close:focus {
+  color: #000; /* Hover/focus rengi daha belirgin */
+  text-decoration: none;
+  cursor: pointer;
+}
+

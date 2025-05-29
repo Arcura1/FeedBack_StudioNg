@@ -80,6 +80,10 @@ export class PdfEditComponent implements OnInit {
   private currentPdfDoc: PDFDocumentProxy | null = null; // Yüklenen PDF dokümanını saklar
   private resizeSubject = new Subject<void>();
 
+  private modalElement: HTMLElement | null = null;
+  private modalMessageElement: HTMLElement | null = null;
+  private closeButtonElement: HTMLElement | null = null;
+
   constructor(private renderer: Renderer2, private elementRef: ElementRef, private http: HttpClient, private route: ActivatedRoute) {
     const homeworkIdFromUrl = this.route.snapshot.paramMap.get('homeworkId');
     const pdfIdFromUrl = this.route.snapshot.paramMap.get('pdfId');
@@ -146,6 +150,27 @@ export class PdfEditComponent implements OnInit {
     const homeworkIdFromUrl = this.route.snapshot.paramMap.get('homeworkId');
     const pdfIdFromUrl = this.route.snapshot.paramMap.get('pdfId');
 
+    // Modal elementlerini al
+    this.modalElement = document.getElementById('modal');
+    this.modalMessageElement = document.getElementById('modalMessage');
+    this.closeButtonElement = document.querySelector('.modal .close');
+
+    // Kapatma butonuna event listener ekle
+    if (this.closeButtonElement) {
+      this.closeButtonElement.addEventListener('click', () => {
+        this.closeModal();
+      });
+    }
+
+    // Modal dışına tıklanınca kapatma
+    if (this.modalElement) {
+      this.modalElement.addEventListener('click', (event) => {
+        if (event.target === this.modalElement) {
+          this.closeModal();
+        }
+      });
+    }
+
     // URL'den alınan parametreleri @Input() değerlerine atamak
     if (homeworkIdFromUrl) {
       this.homeworkId = homeworkIdFromUrl;
@@ -175,6 +200,19 @@ export class PdfEditComponent implements OnInit {
     this.parentMessage = `Tıklanan PDF Koordinatları X: ${this.pdfX.toFixed(2)}, Y: ${this.pdfY.toFixed(2)}`;
   }
 
+  openModal(message: string) {
+    if (this.modalElement && this.modalMessageElement) {
+      this.modalMessageElement.innerHTML = message; // innerHTML kullanarak HTML içeriği de ekleyebiliriz.
+      this.modalElement.classList.add('show');
+    }
+  }
+
+  closeModal() {
+    if (this.modalElement) {
+      this.modalElement.classList.remove('show');
+    }
+  }
+
   handleButtonClick(item: any) {
     const buttonId = item.id;  // Butonun ID'sini alın
 
@@ -193,13 +231,20 @@ export class PdfEditComponent implements OnInit {
         if (data && data.note && data.xcoordinate !== undefined && data.ycoordinate !== undefined) {
           // Koordinatları ve notu konsola yazdır
           console.log(`Butona tıklandığında gelen veri: ${data.note}, Koordinatlar: X: ${data.xcoordinate}, Y: ${data.ycoordinate}`);
+          // Modal'ı aç ve mesajı ayarla
+          const message = `<b>Başlık:</b> ${data.title || 'Başlık Yok'}<br>
+                           <b>Not:</b> ${data.note}<br>
+                           <b>Kullanıcı:</b> ${data.user ? data.user.firstName : 'Bilinmiyor'}<br>
+                           <b>Koordinatlar:</b> X: ${data.xcoordinate.toFixed(2)}, Y: ${data.ycoordinate.toFixed(2)}`;
+          this.openModal(message);
         } else {
           console.error('Veri yapısı beklenenden farklı: ', data);
+          this.openModal('Not detayı alınamadı.');
         }
       })
       .catch(error => {
-        console.error('Veri alınırken bir hata oluştu:', error);
-        alert('Veri alınırken bir hata oluştu. Lütfen tekrar deneyin.');
+        console.error('API isteği sırasında hata oluştu:', error);
+        this.openModal('Not detayı alınırken bir hata oluştu.');
       });
   }
 
@@ -277,79 +322,36 @@ export class PdfEditComponent implements OnInit {
           console.log(data);
           const rect = this.pdfCanvasRef.nativeElement.getBoundingClientRect();
 
-          // Modal ve close butonu elemanlarını seçiyoruz
-          const modal = document.getElementById('modal');
-          const closeBtn = document.getElementsByClassName('close')[0];
-          const modalMessage = document.getElementById('modalMessage');
-          // Modal ve modalMessage null ise, işlem yapma
-          if (modal && modalMessage && closeBtn) {
-            const elements = this.elementRef.nativeElement.querySelectorAll('#notes');
-            elements.forEach((element: HTMLElement) => {
-              element.remove();
-            });
-            data.forEach((item: NoteItem) => {
-              console.log(item.page)
-              console.log(this.currentPageNumber)
-              if (item.page == this.currentPageNumber) {
-                const button = document.createElement('button');
-                button.className = 'btn btn-success position-absolute';
-                button.id = 'notes'; // ID'yi koruyoruz, temizleme mekanizması için önemli olabilir
+          const elements = this.elementRef.nativeElement.querySelectorAll('#notes');
+          elements.forEach((element: HTMLElement) => {
+            element.remove();
+          });
 
-                // Butonu doğru koordinatlarda yerleştir
-                button.style.left = `${((item.xcoordinate / this.originalViewport.width) * rect.width)}px`;
-                button.style.top = `${((item.ycoordinate / this.originalViewport.height) * rect.height)}px`;
+          data.forEach((item: NoteItem) => {
+            console.log(item.page)
+            console.log(this.currentPageNumber)
+            if (item.page == this.currentPageNumber) {
+              const button = document.createElement('button');
+              button.className = 'btn btn-success position-absolute';
+              button.id = 'notes'; // ID'yi koruyoruz, temizleme mekanizması için önemli olabilir
 
-                const noteId = item.id;
+              // Butonu doğru koordinatlarda yerleştir
+              button.style.left = `${((item.xcoordinate / this.originalViewport.width) * rect.width)}px`;
+              button.style.top = `${((item.ycoordinate / this.originalViewport.height) * rect.height)}px`;
 
-                // Butonun başlangıç metnini ayarla
-                if (noteId && this.noteToggleStates[noteId]) {
-                  button.innerHTML = `Kişi: ${item.user.firstName}<br>Email: ${item.user.email}<br>Mesaj: ${item.note}<br>X: ${item.xcoordinate.toFixed(2)}, Y: ${item.ycoordinate.toFixed(2)}`;
-                } else {
-                  button.textContent = `Not: ${item.title}`;
-                }
+              // Buton metnini basitleştir: Sadece başlığı göster
+              button.textContent = `Not: ${item.title || 'Başlıksız'}`;
 
-                // Butonu ekranda uygun alana ekle
-                this.canvasContainerRef.nativeElement.appendChild(button);
+              // Butonu ekranda uygun alana ekle
+              this.canvasContainerRef.nativeElement.appendChild(button);
 
-                // Butona tıklandığında davranışı güncelle
-                button.addEventListener('click', () => {
-                  if (noteId) { // ID varsa durumu sakla
-                    this.noteToggleStates[noteId] = !this.noteToggleStates[noteId];
-                    if (this.noteToggleStates[noteId]) {
-                      button.innerHTML = `Kişi: ${item.user.firstName}<br>Email: ${item.user.email}<br>Mesaj: ${item.note}<br>X: ${item.xcoordinate.toFixed(2)}, Y: ${item.ycoordinate.toFixed(2)}`;
-                    } else {
-                      button.textContent = `Not: ${item.title}`;
-                    }
-                  } else { // ID yoksa, geçici (stateless) toggle
-                    const isCurrentlyShowingDetails = button.innerHTML.includes("Kişi:");
-                    if (isCurrentlyShowingDetails) {
-                         button.textContent = `Not: ${item.title}`;
-                    } else {
-                         button.innerHTML = `Kişi: ${item.user.firstName}<br>Email: ${item.user.email}<br>Mesaj: ${item.note}<br>X: ${item.xcoordinate.toFixed(2)}, Y: ${item.ycoordinate.toFixed(2)}`;
-                    }
-                    console.warn("Note item without ID, toggle state will be transient.", item);
-                  }
-                  // Pop-up gösterme kodunu kaldır:
-                  // modalMessage.textContent = `Kişi:${item.user.firstName} Email:${item.user.email} Mesaj: ${item.note}\nKoordinatlar: X: ${item.xcoordinate}, Y: ${item.ycoordinate}`;
-                  // modal.style.display = 'block';
-                });
-              }
-            });
+              // Butona tıklandığında merkezi handleButtonClick fonksiyonunu çağır
+              button.addEventListener('click', () => {
+                this.handleButtonClick(item);
+              });
+            }
+          });
 
-            // Modal'ı kapatmak için close butonuna tıklama işlevi (Eğer modal başka yerde kullanılmıyorsa bu da değerlendirilebilir)
-            closeBtn.addEventListener('click', () => {
-              modal.style.display = 'none';
-            });
-
-            // Modal dışına tıklanırsa, modal'ı kapat
-            window.addEventListener('click', (event) => {
-              if (event.target === modal) {
-                modal.style.display = 'none';
-              }
-            });
-          } else {
-            console.error('Modal veya modalMessage elementi bulunamadı');
-          }
         })
         .catch(error => {
           console.error('Veri alınırken bir hata oluştu:', error);

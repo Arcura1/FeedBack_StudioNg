@@ -764,7 +764,7 @@ export class PdfEditComponent implements OnInit {
   }
 
   postToPdfAnalyzer() {
-    const postUrl = 'http://localhost:8080/pdfAnalyzer/'+this.pdfId+JSON.parse(sessionStorage.getItem('user') || '{}').id;
+    const postUrl = 'http://localhost:8080/pdfAnalyzer/'+this.pdfId+'/'+JSON.parse(sessionStorage.getItem('user') || '{}').id;
 
     this.http.post(postUrl, null, { responseType: 'text' }).subscribe({
       next: (response) => {

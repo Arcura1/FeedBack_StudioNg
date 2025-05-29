@@ -19,7 +19,8 @@ export class AdminPageComponent implements OnInit {
     console.log('Admin Paneli - Rol:', this.user.role);
   }
 
-  goToAdmin() {
-    this.router.navigate(['/admin/settings']); // ihtiyaca göre yönlendir
-  }
+goToAdmin() {
+  this.router.navigate(['/feedback/organization']);
+}
+
 }

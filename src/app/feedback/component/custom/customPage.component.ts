@@ -9,7 +9,6 @@ import { HttpClient } from '@angular/common/http';
 })
 export class CustomPageComponent implements OnInit {
   authorities: Authority[] = [];
-
   // ORGANIZATION
   organizationAuthorities: Authority[] = [];
   selectedAuthority: Authority | null = null;

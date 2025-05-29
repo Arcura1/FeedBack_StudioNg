@@ -1,58 +1,79 @@
-.accordion-container {
-  max-width: 850px;
+.accordion {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  max-width: 100%;
   margin: 2rem auto;
   background-color: #ffffff;
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-  overflow: hidden;
+  padding: 1rem;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin-top: 110px;
 }
 
 .accordion-item {
-  border-bottom: 1px solid #ddd;
+  /* Flex item ayarları */
+  flex: 1 1 200px; /* Büyüyebilir, küçülebilir, temel genişlik 200px (ayarlayabilirsiniz) */
+  /* Veya sabit sayıda öğe istiyorsanız: */
+  /* flex-basis: calc(20% - 1rem); /* 5 öğe için (gap'i hesaba katın). 1rem gap varsa ve 5 öğe varsa, (100% - 4*1rem) / 5 gibi bir hesaplama gerekir. */
+  min-width: 180px; /* Öğelerin çok daralmasını engeller */
+
+  border: 1px solid #ddd; /* Artık border-bottom yerine tam bir çerçeve daha iyi görünebilir */
+  border-radius: 8px; /* Köşeleri yuvarlatılmış öğeler için */
+  overflow: hidden; /* Header ve body'nin yuvarlak köşelerini korumak için */
+  display: flex; /* Öğenin kendisini de bir flex container yapalım */
+  flex-direction: column; /* Header ve body'yi dikey olarak sıralamak için */
+  background-color: #fdfdfd; /* Öğeler için hafif bir arka plan */
   transition: all 0.3s ease;
 }
 
+/* Orijinal border-bottom'u kaldırın veya yukarıdaki border ile değiştirin */
+/* .accordion-item {
+  border-bottom: 1px solid #ddd; /* Bu satırı yorumlayın veya silin */
+/* } */
+
+
 .accordion-header {
-  background: linear-gradient(to right, #00796b, #26a69a);
-  color: white;
-  padding: 1.2rem 1.5rem;
-  font-size: 1.15rem;
+  background-color: transparent; /* Tam şeffaf */
+  color: black; /* Beyaz yazı */
+  padding: 1rem 1.25rem;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: background 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Hafif kenarlık */
+  border-radius: 8px;
+  transition: all 0.3s ease;
 }
 
 .accordion-header:hover {
-  background: linear-gradient(to right, #00695c, #009688);
-  box-shadow: inset 0 -4px 0 rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
+
+
+
 .accordion-header .icon {
-  margin-right: 10px;
-  font-size: 1.2rem;
+  margin-right: 8px; /* Biraz azaltıldı */
+  font-size: 1.1rem;
 }
 
 .accordion-body {
   max-height: 0;
   overflow: hidden;
-  background-color: #fafafa;
-  padding: 0 1.5rem;
   transition: max-height 0.4s ease, padding 0.3s ease;
-  color: #444;
-  font-size: 0.95rem;
+  padding: 0 1.5rem;
 }
 
 .accordion-body.show {
-  max-height: 1200px;
+  max-height: 1000px; /* İçerik yüksekliğini geçmeyecek kadar büyük bir değer */
   padding: 1.2rem 1.5rem;
-  border-left: 4px solid #009688;
-  background-color: #fefefe;
-  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.03);
 }
+
 
 .accordion-body p {
   margin: 0.5rem 0;
@@ -71,17 +92,20 @@
 /* Input ve form elemanları */
 .form-group label {
   font-weight: 600;
-  margin-top: 1rem;
+  margin-top: 0.8rem; /* Biraz azaltıldı */
   display: block;
+  font-size: 0.85rem;
 }
 
 .form-control {
   border: 1px solid #ccc;
   border-radius: 8px;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.95rem;
+  padding: 0.4rem 0.6rem; /* Biraz azaltıldı */
+  font-size: 0.9rem; /* Biraz azaltıldı */
   margin-top: 0.25rem;
   transition: border-color 0.2s;
+  width: 100%; /* Form elemanlarının tam genişlikte olmasını sağlar */
+  box-sizing: border-box; /* Padding ve border'ı genişliğe dahil eder */
 }
 
 .form-control:focus {
@@ -93,7 +117,8 @@
 .btn {
   border: none;
   border-radius: 6px;
-  padding: 0.5rem 1rem;
+  padding: 0.4rem 0.8rem; /* Biraz azaltıldı */
+  font-size: 0.85rem; /* Biraz azaltıldı */
   font-weight: 500;
   margin-top: 1rem;
   transition: background 0.3s ease;
@@ -117,19 +142,27 @@
   background-color: #b0b0b0;
 }
 
-/* Mobile responsive */
-@media (max-width: 600px) {
+/* Mobile responsive - yan yana düzende farklı bir yaklaşım gerekebilir */
+@media (max-width: 768px) { /* Daha geniş bir breakpoint */
+  .accordion {
+    flex-direction: column; /* Küçük ekranlarda tekrar alt alta gelsinler */
+    padding: 0; /* Padding'i sıfırla veya azalt */
+    max-width: 95%; /* Ekranı daha iyi kullansın */
+  }
+  .accordion-item {
+    flex-basis: auto; /* Otomatik genişlik */
+    width: 100%; /* Tam genişlik */
+    margin-bottom: 1rem; /* Alt alta geldiklerinde aralarında boşluk */
+  }
   .accordion-header {
     font-size: 1rem;
     padding: 0.9rem 1rem;
   }
-
   .accordion-body {
     font-size: 0.9rem;
     padding: 1rem;
   }
-
-  .form-control {
+  .form-control, .btn {
     font-size: 0.9rem;
   }
 }

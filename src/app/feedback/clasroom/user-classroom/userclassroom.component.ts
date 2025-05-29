@@ -11,6 +11,18 @@ export class UserClassroomComponent implements OnInit {
   AllUsers: any[] = [];       // Ekleme için (tüm kullanıcılar)
   classrooms: any[] = [];
 
+  // Arama metinleri
+  userSearchText: string = '';
+  classroomSearchText: string = '';
+  newUserSearchText: string = '';
+  newUserClassroomSearchText: string = '';
+
+  // Filtrelenmiş listeler
+  filteredUsers: any[] = [];
+  filteredClassrooms: any[] = [];
+  filteredNewUsers: any[] = [];
+  filteredNewClassrooms: any[] = [];
+
   // Güncelleme için
   selectedUserId: number | null = null;
   selectedUserClassroomId: number | null = null;
@@ -37,6 +49,7 @@ export class UserClassroomComponent implements OnInit {
       .subscribe({
         next: data => {
           this.PickerUser = data.map(item => item.user);
+          this.filterUsers(); // Kullanıcıları yükledikten sonra filtrele
         },
         error: () => this.message = '❌ Kullanıcılar yüklenemedi.'
       });
@@ -46,7 +59,10 @@ export class UserClassroomComponent implements OnInit {
   loadUsersForAdd(): void {
     this.http.get<any[]>('http://localhost:8080/api/users/getAll')
       .subscribe({
-        next: data => this.AllUsers = data,
+        next: data => {
+          this.AllUsers = data;
+          this.filterNewUsers(); // Kullanıcıları yükledikten sonra filtrele
+        },
         error: () => this.addMessage = '❌ Tüm kullanıcılar yüklenemedi.'
       });
   }
@@ -54,9 +70,75 @@ export class UserClassroomComponent implements OnInit {
   loadClassrooms(): void {
     this.http.get<any[]>('http://localhost:8080/classrooms')
       .subscribe({
-        next: data => this.classrooms = data,
+        next: data => {
+          this.classrooms = data;
+          this.filterClassrooms(); // Sınıfları yükledikten sonra filtrele
+          this.filterNewClassrooms(); // Sınıfları yükledikten sonra filtrele
+        },
         error: () => this.message = '❌ Sınıflar yüklenemedi.'
       });
+  }
+
+  filterUsers(): void {
+    if (!this.userSearchText) {
+      this.filteredUsers = [...this.PickerUser];
+    } else {
+      this.filteredUsers = this.PickerUser.filter(user =>
+        (user.firstName.toLowerCase() + ' ' + user.lastName.toLowerCase()).includes(this.userSearchText.toLowerCase())
+      );
+    }
+    if (this.filteredUsers.length > 0) {
+      this.selectedUserId = this.filteredUsers[0].id;
+      this.onUserChange(); // Kullanıcı değiştiğinde sınıf bilgisini güncelle
+    } else {
+      this.selectedUserId = null;
+      this.selectedUserClassroomId = null; // Kullanıcı yoksa sınıf bilgisi de olmamalı
+    }
+  }
+
+  filterClassrooms(): void {
+    if (!this.classroomSearchText) {
+      this.filteredClassrooms = [...this.classrooms];
+    } else {
+      this.filteredClassrooms = this.classrooms.filter(c =>
+        c.name.toLowerCase().includes(this.classroomSearchText.toLowerCase())
+      );
+    }
+    if (this.filteredClassrooms.length > 0) {
+      this.newClassroomId = this.filteredClassrooms[0].id;
+    } else {
+      this.newClassroomId = null;
+    }
+  }
+
+  filterNewUsers(): void {
+    if (!this.newUserSearchText) {
+      this.filteredNewUsers = [...this.AllUsers];
+    } else {
+      this.filteredNewUsers = this.AllUsers.filter(user =>
+        (user.firstName.toLowerCase() + ' ' + user.lastName.toLowerCase()).includes(this.newUserSearchText.toLowerCase())
+      );
+    }
+    if (this.filteredNewUsers.length > 0) {
+      this.newUserId = this.filteredNewUsers[0].id;
+    } else {
+      this.newUserId = null;
+    }
+  }
+
+  filterNewClassrooms(): void {
+    if (!this.newUserClassroomSearchText) {
+      this.filteredNewClassrooms = [...this.classrooms];
+    } else {
+      this.filteredNewClassrooms = this.classrooms.filter(c =>
+        c.name.toLowerCase().includes(this.newUserClassroomSearchText.toLowerCase())
+      );
+    }
+    if (this.filteredNewClassrooms.length > 0) {
+      this.newUserClassroomId = this.filteredNewClassrooms[0].id;
+    } else {
+      this.newUserClassroomId = null;
+    }
   }
 
   onUserChange(): void {

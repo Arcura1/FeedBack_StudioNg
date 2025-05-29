@@ -53,24 +53,41 @@ export class CustomPageComponent implements OnInit {
     this.loadAuthorities();
   }
 
-  loadAuthorities(): void {
-    const roleId = 11;
+loadAuthorities(): void {
+  const user = JSON.parse(sessionStorage.getItem('user') || '{}');
 
-    this.authorityService.getAuthoritiesByRole(roleId).subscribe({
-      next: (data: Authority[]) => {
-        this.authorities = data;
+  // roleTypeEnum alınmaya çalışılıyor
+  const roleTypeEnum =
+    typeof user.role === 'string'
+      ? user.role // örneğin: "CUSTOM"
+      : user.role?.roleTypeEnum;
 
-        this.organizationAuthorities = data.filter(a => a.authorityType === 'ORGANIZATION' && a.organization);
-        this.classroomAuthorities = data.filter(a => a.authorityType === 'CLASSROOM' && a.classroom);
-        this.homeworkAuthorities = data.filter(a => a.authorityType === 'HOMEWORK' && a.homework);
-        this.pdfEditAuthorities = data.filter(a => a.authorityType === 'PDF_EDIT' && a.pdfInfo);
-        this.classroomUserAuthorities = data.filter(a => a.authorityType === 'CLASSROOM_USER' && a.classroomUser);
-      },
-      error: err => {
-        console.error('Yetkiler yüklenemedi:', err);
-      }
-    });
+  if (!roleTypeEnum) {
+    console.error('Rol tipi alınamadı:', user);
+    return;
   }
+
+  const body = {
+    roleTypeEnum: roleTypeEnum
+  };
+
+  this.http.post<Authority[]>('http://localhost:8080/authorities/query', body).subscribe({
+    next: (data: Authority[]) => {
+      this.authorities = data;
+
+      this.organizationAuthorities = data.filter(a => a.authorityType === 'ORGANIZATION' && a.organization);
+      this.classroomAuthorities = data.filter(a => a.authorityType === 'CLASSROOM' && a.classroom);
+      this.homeworkAuthorities = data.filter(a => a.authorityType === 'HOMEWORK' && a.homework);
+      this.pdfEditAuthorities = data.filter(a => a.authorityType === 'PDF_EDIT' && a.pdfInfo);
+      this.classroomUserAuthorities = data.filter(a => a.authorityType === 'CLASSROOM_USER' && a.classroomUser);
+    },
+    error: err => {
+      console.error('Yetkiler yüklenemedi:', err);
+    }
+  });
+}
+
+
 
   toggleAccordion(section: string): void {
     this.selectedSection = this.selectedSection === section ? null : section;

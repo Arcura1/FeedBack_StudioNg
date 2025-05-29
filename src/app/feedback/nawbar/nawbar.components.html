@@ -20,7 +20,14 @@
           <a class="nav-link btn me-2" (click)="goToProfile()">Profil</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link btn me-2" (click)="goToHomework()">Homework</a>
+          <a
+            class="mr-4 text-gray-700 hover:text-blue-700 dark:text-gray-200 dark:hover:text-blue-400"
+            href="#"
+            (click)="goToHomework()"
+            *ngIf="user.role === 'teacher'"
+          >
+            Homework
+          </a>
         </li>
         <li class="nav-item">
           <a class="nav-link btn btn-danger fw-bold" (click)="logout()">Çıkış Yap</a>

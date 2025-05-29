@@ -38,6 +38,9 @@ export class MainPageComponent implements OnInit {
   goToAdmin() {
     this.router.navigate(['/admin']);
   }
+goToHome() {
+  this.router.navigate(['/']); // veya istediğin başka bir rota
+}
 
   goToExecutive() {
     this.router.navigate(['/executive']);

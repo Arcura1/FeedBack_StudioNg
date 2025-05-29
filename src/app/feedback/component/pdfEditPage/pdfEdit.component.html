@@ -49,7 +49,7 @@
     </div>
 
     <!-- PDF Viewer -->
-    <div class="border position-relative" id="pdf-viewer" style="width: max-content" #canvasContainer>
+    <div class="border position-relative" id="pdf-viewer" style="width: 100%; overflow-x: auto;" #canvasContainer>
       <canvas (click)="pdfLocationUpdate($event)"
               (mouseup)="mouseup($event)"
               (mousemove)="mouseMove($event)"

@@ -1,13 +1,16 @@
-import {Component, ElementRef, Input, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, Renderer2, ViewChild, HostListener} from '@angular/core';
 import {PDFDocumentProxy} from 'pdfjs-dist';
 import html2canvas from 'html2canvas';
 import {HttpClient} from "@angular/common/http";
 import {ActivatedRoute} from "@angular/router";
 import jsPDF from "jspdf";
+import { debounceTime } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 declare const pdfjsLib: any;
 
 interface NoteItem {
+  id?: string;
   note: string;
   xcoordinate: number;
   ycoordinate: number;
@@ -18,6 +21,8 @@ interface NoteItem {
     firstName: string;
     id: number;
   }
+  isShowingNote?: boolean;
+  displayData?: string;
 }
 interface highItem {
   id: String,
@@ -69,7 +74,11 @@ export class PdfEditComponent implements OnInit {
   // public ctx: CanvasRenderingContext2D | null = null;
   public isDrawing: boolean = false;
   public showButtons: any[] = [];
+  public notesData: NoteItem[] = [];
+  public noteToggleStates: { [noteId: string]: boolean } = {}; // Notların detay gösterim durumunu tutar
 
+  private currentPdfDoc: PDFDocumentProxy | null = null; // Yüklenen PDF dokümanını saklar
+  private resizeSubject = new Subject<void>();
 
   constructor(private renderer: Renderer2, private elementRef: ElementRef, private http: HttpClient, private route: ActivatedRoute) {
     const homeworkIdFromUrl = this.route.snapshot.paramMap.get('homeworkId');
@@ -97,7 +106,8 @@ export class PdfEditComponent implements OnInit {
             this.topPagepdf = pdf._pdfInfo.numPages
             console.log('PDF gelmiş');
             console.log(pdf);
-            this.renderPage(pdf, this.currentPageNumber); // 1. sayfayı render et
+            this.currentPdfDoc = pdf; // PDF dokümanını sakla
+            this.renderPage(this.currentPdfDoc, this.currentPageNumber); // 1. sayfayı render et
           },
           (reason: any) => {
             console.error('PDF yüklenemedi: ' + reason);
@@ -114,6 +124,18 @@ export class PdfEditComponent implements OnInit {
 
     this.pdfX = 0; // Özellik constructor'da başlatıldı
     this.pdfY = 0;
+
+    this.resizeSubject.pipe(debounceTime(300)).subscribe(() => {
+      if (this.currentPdfDoc) {
+        this.clearButtons();
+        this.renderPage(this.currentPdfDoc, this.currentPageNumber);
+      }
+    });
+  }
+
+  @HostListener('window:resize')
+  onWindowResize() {
+    this.resizeSubject.next();
   }
 
   ngOnInit(): void {
@@ -139,7 +161,8 @@ export class PdfEditComponent implements OnInit {
         this.topPagepdf = pdf._pdfInfo.numPages
         console.log('PDF gelmiş');
         console.log(pdf);
-        this.renderPage(pdf, this.currentPageNumber); // 1. sayfayı render et
+        this.currentPdfDoc = pdf; // PDF dokümanını sakla
+        this.renderPage(this.currentPdfDoc, this.currentPageNumber); // 1. sayfayı render et
       },
       (reason: any) => {
         console.error('PDF yüklenemedi: ' + reason);
@@ -197,12 +220,19 @@ export class PdfEditComponent implements OnInit {
     }
   }
 
+  async renderPage(pdf: PDFDocumentProxy, pageNumber: number) {
+    if (!this.canvasContainerRef || !this.pdfCanvasRef) {
+      console.warn("Canvas references not yet available.");
+      return;
+    }
+    try {
+      const page = await pdf.getPage(pageNumber);
+      const containerWidth = this.canvasContainerRef.nativeElement.offsetWidth;
+      const desiredViewport = page.getViewport({ scale: 1 }); // Ölçeklenmemiş viewport
+      const scale = containerWidth / desiredViewport.width; // Container'a sığacak ölçeği hesapla
 
-  renderPage(pdf: PDFDocumentProxy, pageNumber: number) {
-    pdf.getPage(pageNumber).then((page) => {
-      const scale = 1.5; // Ölçek ayarı
-      const viewport = page.getViewport({scale});
-      this.originalViewport = page.getViewport({scale: 1});
+      const viewport = page.getViewport({scale: scale}); // Dinamik ölçekli viewport
+      this.originalViewport = page.getViewport({scale: 1}); // Orijinal koordinatlar için
       // Canvas elemanını seç
       const canvas = this.pdfCanvasRef.nativeElement; // @ViewChild ile elde edilen referans
       const context = canvas.getContext('2d');
@@ -232,30 +262,9 @@ export class PdfEditComponent implements OnInit {
                   highlightDiv.style.height = Math.abs(value.endY - value.startY) + 'px';
 
                   this.canvasContainerRef.nativeElement.appendChild(highlightDiv);
-
-                  // else if(){
-                  //
-                  // }else if(){
-                  //
-                  // }
-                // console.log(value);
-                // const highlightDiv = document.createElement('div');
-                // highlightDiv.className = 'position-absolute bg-warning';
-                // highlightDiv.id = 'higlighta';
-                // highlightDiv.style.opacity = '0.5';
-                //
-                // highlightDiv.style.left = Math.min(this.startX, value.endX) + 'px';
-                // highlightDiv.style.top = Math.min(this.startY, value.endY) + 'px';
-                // highlightDiv.style.width = Math.abs(value.endX - this.startX) + 'px';
-                // highlightDiv.style.height = Math.abs(value.endY - this.startY) + 'px';
-                //
-                // this.canvasContainerRef.nativeElement.appendChild(highlightDiv);
                 }
               })
         })
-
-
-
 
       fetch('http://localhost:8080/viewAll' + "/" + this.pdfId)
         .then(response => {
@@ -284,28 +293,50 @@ export class PdfEditComponent implements OnInit {
               if (item.page == this.currentPageNumber) {
                 const button = document.createElement('button');
                 button.className = 'btn btn-success position-absolute';
-                button.textContent = `Not: ${item.title}`;
-                button.id = 'notes';
+                button.id = 'notes'; // ID'yi koruyoruz, temizleme mekanizması için önemli olabilir
 
                 // Butonu doğru koordinatlarda yerleştir
                 button.style.left = `${((item.xcoordinate / this.originalViewport.width) * rect.width)}px`;
                 button.style.top = `${((item.ycoordinate / this.originalViewport.height) * rect.height)}px`;
 
+                const noteId = item.id;
+
+                // Butonun başlangıç metnini ayarla
+                if (noteId && this.noteToggleStates[noteId]) {
+                  button.innerHTML = `Kişi: ${item.user.firstName}<br>Email: ${item.user.email}<br>Mesaj: ${item.note}<br>X: ${item.xcoordinate.toFixed(2)}, Y: ${item.ycoordinate.toFixed(2)}`;
+                } else {
+                  button.textContent = `Not: ${item.title}`;
+                }
+
                 // Butonu ekranda uygun alana ekle
                 this.canvasContainerRef.nativeElement.appendChild(button);
 
-                // Butona tıklandığında pop-up açılacak
+                // Butona tıklandığında davranışı güncelle
                 button.addEventListener('click', () => {
-                  // Modal mesajını güncelle
-                  modalMessage.textContent = `Kişi:${item.user.firstName} Email:${item.user.email} Mesaj: ${item.note}\nKoordinatlar: X: ${item.xcoordinate}, Y: ${item.ycoordinate}`;
-
-                  // Modal'ı göster
-                  modal.style.display = 'block';
+                  if (noteId) { // ID varsa durumu sakla
+                    this.noteToggleStates[noteId] = !this.noteToggleStates[noteId];
+                    if (this.noteToggleStates[noteId]) {
+                      button.innerHTML = `Kişi: ${item.user.firstName}<br>Email: ${item.user.email}<br>Mesaj: ${item.note}<br>X: ${item.xcoordinate.toFixed(2)}, Y: ${item.ycoordinate.toFixed(2)}`;
+                    } else {
+                      button.textContent = `Not: ${item.title}`;
+                    }
+                  } else { // ID yoksa, geçici (stateless) toggle
+                    const isCurrentlyShowingDetails = button.innerHTML.includes("Kişi:");
+                    if (isCurrentlyShowingDetails) {
+                         button.textContent = `Not: ${item.title}`;
+                    } else {
+                         button.innerHTML = `Kişi: ${item.user.firstName}<br>Email: ${item.user.email}<br>Mesaj: ${item.note}<br>X: ${item.xcoordinate.toFixed(2)}, Y: ${item.ycoordinate.toFixed(2)}`;
+                    }
+                    console.warn("Note item without ID, toggle state will be transient.", item);
+                  }
+                  // Pop-up gösterme kodunu kaldır:
+                  // modalMessage.textContent = `Kişi:${item.user.firstName} Email:${item.user.email} Mesaj: ${item.note}\nKoordinatlar: X: ${item.xcoordinate}, Y: ${item.ycoordinate}`;
+                  // modal.style.display = 'block';
                 });
               }
             });
 
-            // Modal'ı kapatmak için close butonuna tıklama işlevi
+            // Modal'ı kapatmak için close butonuna tıklama işlevi (Eğer modal başka yerde kullanılmıyorsa bu da değerlendirilebilir)
             closeBtn.addEventListener('click', () => {
               modal.style.display = 'none';
             });
@@ -336,7 +367,6 @@ export class PdfEditComponent implements OnInit {
           viewport: viewport
         };
 
-
         page.render(renderContext).promise.then(() => {
           // Sayfada kelimelerin konumlarını almak için metin içeriğini alıyoruz
           page.getTextContent().then((textContent) => {
@@ -353,8 +383,6 @@ export class PdfEditComponent implements OnInit {
 
                 if (ctx) {
                   // Kelimenin altını çiz (çizgi genişliği ve yüksekliği kelimenin boyutuna göre)
-
-
                   ctx.strokeStyle = 'red';
                   ctx.lineWidth = 1;
                   ctx.beginPath();
@@ -370,45 +398,65 @@ export class PdfEditComponent implements OnInit {
       } else {
         console.error('Canvas context alınamadı');
       }
-    });
 
+      // Mevcut notları ve butonları canvas üzerine çiz
+      this.clearButtons(); // Yeniden çizerken eski butonları temizle (renderPage içinde çağrılıyorsa)
+      this.notesData.forEach(note => {
+        if (note.page === pageNumber) {
+          // Notun konumunu ve boyutunu ayarla
+          const buttonElement = this.renderer.createElement('button');
+          this.renderer.setProperty(buttonElement, 'innerHTML', note.displayData || note.note); // displayData varsa onu, yoksa notu göster
+          this.renderer.setStyle(buttonElement, 'position', 'absolute');
+          this.renderer.setStyle(buttonElement, 'left', `${note.xcoordinate}px`);
+          this.renderer.setStyle(buttonElement, 'top', `${note.ycoordinate}px`);
+          this.renderer.addClass(buttonElement, 'btn'); // Bootstrap butonu için class
+          this.renderer.addClass(buttonElement, 'btn-info'); // Renk
+          this.renderer.listen(buttonElement, 'click', () => this.handleButtonClick(note));
+
+          // Canvas container'a butonu ekle
+          const canvasContainer = this.canvasContainerRef.nativeElement;
+          this.renderer.appendChild(canvasContainer, buttonElement);
+          this.showButtons.push(buttonElement); // Butonu listeye ekle (kaldırmak için)
+        }
+      });
+
+    } catch (error) {
+      console.error('Sayfa render edilirken bir hata oluştu:', error);
+    }
   }
 
-
   pageChangeForvard() {
-    if (this.topPagepdf > this.currentPageNumber) {
+    if (this.currentPageNumber < this.topPagepdf) {
       this.currentPageNumber++;
-    }
-
-    this.loadingTask.promise.then(
-      (pdf: PDFDocumentProxy) => {
-        console.log('PDF gelmiş');
-        console.log(pdf);
-        this.renderPage(pdf, this.currentPageNumber); // 1. sayfayı render et
-      },
-      (reason: any) => {
-        console.error('PDF yüklenemedi: ' + reason);
+      this.clearButtons();
+      if (this.currentPdfDoc) {
+        this.renderPage(this.currentPdfDoc, this.currentPageNumber);
       }
-    );
+    }
   }
 
   pageChangeBackvard() {
-    if (1 >= this.currentPageNumber) {
-
-    } else {
+    if (this.currentPageNumber > 1) {
       this.currentPageNumber--;
-    }
-
-    this.loadingTask.promise.then(
-      (pdf: PDFDocumentProxy) => {
-        console.log('PDF gelmiş');
-        console.log(pdf);
-        this.renderPage(pdf, this.currentPageNumber); // 1. sayfayı render et
-      },
-      (reason: any) => {
-        console.error('PDF yüklenemedi: ' + reason);
+      this.clearButtons();
+      if (this.currentPdfDoc) {
+        this.renderPage(this.currentPdfDoc, this.currentPageNumber);
       }
-    );
+    }
+  }
+
+  clearButtons() {
+    this.showButtons.forEach(button => {
+      this.renderer.removeChild(this.canvasContainerRef.nativeElement, button);
+    });
+    this.showButtons = [];
+  }
+
+  refreshPage() {
+    this.clearButtons();
+    if (this.currentPdfDoc) {
+      this.renderPage(this.currentPdfDoc, this.currentPageNumber);
+    }
   }
 
   onSubmit() {
@@ -416,6 +464,19 @@ export class PdfEditComponent implements OnInit {
     console.log(JSON.parse(sessionStorage.getItem('user') || '{}').id)
     // Formdaki input değerini al
 
+    // Mevcut kodu koruyarak, notları notesData dizisine ekleyelim
+    const newNote: NoteItem = {
+      id: `${this.title}_${Date.now()}`,
+      note: this.metin,
+      xcoordinate: this.pdfX,
+      ycoordinate: this.pdfY,
+      page: this.currentPageNumber,
+      title: this.title,
+      user: JSON.parse(sessionStorage.getItem('user') || '{}'), // Kullanıcı bilgisini session'dan al
+      isShowingNote: false, // Başlangıçta notu göster
+      displayData: this.metin // Başlangıçta not metnini göster
+    };
+    // this.notesData.push(newNote); // YENİ NOTUN HEMEN GÖSTERİLMEMESİ İÇİN BU SATIR YORUMA ALINDI/KALDIRILDI
 
     // Gönderilecek JSON verisi
     const data = {
@@ -468,10 +529,8 @@ export class PdfEditComponent implements OnInit {
       this.pdfY = (y / rect.height) * this.originalViewport.height;
       this.updateParentMessage();
       console.log(`Tıklanan PDF Koordinatları X: ${this.pdfX.toFixed(2)}, Y: ${this.pdfY.toFixed(2)}`);
-
     }
   }
-
 
   higlihtMode() {
     this.modeSelect = 1;
@@ -509,7 +568,6 @@ export class PdfEditComponent implements OnInit {
         let aendX = endX.toFixed(2);
         let aendY = endY.toFixed(2);
 
-
         const highlightData = {
           startX: parseFloat(astartX),
           startY: parseFloat(astartY),
@@ -544,7 +602,6 @@ export class PdfEditComponent implements OnInit {
             console.error('Bir hata oluştu:', error);  // Detailed error message
           });
 
-
         const highlightDiv = document.createElement('div');
         highlightDiv.className = 'position-absolute bg-warning';
         highlightDiv.id = 'higlighta';
@@ -562,7 +619,6 @@ export class PdfEditComponent implements OnInit {
     }
   }
 
-
   mouseDown($event: MouseEvent) {
     if (this.modeSelect == 1) {
       this.isMouseDown = true;
@@ -577,24 +633,6 @@ export class PdfEditComponent implements OnInit {
   }
 
   download($event: MouseEvent) {
-    // html2canvas(this.canvasContainerRef.nativeElement).then(canvas => {
-    //
-    //   const link = document.createElement('a');
-    //   html2canvas(this.canvasContainerRef.nativeElement, {
-    //     scale: 2, // Daha yüksek çözünürlük için ölçek artırılır
-    //     useCORS: true, // Cross-Origin Resource Sharing izinlerini etkinleştir
-    //     logging: true, // Hata ayıklama için loglama
-    //     allowTaint: true // Taint edilmiş (dış kaynaktan) içeriklere izin ver
-    //   }).then(canvas => {
-    //     // Oluşturulan canvas'ı indirmek için link oluştur
-    //     const link = document.createElement('a');
-    //     link.download = 'highlighted_pdf.png';
-    //     link.href = canvas.toDataURL('image/png'); // PNG formatında çıktı
-    //     link.click();
-    //   }).catch(error => {
-    //     console.error('PDF indirilirken bir hata oluştu:', error);
-    //   });
-    // })
     this.generatePdfFromCanvas();
   }
   generatePdfFromCanvas(): void {
@@ -626,13 +664,6 @@ export class PdfEditComponent implements OnInit {
   downloadWithoutButton($event: MouseEvent) {
     this.toggleVisibility();
     this.generatePdfFromCanvas();
-    // html2canvas(this.canvasContainerRef.nativeElement).then(canvas => {
-    //
-    //   const link = document.createElement('a');
-    //   link.download = 'highlighted_pdf.png';
-    //   link.href = canvas.toDataURL();
-    //   link.click();
-    // });
     this.toggleVisibility();
   }
 
@@ -649,24 +680,6 @@ export class PdfEditComponent implements OnInit {
       }
     });
   }
-
-  // downloadWithoutButtonpdf($event: MouseEvent) {
-  //   const canvas = this.pdfCanvasRef.nativeElement;
-  //   const pdf = new jsPDF();
-  //
-  //   // Canvas'ı bir veri URL'sine dönüştür
-  //   const imgData = canvas.toDataURL('image/png');
-  //
-  //   // PDF'in boyutunu canvas boyutuna ayarla
-  //   const pdfWidth = canvas.width * 0.75; // px'den pt'ye çevir (1 px ≈ 0.75 pt)
-  //   const pdfHeight = canvas.height * 0.75;
-  //
-  //   // Canvas görüntüsünü PDF'e ekle
-  //   pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-  //
-  //   // PDF dosyasını indir
-  //   pdf.save('canvas-output.pdf');
-  // }
 
   mouseMove($event: MouseEvent) {
     if (this.isDrawing && this.modeSelect == 2) {
@@ -691,11 +704,6 @@ export class PdfEditComponent implements OnInit {
     });
   }
 
-
-  refreshPage() {
-    window.location.reload(); // Sayfayı yenile
-  }
-
   deleteAllHiglights() {
     const deleteUrl = `http://localhost:8080/highlights/delAll/${this.pdfId}`;
 
@@ -710,5 +718,48 @@ export class PdfEditComponent implements OnInit {
         alert('An error occurred while deleting highlights. Please try again.');
       },
     });
+  }
+
+  createNoteButton(note: NoteItem, canvas: HTMLCanvasElement, scale: number) {
+    const button = this.renderer.createElement('button');
+    this.renderer.addClass(button, 'note-button'); // CSS sınıfı ekle
+    this.renderer.setProperty(button, 'id', `note-${note.id}`); // ID ata
+    this.renderer.setAttribute(button, 'title', note.title || 'Not'); // Başlık ekle
+
+    // Buton metnini ayarla
+    const buttonText = note.isShowingNote ? (note.displayData || 'Detayları Gizle') : (note.title || 'Not');
+    this.renderer.setProperty(button, 'textContent', buttonText);
+
+    // Buton konumunu ve boyutunu ayarla (ölçek dikkate alınarak)
+    const buttonSize = 20 * scale; // Temel buton boyutu (örneğin 20px) ölçekle çarpılır
+    const fontSize = 0.8 * scale; // Temel font boyutu (örneğin 0.8vw) ölçekle çarpılır, vw yerine em veya rem de düşünülebilir. Daha dinamik olması için 0.5vw gibi bir değer de ayarlanabilir.
+
+    this.renderer.setStyle(button, 'position', 'absolute');
+    this.renderer.setStyle(button, 'left', `${note.xcoordinate * scale}px`);
+    this.renderer.setStyle(button, 'top', `${note.ycoordinate * scale}px`);
+    this.renderer.setStyle(button, 'width', `${buttonSize}px`);
+    this.renderer.setStyle(button, 'height', `${buttonSize}px`);
+    // Font boyutunu göreceli yapalım. `vw` viewport genişliğine göre, `em` parent elementin font boyutuna göre ölçeklenir.
+    // Burada basitlik adına viewport genişliğine göre bir ayarlama yapıyoruz.
+    // Daha sofistike bir yaklaşım için container genişliğini baz alabilir veya em kullanabilirsiniz.
+    this.renderer.setStyle(button, 'font-size', `${fontSize}vw`); // Göreceli font boyutu
+    this.renderer.setStyle(button, 'border-radius', '50%'); // Butonu yuvarlak yap
+    this.renderer.setStyle(button, 'background-color', 'rgba(255, 165, 0, 0.7)'); // Turuncu, yarı saydam arka plan
+    this.renderer.setStyle(button, 'color', 'white');
+    this.renderer.setStyle(button, 'border', '1px solid orange');
+    this.renderer.setStyle(button, 'cursor', 'pointer');
+    this.renderer.setStyle(button, 'z-index', '1000'); // Diğer elementlerin üzerinde olması için
+    this.renderer.setStyle(button, 'padding', '0'); // İç boşluğu sıfırla
+    this.renderer.setStyle(button, 'display', 'flex');
+    this.renderer.setStyle(button, 'align-items', 'center');
+    this.renderer.setStyle(button, 'justify-content', 'center');
+    this.renderer.setStyle(button, 'overflow', 'hidden'); // Taşan metni gizle
+    this.renderer.setStyle(button, 'text-overflow', 'ellipsis'); // Uzun metinler için ...
+    this.renderer.setStyle(button, 'white-space', 'nowrap'); // Metnin alt satıra kaymasını engelle
+
+    // Canvas container'a butonu ekle
+    const canvasContainer = this.canvasContainerRef.nativeElement;
+    this.renderer.appendChild(canvasContainer, button);
+    this.showButtons.push(button); // Butonu listeye ekle (kaldırmak için)
   }
 }

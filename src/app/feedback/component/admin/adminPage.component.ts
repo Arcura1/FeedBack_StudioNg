@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'adminPage',
@@ -8,8 +9,10 @@ import { Router } from '@angular/router';
 })
 export class AdminPageComponent implements OnInit {
   user: any = {};
+  searchQuery: { name: string } = { name: '' };
+  searchResults: any[] = [];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.user = JSON.parse(sessionStorage.getItem('user') || '{}');
@@ -19,6 +22,26 @@ export class AdminPageComponent implements OnInit {
     console.log('Admin Paneli - Rol:', this.user.role);
   }
 
+  searchOrganizationByName(): void {
+    if (!this.searchQuery.name) {
+      alert('Lütfen bir kurum adı girin.');
+      return;
+    }
+
+    this.http.post<any[]>('http://localhost:8080/organization/search', this.searchQuery)
+      .subscribe(
+        (result) => {
+          this.searchResults = result;
+          if (result.length === 0) {
+            alert('Girilen ada uygun kurum bulunamadı.');
+          }
+        },
+        (error) => {
+          console.error('Arama hatası:', error);
+          alert('Kurum arama sırasında bir hata oluştu!');
+        }
+      );
+  }
 goToAdmin() {
   this.router.navigate(['/feedback/organization']);
 }

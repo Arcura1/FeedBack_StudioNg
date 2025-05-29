@@ -29,8 +29,8 @@ html, body {
 button.btn {
   position: relative;
   display: inline-block;
-  padding: 10px 24px;
-  font-size: 16px;
+  padding: 0.5em 1.2em;
+  font-size: 0.8vw;
   font-weight: 500;
   color: white;
   background: linear-gradient(135deg, #42a5f5, #7e57c2);
@@ -75,5 +75,54 @@ button.btn:hover {
 @keyframes glowButton {
   0% { filter: hue-rotate(0deg); }
   100% { filter: hue-rotate(360deg); }
+}
+
+/* Farklı buton türleri için ek stiller */
+
+/* Success Button */
+/* Yeşil tonları ve efektleri */
+button.btn.btn-success {
+  background: linear-gradient(135deg, #66bb6a, #43a047); /* Yeşil gradyan */
+  box-shadow: 0 4px 14px rgba(77, 182, 172, 0.3); /* Yeşil gölge */
+}
+
+button.btn.btn-success:hover {
+  box-shadow: 0 6px 20px rgba(77, 182, 172, 0.4); /* Hover yeşil gölge */
+  /* transform: translateY(-2px); bu zaten ana .btn:hover'da var */
+}
+
+button.btn.btn-success::before {
+  background: linear-gradient(45deg, #a7ffeb, #64ffda, #a7ffeb); /* Yeşil parlama efekti */
+  /* Diğer ::before özellikleri ana .btn::before'dan miras alınır */
+}
+
+/* Warning Button */
+/* Turuncu tonları ve efektleri */
+button.btn.btn-warning {
+  background: linear-gradient(135deg, #ffa726, #fb8c00); /* Turuncu gradyan */
+  box-shadow: 0 4px 14px rgba(255, 167, 38, 0.3); /* Turuncu gölge */
+}
+
+button.btn.btn-warning:hover {
+  box-shadow: 0 6px 20px rgba(255, 167, 38, 0.4); /* Hover turuncu gölge */
+}
+
+button.btn.btn-warning::before {
+  background: linear-gradient(45deg, #ffd180, #ffab40, #ffd180); /* Turuncu parlama efekti */
+}
+
+/* Danger Button */
+/* Kırmızı tonları ve efektleri */
+button.btn.btn-danger {
+  background: linear-gradient(135deg, #ef5350, #e53935); /* Kırmızı gradyan */
+  box-shadow: 0 4px 14px rgba(239, 83, 80, 0.3); /* Kırmızı gölge */
+}
+
+button.btn.btn-danger:hover {
+  box-shadow: 0 6px 20px rgba(239, 83, 80, 0.4); /* Hover kırmızı gölge */
+}
+
+button.btn.btn-danger::before {
+  background: linear-gradient(45deg, #ff8a80, #ff5252, #ff8a80); /* Kırmızı parlama efekti */
 }
 

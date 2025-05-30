@@ -60,6 +60,7 @@ export class HomeworkComponent implements OnInit{
         this.homeworkTitle = '';
         this.homeworkDescription = '';
         this.teacherHomeworks.push(newHomework);
+        window.location.reload();
       },
       (error) => {
         console.error('Hata:', error);

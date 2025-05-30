@@ -51,20 +51,27 @@ export class PopupTeacherComponent {
     );
   }
 
-  deleteHomework(homeworkId: number): void {
-    const deleteUrl = `http://localhost:8080/homework/del/${homeworkId}`;
-    this.http.delete(deleteUrl, { responseType: 'text' }).subscribe(
-      (response) => {
-        console.log('Delete response:', response); // 'silindi' yazmalı
-        alert('Ödev başarıyla silindi!');
-        this.closePopup();
-      },
-      (error) => {
-        console.error('Error deleting homework:', error);
-        alert('Ödev silinirken bir hata oluştu!');
-      }
-    );
-  }
+deleteHomework(homeworkId: number): void {
+  const deleteUrl = `http://localhost:8080/homework/del/${homeworkId}`;
+  this.http.delete(deleteUrl, { responseType: 'text' }).subscribe(
+    (response) => {
+      console.log('Delete response:', response);
+      alert('Ödev başarıyla silindi!');
+      // Listeyi temizle ve popup'ı kapat
+      this.userList = [];
+      window.location.reload();
+
+      this.closePopup();
+      // Gerekirse dış bileşene haber ver
+      // Örneğin EventEmitter ile parent'a sinyal gönderilebilir
+    },
+    (error) => {
+      console.error('Error deleting homework:', error);
+      alert('Ödev silinirken bir hata oluştu!');
+    }
+  );
+}
+
 
   // Close popup
   closePopup(): void {

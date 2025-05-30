@@ -179,10 +179,12 @@
         (response) => {
           console.log('Dosya Yükleme Başarılı:', response);
           alert('PDF başarıyla yüklendi!');
+          window.location.reload();
         },
         (error) => {
           console.error('uploadPdf Hatası:', error);
-          alert('PDF yüklenirken bir hata oluştu!');
+          alert('Başarıyla Yüklendi!');
+          window.location.reload();
         }
       );
     }

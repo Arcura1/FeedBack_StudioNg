@@ -179,12 +179,14 @@
         (response) => {
           console.log('Dosya Yükleme Başarılı:', response);
           alert('PDF başarıyla yüklendi!');
-          window.location.reload();
+          window.location.href = '/feedback/student';
+
         },
         (error) => {
           console.error('uploadPdf Hatası:', error);
           alert('Başarıyla Yüklendi!');
-          window.location.reload();
+          window.location.href = '/feedback/student';
+
         }
       );
     }

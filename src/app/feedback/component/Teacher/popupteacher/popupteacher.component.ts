@@ -73,7 +73,24 @@ export class PopupTeacherComponent {
     this.pdfIdMap.clear();
   }
 
-  deletePdf(id: BufferSource) {
-    // const pdfId = this.pdfIdMap.get(userId);
-  }
+deletePdf(pdfId: number): void {
+  const deleteUrl = `http://localhost:8080/pdf/${pdfId}`;
+  this.http.delete(deleteUrl, { responseType: 'text' }).subscribe({
+    next: (response) => {
+      console.log('PDF silindi:', response);
+      alert('PDF başarıyla silindi!');
+      this.userList = this.userList.filter(user => user.id !== pdfId);
+      this.pdfIdMap.forEach((val, key) => {
+        if (val === pdfId) {
+          this.pdfIdMap.delete(key);
+        }
+      });
+    },
+    error: (error) => {
+      console.error('PDF silinirken hata:', error);
+      alert('PDF silinirken bir hata oluştu!');
+    }
+  });
+}
+
 }

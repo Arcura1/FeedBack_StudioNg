@@ -76,10 +76,9 @@ export class PopupTeacherComponent {
 deletePdf(pdfId: number): void {
   const deleteUrl = `http://localhost:8080/pdf/${pdfId}`;
   this.http.delete(deleteUrl, { responseType: 'text' }).subscribe({
-    next: (response) => {
-      console.log('PDF silindi:', response);
+    next: () => {
       alert('PDF başarıyla silindi!');
-      this.userList = this.userList.filter(user => user.id !== pdfId);
+      this.userList = this.userList.filter(u => u.id !== pdfId);
       this.pdfIdMap.forEach((val, key) => {
         if (val === pdfId) {
           this.pdfIdMap.delete(key);
@@ -92,5 +91,8 @@ deletePdf(pdfId: number): void {
     }
   });
 }
+
+
+
 
 }

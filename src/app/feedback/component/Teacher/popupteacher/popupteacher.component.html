@@ -18,6 +18,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+
       <div class="modal-body">
         <p><strong>Ödev ID:</strong> {{ homework?.id }}</p>
 
@@ -29,28 +30,31 @@
               <p><strong>Email:</strong> {{ user.user.email }}</p>
               <p><strong>Telefon:</strong> {{ user.user.phone }}</p>
               <p><strong>Rol:</strong> {{ user.user.role }}</p>
+
+              <p><strong>PDF ID:</strong> {{ user.id }}</p> <!-- Ekstra bilgi olarak -->
+
               <!-- PDF Edit Butonu -->
-              <button class="btn btn-primary" (click)="goToPdfEdit(user.user.id)">
+              <button class="btn btn-primary me-2" (click)="goToPdfEdit(user.user.id)">
                 PDF Edit
               </button>
-              <button class="btn btn-primary" (click)="deletePdf(user.user.id)">
-              Delete Pdf
-            </button>
+
+              <!-- Delete PDF Butonu -->
+              <button class="btn btn-danger" (click)="deletePdf(user.id)">
+                Delete PDF
+              </button>
             </li>
           </ul>
         </div>
 
-        <!-- Kullanıcı Bulunamadığında Gösterilecek Mesaj -->
+        <!-- Kullanıcı Bulunamadığında -->
         <ng-template #noUsers>
           <p>Bu ödev için kullanıcı bilgisi bulunamadı.</p>
         </ng-template>
       </div>
+
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="closePopup()">
           Kapat
-        </button>
-        <button class="btn btn-danger btn-sm" (click)="deleteHomework(homework.id)">
-          Sil
         </button>
       </div>
     </div>

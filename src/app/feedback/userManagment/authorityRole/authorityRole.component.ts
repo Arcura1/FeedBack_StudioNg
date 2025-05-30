@@ -152,4 +152,10 @@ export class AuthorityRoleComponent implements OnInit {
     this.filteredAuthorities = [];
     this.roles = [];
   }
+
+  selectroleType($event: Event) {
+    console.log($event)
+    console.log($event.target)
+    console.log($event)
+  }
 }

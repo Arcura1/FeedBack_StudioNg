@@ -3,13 +3,32 @@
 
   <form (ngSubmit)="save()" class="row g-3 mb-4">
     <!-- ROLE Seçimi -->
-    <div class="col-md-4">
-      <input type="text" (input)="onRoleSearch($event)" placeholder="Role ara..." class="form-control mb-2" />
-      <select *ngIf="roles.length > 0" [(ngModel)]="newRelation.roleId" name="roleId" class="form-control">
+    <!-- ROLE SEARCH & SELECT -->
+    <div class="col-md-4 position-relative">
+      <input
+        type="text"
+        class="form-control mb-2"
+        placeholder="Role ara..."
+        (input)="onRoleSearch($event)"
+        (focus)="onRoleSearch($event)"
+        (blur)="hideSuggestions()"
+        [attr.autocomplete]="'off'"
+      />
+
+      <select
+        *ngIf="roles.length > 0"
+        [(ngModel)]="newRelation.roleId"
+        (change)="selectroleType($event)"
+        name="roleId"
+        class="form-control"
+      >
+        <option [value]="null">-- Rol seçin --</option>
         <option *ngFor="let role of roles" [value]="role.id">
           {{ role.name }}
         </option>
       </select>
+
+
     </div>
 
     <!-- AUTHORITY TYPE -->

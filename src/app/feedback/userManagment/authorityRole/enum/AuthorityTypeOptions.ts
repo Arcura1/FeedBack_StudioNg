@@ -6,5 +6,4 @@ export const AuthorityTypeOptions = [
   { label: 'Classroom', value: AuthorityType.CLASSROOM },
   { label: 'Homework', value: AuthorityType.HOMEWORK },
   { label: 'PDF Edit', value: AuthorityType.PDF_EDIT },
-  { label: 'Classroom User', value: AuthorityType.CLASSROOM_USER }
 ];

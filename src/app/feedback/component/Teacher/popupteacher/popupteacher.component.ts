@@ -72,4 +72,8 @@ export class PopupTeacherComponent {
     this.userList = [];
     this.pdfIdMap.clear();
   }
+
+  deletePdf(id: BufferSource) {
+    // const pdfId = this.pdfIdMap.get(userId);
+  }
 }

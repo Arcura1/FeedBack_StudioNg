@@ -52,23 +52,14 @@ export class CustomPageComponent implements OnInit {
 
 loadAuthorities(): void {
   const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+  const userId = user.id;
 
-  // roleTypeEnum alınmaya çalışılıyor
-  const roleTypeEnum =
-    typeof user.role === 'string'
-      ? user.role // örneğin: "CUSTOM"
-      : user.role?.roleTypeEnum;
-
-  if (!roleTypeEnum) {
-    console.error('Rol tipi alınamadı:', user);
+  if (!userId) {
+    console.error('Kullanıcı ID alınamadı:', user);
     return;
   }
 
-  const body = {
-    roleTypeEnum: roleTypeEnum
-  };
-
-  this.http.post<Authority[]>('http://localhost:8080/authorities/query', body).subscribe({
+  this.http.get<Authority[]>(`http://localhost:8080/authorities/getByRole/${userId}`).subscribe({
     next: (data: Authority[]) => {
       this.authorities = data;
 
@@ -82,6 +73,7 @@ loadAuthorities(): void {
     }
   });
 }
+
 
 
 

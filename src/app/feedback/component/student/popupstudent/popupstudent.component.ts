@@ -50,6 +50,7 @@
     closePopup(): void {
       this.isVisible = false;
       this.selectedFile = null;
+      this.uploadedPdfId=null;
     }
 
     // Dosya seçimi işleyici

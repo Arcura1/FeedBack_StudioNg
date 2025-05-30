@@ -25,7 +25,7 @@ const routes: Routes = [
     path: 'PdfEdit/:homeworkId/:pdfId',
     component: PdfEditComponent,
     canActivate: [RoleGuard],
-    data: { roles: ['ADMIN', 'EXECUTIVE', 'TEACHER', 'STUDENT'] }
+    data: { roles: ['ADMIN', 'EXECUTIVE', 'TEACHER', 'STUDENT', 'CUSTOM'] }
   },
 
 
@@ -106,7 +106,7 @@ const routes: Routes = [
     path: 'PdfEdit',
     component: PdfEditComponent,
     canActivate: [RoleGuard],
-    data: { roles: ['ADMIN', 'EXECUTIVE', 'TEACHER', 'STUDENT'] }
+    data: { roles: ['ADMIN', 'EXECUTIVE', 'TEACHER', 'STUDENT', 'CUSTOM'] }
   },
 
 

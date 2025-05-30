@@ -4,3 +4,11 @@
   min-height: 100vh;
   padding: 1rem;
 }
+nawbarfeed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; /* Diğer öğelerin üstünde olsun */
+}
+

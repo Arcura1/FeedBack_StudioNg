@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthorityService, Authority } from './service/authority.service';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-custom-page',
@@ -41,7 +42,8 @@ export class CustomPageComponent implements OnInit {
 
   constructor(
     private authorityService: AuthorityService,
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -172,12 +174,21 @@ const req = this.homework.id
   }
 
   // PDF
-  onSelectPdf(value: string): void {
-    const [id, effect] = value.split('|');
-    const selected = this.pdfEditAuthorities.find(a => a.pdfInfo?.id === +id && a.effectTypeEnum === effect);
-    this.selectedPdfAuthority = selected ?? null;
-    this.pdf = selected?.pdfInfo ?? null;
+onSelectPdf(value: string): void {
+  const [id, effect] = value.split('|');
+  const selected = this.pdfEditAuthorities.find(a => a.pdfInfo?.id === +id && a.effectTypeEnum === effect);
+  this.selectedPdfAuthority = selected ?? null;
+  this.pdf = selected?.pdfInfo ?? null;
+
+  // 👇 homeworkEntityId ve id mevcutsa yönlendir
+  const pdfId = this.pdf?.id;
+  const homeworkId = this.pdf?.homeworkEntityId;
+
+  if (pdfId && homeworkId) {
+    this.router.navigate([`/feedback/PdfEdit`, homeworkId, pdfId]);
   }
+}
+
 
   savePdf(): void {
     if (!this.pdf) return;

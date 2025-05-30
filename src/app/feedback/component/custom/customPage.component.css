@@ -14,10 +14,10 @@
 
 .accordion-item {
   /* Flex item ayarları */
-  flex: 1 1 200px; /* Büyüyebilir, küçülebilir, temel genişlik 200px (ayarlayabilirsiniz) */
+  flex: 1 1 calc(25% - 1rem); /* Büyüyebilir, küçülebilir, temel genişlik 200px (ayarlayabilirsiniz) */
   /* Veya sabit sayıda öğe istiyorsanız: */
   /* flex-basis: calc(20% - 1rem); /* 5 öğe için (gap'i hesaba katın). 1rem gap varsa ve 5 öğe varsa, (100% - 4*1rem) / 5 gibi bir hesaplama gerekir. */
-  min-width: 180px; /* Öğelerin çok daralmasını engeller */
+  min-width: 220px; /* Öğelerin çok daralmasını engeller */
 
   border: 1px solid #ddd; /* Artık border-bottom yerine tam bir çerçeve daha iyi görünebilir */
   border-radius: 8px; /* Köşeleri yuvarlatılmış öğeler için */

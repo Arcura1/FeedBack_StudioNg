@@ -16,20 +16,20 @@ export class NavbarComponent implements OnInit{
   constructor(private router: Router) {}
 
   goToProfile() {
-    this.router.navigate(['/feedback/profile']);
+    this.router.navigate(['/feedback/profile'], { skipLocationChange: true });
   }
 
   goToMain() {
     this.router.navigate(['/feedback']);
   }
   goToClassroom() {
-    this.router.navigate(['/feedback/classroom']);
+    this.router.navigate(['/feedback/classroom'], { skipLocationChange: true });
   }
   goToUsermanagement() {
-    this.router.navigate(['/feedback/usermanagement']);
+    this.router.navigate(['/feedback/usermanagement'], { skipLocationChange: true });
   }
   goToOrganization() {
-    this.router.navigate(['/feedback/organization']);
+    this.router.navigate(['/feedback/organization'], { skipLocationChange: true });
   }
 
 logout() {
@@ -38,9 +38,4 @@ logout() {
   this.router.navigate(['/login']); // Giriş ekranına yönlendir
 }
 
-  goToHomework() {
-    const classroomId = 1;
-
-    this.router.navigate(['/feedback/homework',classroomId]);
-  }
 }

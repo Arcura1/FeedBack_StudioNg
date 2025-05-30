@@ -24,7 +24,7 @@ export class MainPageComponent implements OnInit {
 
   // Student sayfasına yönlendirme
   goToStudent() {
-    this.router.navigate(['/feedback/student']);
+    this.router.navigate(['/feedback/student'], { skipLocationChange: true });
   }
 
 

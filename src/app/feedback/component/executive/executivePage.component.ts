@@ -13,6 +13,6 @@ export class ExecutivePageComponent implements OnInit {
   }
 
   goToExecutive() {
-  this.router.navigate(['/feedback/executivePageQr']);
+  this.router.navigate(['/feedback/executivePageQr'], { skipLocationChange: true });
   }
 }

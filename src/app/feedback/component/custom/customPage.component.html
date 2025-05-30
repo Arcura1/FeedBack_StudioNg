@@ -164,9 +164,13 @@
           <label for="pdfSelect">Bir PDF seçin:</label>
           <select class="form-control" id="pdfSelect" #pdfSelect (change)="onSelectPdf(pdfSelect.value)">
             <option [value]="''">Seçiniz</option>
-            <option *ngFor="let authority of pdfEditAuthorities" [value]="authority.pdfInfo?.id + '|' + authority.effectTypeEnum">
-              {{ authority.pdfInfo?.name }} ({{ authority.effectTypeEnum }})
-            </option>
+            <ng-container *ngFor="let authority of pdfEditAuthorities">
+              <option *ngIf="authority.effectTypeEnum === 'UPDATE'"
+                      [value]="authority.pdfInfo?.id + '|' + authority.effectTypeEnum">
+                {{ authority.effectTypeEnum }} - ID: {{ authority.pdfInfo?.id }}
+              </option>
+            </ng-container>
+
           </select>
         </div>
 
@@ -188,7 +192,7 @@
           <p>Yetkili PDF verisi bulunamadı.</p>
         </div>
       </div>
-      </div>
+    </div>
 </div>
 
 

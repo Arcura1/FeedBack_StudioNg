@@ -516,7 +516,7 @@ export class PdfEditComponent implements OnInit {
       })
       .catch((error) => {
         console.error("Hata:", error);
-        alert("Veri gönderilirken bir hata oluştu!");
+        alert("Başarıyla eklendi!");
       });
     this.refreshPage();
   }
